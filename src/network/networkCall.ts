@@ -19,8 +19,10 @@ export default class NetworkCall {
   static refreshTokenPromise = null;
 
   static async fetch(request, useLoading = true) {
+    console.log("---->> request: ", request);
     store.dispatch(setLoadingAction(true));
     const axiosCall = (newRequest) => {
+      console.log("final request: ", newRequest);
       return NetworkCall.axios({
         method: request.method,
         url: request.url,

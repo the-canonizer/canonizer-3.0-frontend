@@ -207,6 +207,7 @@ export async function getServerSideProps({ req, query, res }) {
   ]);
 
   console.log("tree api response -->>", tree);
+  console.log("camp api response -->>", campRecord);
 
   const resTopicName = topicRecord?.topic_name?.replaceAll(" ", "-");
   const resCampName = campRecord?.campData?.camp_name?.replaceAll(" ", "-");

@@ -22,12 +22,14 @@ export const getTreesApi = async (reqBody, loginToken = null) => {
       false
     );
     store.dispatch(setTree(trees?.data || []));
+    console.log("tree method  response --->", trees);
     return {
       treeData: trees?.data?.at(0),
       status_code: trees?.code,
       message: trees?.message || "",
     };
   } catch (error) {
+    console.log("Error --------------->>>", error);
     store.dispatch(setTree([]));
     let data = error?.error?.data;
     return {
