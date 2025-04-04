@@ -323,19 +323,19 @@ const ThreadListUI = ({
                                 : others["nick_name"]}
                             </a>
                           </Link>{" "}
-                          {`replied ${moment(getTime(dt))
+                          { dt ? `replied ${moment(getTime(dt))
                             .local()
                             .startOf("seconds")
                             .fromNow()} (${moment(getTime(dt)).format(
                             "MMM Do YYYY, h:mm:ss a"
-                          )})`}
+                          )})` : `replied years ago`}
                         </Fragment>
                       )}
                     </Text>
                     <Text className="block text-xs text-canLight mt-2">
-                      {moment(getTime(dt || others?.updated_at)).format(
+                      {dt || others?.updated_at ? moment(getTime(dt || others?.updated_at)).format(
                         "DD MMM YYYY, h:mm A"
-                      )}
+                      ) : ''}
                     </Text>
                   </Paragraph>
                 );
