@@ -42,7 +42,7 @@ const SinglePost = ({
             >
               <a className="">{nick_name}</a>
             </Link>
-            <Text>
+            {postedTime || postedUpdatedTime ? (<Text>
               {new Date(postedTime).getTime() ===
               new Date(postedUpdatedTime).getTime() ? (
                 <Text className="ml-1 font-medium text-sm">
@@ -75,7 +75,13 @@ const SinglePost = ({
                   </Text>
                 </Text>
               )}
-            </Text>
+            </Text>):(
+              <Text>
+                 <Text className="ml-1 font-medium text-sm">
+                  commented{" "} years ago
+                   </Text>
+              </Text>
+            )}
           </Text>
           {post?.is_my_post ? (
             <Fragment>
