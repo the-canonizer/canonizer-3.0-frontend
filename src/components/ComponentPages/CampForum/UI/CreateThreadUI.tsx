@@ -15,6 +15,7 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 import GetBreadCrumbs from "./PopupBreadCrumb";
 import { defaultNicknameData } from "src/utils/generalUtility";
+import DrawerBreadcrumbs from "components/ComponentPages/TopicDetails/SupportTreeCard/supportTreeDrawer/drawerBreadcrumbs";
 
 const { labels, placeholders, nickNmRule, threadTitleRule } = messages;
 
@@ -43,9 +44,10 @@ const CreateEditThreadPopup = ({
       onClose={onClose}
       open={isOpen}
       height={700}
-      width={560}
+      width={730}
       extra={
-        <GetBreadCrumbs topicRecord={topicRecord} campRecord={campRecord} />
+        // <GetBreadCrumbs topicRecord={topicRecord} campRecord={campRecord} />
+        <DrawerBreadcrumbs topicRecord={topicRecord} campRecord={campRecord} />
       }
       className="[&_.ant-drawer-header]:flex-wrap [&_.ant-drawer-header-title]:py-3 [&_.ant-drawer-header-title]:w-full [&_.ant-drawer-header-title]:flex-[100%] [&_.ant-drawer-header-title]:h-auto [&_.ant-drawer-extra]:w-full"
       id="drawer-create-edit-thread"

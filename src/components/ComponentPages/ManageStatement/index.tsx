@@ -55,7 +55,7 @@ function ManageStatements({ isEdit = false }) {
     name: "",
   });
   const [editStatementData, setEditStatementData] = useState(null);
-  const [submitIsDisable, setSubmitIsDisable] = useState(false);
+  const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [nickNameData, setNickNameData] = useState([]);
   const [screenLoading, setScreenLoading] = useState(false);
   const [editorState, setEditorState] = useState("");
@@ -126,7 +126,7 @@ function ManageStatements({ isEdit = false }) {
         campName === "Agreement"
           ? res?.data?.topic_name
           : res?.data?.bread_crumb?.at(-1)?.camp_name;
-      setEditorState(`<h2>${contentText}</h2><p>&nbsp;</p>`);
+      setEditorState(`<h2><b>${contentText}</b></h2><p>&nbsp;</p>`);
     }
   };
 
@@ -176,7 +176,7 @@ function ManageStatements({ isEdit = false }) {
     const nickNameId = backdata?.nick_name[0]?.id;
 
     const isStatementDifferent =
-      JSON.stringify(statementValue) !=
+      JSON.stringify(statementValue) !==
       JSON.stringify(values?.statement?.trim());
     const isNicknameDifferent =
       nickNameId != values?.nick_name && values?.nick_name;
@@ -287,7 +287,7 @@ function ManageStatements({ isEdit = false }) {
             !statement.parsed_value.startsWith("<p>") &&
             !statement.parsed_value.startsWith("<div>")
           ) {
-            statement.parsed_value = `<div><div/>${statement.parsed_value}`;
+            statement.parsed_value;
           }
           setEditCampStatementData(editRes?.data?.statement?.note);
           setEditStatementData(editRes.data);
@@ -902,10 +902,10 @@ function ManageStatements({ isEdit = false }) {
             <Breadcrumbs
               id="breadcrumbs"
               items={[
-                {
-                  icon: <HomeOutlined className="text-canBlack" />,
-                  href: "/",
-                },
+                // {
+                //   icon: <HomeOutlined className="text-canBlack" />,
+                //   href: "/",
+                // },
                 {
                   href: getBackURL(),
                   label:

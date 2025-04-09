@@ -69,7 +69,7 @@ const PostUI = ({
             ) : (
               <Popover
                 content={currentThread?.title}
-                key={currentThread?.created_at}
+                key={currentThread?.created_at ? currentThread?.created_at : '' }
                 placement="topLeft"
                 id="thread-title-popover"
               >

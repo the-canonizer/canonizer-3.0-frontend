@@ -6,12 +6,28 @@
       @apply md:text-[#242B37] max-md:text-[#777F93] gap-1 flex items-center;
     }
     li {
-      &:last-child {
-        @apply font-semibold max-md:text-[#4EB966];
+      &:last-child{
         a{
-          @apply max-md:text-[#4EB966];
+          @apply font-semibold text-[#4EB966];
+          &:hover{
+            @apply text-canBlue;
+          }
         }
       }
+      &:first-child{
+        a{
+          @apply font-semibold text-[#242B37];
+          &:hover{
+            @apply text-canBlue;
+          }
+        }
+      }
+      // &:last-child {
+      //   @apply font-semibold max-md:text-[#4EB966];
+      //   a{
+      //     @apply max-md:text-[#4EB966];
+      //   }
+      // }
       @apply max-lg:text-xs lg:text-base;
       .ant-breadcrumb-link {
         .anticon {
@@ -49,3 +65,4 @@
 
   }
 }
+

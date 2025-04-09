@@ -22,9 +22,9 @@ function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
       <Breadcrumb.Item
         href={`/topic/${topicRecord?.topic_num}-${topic_name}/1-Agreement`}
       >
-        Topic: {topicRecord?.topic_name}
+        {topicRecord?.topic_name}
       </Breadcrumb.Item>
-      {campRecord && campRecord?.parentCamps?.length > 1 && !showAll ? (
+      {campRecord && campRecord?.parentCamps?.length > 2 && !showAll ? (
         <>
           <Breadcrumb.Item>
             <Button
@@ -38,11 +38,11 @@ function DrawerBreadcrumbs({ topicRecord, campRecord, topic_name }: any) {
           <Breadcrumb.Item
             href={`/topic/${topicRecord?.topic_num}-${topic_name}/${campRecord?.camp_num}-${campRecord?.camp_name}`}
           >
-            Camp: {campRecord?.camp_name}
+            {campRecord?.camp_name}
           </Breadcrumb.Item>
         </>
       ) : (
-        campRecord?.parentCamps?.map((camp, index) => (
+        campRecord?.parentCamps?.slice(1)?.map((camp, index) => (
           <React.Fragment key={index}>
             <Breadcrumb.Item
               href={`/topic/${camp?.topic_num}-${topic_name}/${camp?.camp_num}-${camp?.camp_name}`}

@@ -782,6 +782,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                               alt=""
                               height={7}
                               width={15}
+                              preview={false}
                             />
                           }
                           value={`${treeExpandValue}`}

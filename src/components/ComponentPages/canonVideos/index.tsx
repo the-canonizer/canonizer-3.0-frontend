@@ -336,7 +336,7 @@ export default function CanonVideos() {
       <Menu.Item>
         <FacebookShareButton
           id="video-share-facebook-btn"
-          url={router?.asPath}
+          url={!isServer() && window?.location?.href}
           quote={currentVideoTitle}
           hashtag={`#${!isServer() && window?.location?.hostname}`}
         >
