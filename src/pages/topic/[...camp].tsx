@@ -38,6 +38,7 @@ const TopicDetailsPage = ({
   statementHistory,
   tree,
   serverCall,
+  reqBodyForService,
 }: any) => {
   const dispatch = useDispatch();
   const serverSideCall = useRef(serverCall || false);
@@ -229,6 +230,7 @@ export async function getServerSideProps({ req, query, res }) {
         statementHistory: statementHistory?.data || {},
         tree: tree || [],
         serverCall: true,
+        reqBodyForService,
       },
     };
   }
@@ -243,6 +245,7 @@ export async function getServerSideProps({ req, query, res }) {
       statementHistory: statementHistory?.data || {},
       tree: tree || [],
       serverCall: true,
+      reqBodyForService,
     },
   };
 }
