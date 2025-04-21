@@ -7,6 +7,8 @@ import {
   GetLanguageList,
   GetUserProfileInfo,
   UpdateUserProfileInfo,
+  GetUserPreferences,
+  UpdateUserPreferences
 } from "src/network/api/userApi";
 import { RootState } from "src/store";
 import isAuth from "../../../hooks/isUserAuthenticated";
@@ -102,16 +104,25 @@ const ProfilePrefrences = () => {
         console.error("Error fetching algorithms list:", error);
       }
     }
+    async function fetchUserPreferences(){
+        try {
+        let res = await GetUserPreferences();
+        if (res !== undefined) {
+         setProfileUserTags(res?.tags);
+         setSelectedLanguage(res?.language);
+         setSelectedAlgorithmKey(res?.default_algo);
+        }
+      } catch (error) {
+        console.error("Error fetching algorithms list:", error);
+      }
+    }
     async function fetchUserProfileInfo() {
       setLoading(true); // Start loading
       try {
         let res = await GetUserProfileInfo();
         if (res !== undefined) {
-          setProfileUserTags(res?.data?.tags);
           setUserPrifleInfoFirstName(res?.data?.first_name);
           setUserPrifleInfolastName(res?.data?.last_name);
-          setSelectedLanguage(res?.data?.language);
-          setSelectedAlgorithmKey(res?.data?.default_algo);
         }
       } catch (error) {
         console.error("Error fetching user profile info:", error);
@@ -119,10 +130,10 @@ const ProfilePrefrences = () => {
         setLoading(false); // Stop loading
       }
     }
-
     fetchLanguageList();
     fetchAlgorithmsList();
     fetchUserProfileInfo();
+    fetchUserPreferences();
     getAllTags();
   }, [isUserAuthenticated]);
 
@@ -234,30 +245,30 @@ const ProfilePrefrences = () => {
     dispatch(setDisableButtonForProfileInfo(true));
     dispatch(setPostalCodeDisableForProfileInfo(true));
     //Set Private Public flags
-    values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
-    values.last_name_bit = isPublicOrPrivate(publicPrivateArray.last_name);
-    values.email_bit = isPublicOrPrivate(publicPrivateArray.email);
-    values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1);
-    values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2);
-    values.postal_code_bit = isPublicOrPrivate(publicPrivateArray.postal_code);
-    values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
-    values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
-    values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
-    values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
+    // values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
+    // values.last_name_bit = isPublicOrPrivate(publicPrivateArray.last_name);
+    // values.email_bit = isPublicOrPrivate(publicPrivateArray.email);
+    // values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1);
+    // values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2);
+    // values.postal_code_bit = isPublicOrPrivate(publicPrivateArray.postal_code);
+    // values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
+    // values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
+    // values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
+    // values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
     values.language = selectedLanguage;
-    values.first_name = userPrifleInfoFirstName;
-    values.last_name = userPrifleInfolastName;
+    // values.first_name = userPrifleInfoFirstName;
+    // values.last_name = userPrifleInfolastName;
     values.default_algo = selectedAlgorithmKey;
-    values.birthday = birthdayForProfileInfo;
-    values.mobile_carrier = formVerify.getFieldValue(
-      publicPrivateArray.mobile_carrier
-    );
-    values.phone_number = formVerify.getFieldValue(
-      publicPrivateArray.phone_number
-    );
-    values.address_1 = address;
-    values.postal_code = code;
-    values = { ...values, ...updateAddress };
+    // values.birthday = birthdayForProfileInfo;
+    // values.mobile_carrier = formVerify.getFieldValue(
+    //   publicPrivateArray.mobile_carrier
+    // );
+    // values.phone_number = formVerify.getFieldValue(
+    //   publicPrivateArray.phone_number
+    // );
+    // values.address_1 = address;
+    // values.postal_code = code;
+    // values = { ...values, ...updateAddress };
     // const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
     const userTags = [
       ...tags.filter((ch) => ch.checked).map((ch) => ch.id), // Include checked tags from tags state
@@ -270,7 +281,8 @@ const ProfilePrefrences = () => {
       values.user_tags = Array.from(new Set(userTags)); // Ensure unique tag IDs
     }
 
-    let res = await UpdateUserProfileInfo(values);
+    // let res = await UpdateUserProfileInfo(values);
+    let res = await UpdateUserPreferences(values);
     if (res && res.status_code === 200) {
       // setshowSelectedLanguage(res?.data?.language)
       message.success(res.message);
@@ -500,7 +512,7 @@ const ProfilePrefrences = () => {
                     setLoading(true); // Start loader
                     await formVerify.validateFields(); // Validate form fields
                     await onFinish2(formVerify.getFieldsValue()); // Submit form values
-                    await GetUserProfileInfo(); // Fetch updated profile info
+                    //await GetUserProfileInfo(); // Fetch updated profile info
                   } finally {
                     setLoading(false); // Stop loader regardless of success or failure
                   }
