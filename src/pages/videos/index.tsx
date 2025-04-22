@@ -74,8 +74,13 @@ const VideosPage = () => {
                                     id="videos-category-thumbnail-container"
                                     className="img-wrapper"
                                   >
-                                    <Image
+                                    {/* <Image
                                       layout="fill"
+                                      id="videos-category-thumbnail"
+                                      alt=""
+                                      src={`${process.env.NEXT_PUBLIC_BETA_URL}files/videos/consciousness/${video.thumbnail}`}
+                                    /> */}
+                                     <img
                                       id="videos-category-thumbnail"
                                       alt=""
                                       src={`${process.env.NEXT_PUBLIC_BETA_URL}files/videos/consciousness/${video.thumbnail}`}
