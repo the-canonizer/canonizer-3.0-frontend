@@ -668,7 +668,6 @@ function ManageStatements({ isEdit = false }) {
         topic_name: getTopicAndCampIds()?.topicName,
         camp_num: getTopicAndCampIds()?.campNum,
       };
-
       const res = await saveStatement(payload);
 
       if (res?.status_code == 200) {
@@ -740,7 +739,7 @@ function ManageStatements({ isEdit = false }) {
       namespace_id: null,
       nick_name: values?.nick_name,
       note: values?.edit_summary?.trim(),
-      statement: statement,
+      statement: statement || values.statement,
       objection_reason: null,
       camp_id: null,
       camp_name: null,
@@ -796,7 +795,6 @@ function ManageStatements({ isEdit = false }) {
     if (!isSaveDraft && isDraft) {
       reqBody.event_type = "create";
     }
-
     const res = await updateStatementApi(reqBody);
     return res;
   };
