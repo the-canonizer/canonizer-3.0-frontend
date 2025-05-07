@@ -12,6 +12,7 @@ const defaultValue = {
   sortLatestTopic: false,
   sortScoreViewTopic: false,
   reasonData: {},
+  score_percentage_checked:true,
 };
 
 export const utilsSlice = createSlice({
@@ -25,12 +26,14 @@ export const utilsSlice = createSlice({
     },
     setScoreCheckBox: (state, action) => {
       state.score_checkbox = action.payload;
+      state.score_percentage_checked = !(state.score_checkbox || state.archived_checkbox)
     },
     setReasonData: (state, action) => {
       state.reasonData = action.payload;
     },
     setArchivedCheckBox: (state, action) => {
       state.archived_checkbox = action.payload;
+      state.score_percentage_checked = !(state.score_checkbox || state.archived_checkbox)
     },
     setSortLatestTopic: (state, action) => {
       state.sortLatestTopic = action.payload;
@@ -38,6 +41,9 @@ export const utilsSlice = createSlice({
     setScoreViewTopic: (state, action) => {
       state.sortScoreViewTopic = action.payload;
     },
+    setScorePercenategCheckBox: (state,action) =>{
+      state.score_percentage_checked = action.payload;
+    }
   },
 });
 
@@ -48,6 +54,7 @@ export const {
   setArchivedCheckBox,
   setSortLatestTopic,
   setScoreViewTopic,
+  setScorePercenategCheckBox,
 } = utilsSlice.actions;
 
 export default utilsSlice.reducer;
