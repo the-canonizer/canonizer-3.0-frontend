@@ -2,7 +2,7 @@ import { Popover, Tag } from "antd";
 
 import HandIcon from "./handIcon";
 
-const ScoreTag = ({ topic_score, hideRank = false }) => {
+const ScoreTag = ({ topic_score, hideRank = false,isPercentage = false }) => {
   // if (!topic_score) return null;
 
   const popoverContent = () => {
@@ -42,7 +42,7 @@ const ScoreTag = ({ topic_score, hideRank = false }) => {
           }
         >
           <HandIcon />
-          {topic_score?.toFixed(2)}
+          {topic_score?.toFixed(2)} {isPercentage ? '%': ''}
         </Tag>
       )}
     </>

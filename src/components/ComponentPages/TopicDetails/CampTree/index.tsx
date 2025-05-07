@@ -41,6 +41,7 @@ const CampTree = ({
     asof,
     asofdate,
     haveStatementPreview,
+    is_percentage_score_checked,
   } = useSelector((state: RootState) => ({
     tree: state?.topicDetails?.tree,
     filterByScore: state.filters?.filterObject?.filterByScore,
@@ -55,6 +56,7 @@ const CampTree = ({
     asof: state?.filters?.filterObject?.asof,
     asofdate: state.filters?.filterObject?.asofdate,
     haveStatementPreview: state?.topic?.haveStatementPreview,
+    is_percentage_score_checked: state?.utils?.score_percentage_checked,
   }));
 
   let childExpandTree = [];
@@ -550,10 +552,11 @@ const CampTree = ({
                       <ScoreTag
                         topic_score={
                           is_checked
-                            ? data[item]?.full_score
-                            : data[item]?.score
+                            ? is_percentage_score_checked ? ((data[item]?.full_score /tree?.["0"]?.[1].full_score) * 100) : data[item]?.full_score
+                            : is_percentage_score_checked ? (data[item]?.score / tree?.["0"]?.[1].score) * 100  : data[item]?.score
                         }
                         hideRank={tree && tree?.["0"]?.["1"]?.rank_hidden}
+                        isPercentage = {is_percentage_score_checked }
                       />
                     )}
                     <SecondaryButton

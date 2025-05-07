@@ -70,6 +70,7 @@ import ActivityNewsCard from "./ActivityNewsCard";
 import { labels } from "src/messages/label";
 import { setStatementPreview } from "src/store/slices/topicSlice";
 import GoogleAd from "components/googleAds";
+import ScorePercentageCheckBox from "../ScorePercentageCheckBox";
 // import GoogleAd from "components/googleAds";
 
 const { Link: AntLink } = Typography;
@@ -132,7 +133,6 @@ const TopicDetails = ({ serverSideCall }: any) => {
     useState<number>(null);
   const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
   const [breadCrumbBolean, setBreadCrumbBolean] = useState(true);
-
   const supportRelatedInfo = (
     <div className="popoverSupport text-xs">
       <span>
@@ -801,6 +801,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
                           />
                         </div>
                         <ArchivedCampCheckBox
+                          loadingIndicator={loadingIndicator}
+                          isDisabled={tree && tree?.["1"]?.rank_hidden}
+                        />
+                        <ScorePercentageCheckBox
                           loadingIndicator={loadingIndicator}
                           isDisabled={tree && tree?.["1"]?.rank_hidden}
                         />
