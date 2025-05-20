@@ -47,7 +47,7 @@ const CreateEditThreadPopup = ({
       width={730}
       extra={
         // <GetBreadCrumbs topicRecord={topicRecord} campRecord={campRecord} />
-        <DrawerBreadcrumbs topicRecord={topicRecord} campRecord={campRecord} />
+        <DrawerBreadcrumbs topicRecord={topicRecord} campRecord={campRecord} topic_name={topicRecord?.topic_name} />
       }
       className="[&_.ant-drawer-header]:flex-wrap [&_.ant-drawer-header-title]:py-3 [&_.ant-drawer-header-title]:w-full [&_.ant-drawer-header-title]:flex-[100%] [&_.ant-drawer-header-title]:h-auto [&_.ant-drawer-extra]:w-full"
       id="drawer-create-edit-thread"
