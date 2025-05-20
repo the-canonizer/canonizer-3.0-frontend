@@ -16,9 +16,11 @@ const ScoreTag = ({ topic_score, hideRank = false,isPercentage = false }) => {
     );
   };
 
+  const isValidScore = typeof topic_score === "number" && !isNaN(topic_score);
+
   return (
     <>
-      {topic_score == undefined || hideRank ? (
+      {!isValidScore || hideRank ? (
         <Popover
           placement={"topLeft"}
           content={popoverContent}
