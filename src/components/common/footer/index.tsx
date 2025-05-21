@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Row, Col, Typography, Image } from "antd";
+import { Row, Col, Typography } from "antd";
+import Image from 'next/image'; 
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
@@ -94,16 +95,18 @@ function Footer() {
       <Row gutter={20} id="footer-row">
         <Col xs={24} sm={24} md={7} lg={8} id="footer-col-1">
           <div className="mb-3" id="footer-logo">
-            <Link href="/">
-              <a id="footer-logo-link">
-                <Image
-                  src={`/images/logo-white.svg`}
-                  alt="Canonizer"
-                  width={150}
-                  id="footer-logo-image"
-                />
-              </a>
-            </Link>
+		<Link href="/" passHref>
+  		  <a id="footer-logo-link">
+    		    <Image
+      		      src="/images/logo-white.svg"
+      		      alt="Canonizer"
+      		      width={150}
+      		      height={60} // Next.js requires both width & height or layout="fill"
+      		      id="footer-logo-image"
+      		      draggable={false}
+    		    />
+  		  </a>
+		</Link>
           </div>
           <p
             className="text-xs font-inter font-normal text-white md:!pr-8"
