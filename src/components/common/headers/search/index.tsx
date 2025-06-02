@@ -774,7 +774,7 @@ const CampItems = ({ searchCamps, searchValue }) => {
                           </div>
 
                           <span className="break-normal whitespace-nowrap">
-                            Topic:
+                            Camp:
                           </span>
 
                           <a
