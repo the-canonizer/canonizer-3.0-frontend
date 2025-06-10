@@ -76,4 +76,15 @@ export default class TopicRequest extends Request {
       token
     );
   }
+  // GetConsensusVideoPodcasts
+  static GetConsensusVideoPodcasts(page, parPage,token: string = "") {
+    return new Request(
+      K.Network.URL.GetconsensusVideoPodcasts+ `?page=${page}&per_page=${parPage}`,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }

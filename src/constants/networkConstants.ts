@@ -209,6 +209,7 @@ const NetworkConstants = {
     GetHotTopic: `${BaseCanonizerApiUrl}/hot-topic`,
     GetPrefTopic: `${BaseCanonizerApiUrl}/preferred-topic`,
     GetFeaturedTopic: `${BaseCanonizerApiUrl}/featured-topic`,
+    GetconsensusVideoPodcasts: `${BaseCanonizerApiUrl}/consensus-video-podcasts`,
 
     //Sibling camps
     GetSiblingCamp: `${BaseCanonizerApiUrl}/get-sibling-camps`,
