@@ -6,6 +6,7 @@ import {
   setFeaturedTopic,
   setHotTopic,
   setPrefTopic,
+  setConsensusVideoPodcasts,
 } from "src/store/slices/hotTopicSlice";
 
 export const createTopic = async (body) => {
@@ -132,3 +133,21 @@ export const GetFeaturedTopicDetails = async (token: string) => {
     return err?.error?.data;
   }
 };
+
+export const GetConsensusVideoPodcastDetails = async (page, perPage,token:string)=>{
+  try {
+      const res = await NetworkCall.fetch(TopicRequest.GetConsensusVideoPodcasts(page, perPage,token));
+      
+      if (res.status_code === 200) {
+        store.dispatch(setConsensusVideoPodcasts(res?.data?.items || []));
+      }
+
+      if (res.status_code === 400) {
+        store.dispatch(setConsensusVideoPodcasts([]));
+      }
+
+      return res;
+    } catch (err) {
+      return err?.error?.data;
+    }
+}

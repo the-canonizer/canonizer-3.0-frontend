@@ -7,6 +7,7 @@ export const hotTopicSlice = createSlice({
     featuredTopic: [],
     preferedTopic: [],
     openConsensusTreePopup: false,
+    consensusVideoPodcasts:[],
   },
   reducers: {
     setHotTopic: (state, action) => {
@@ -21,6 +22,9 @@ export const hotTopicSlice = createSlice({
     setOpenConsensusTreePopup: (state, action) => {
       state.openConsensusTreePopup = action.payload;
     },
+    setConsensusVideoPodcasts:(state,action)=>{
+      state.consensusVideoPodcasts = action.payload
+    }
   },
 });
 
@@ -29,6 +33,7 @@ export const {
   setPrefTopic,
   setFeaturedTopic,
   setOpenConsensusTreePopup,
+  setConsensusVideoPodcasts
 } = hotTopicSlice.actions;
 
 export default hotTopicSlice.reducer;
