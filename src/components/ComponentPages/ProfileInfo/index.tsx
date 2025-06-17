@@ -328,6 +328,7 @@ const ProfileInfo = () => {
         dispatch(setGlobalUserProfileData(profileData?.first_name));
         dispatch(setGlobalUserProfileDataLastName(profileData?.last_name));
         dispatch(setGlobalUserProfileDataEmail(profileData?.email));
+        dispatch(setBirthdayForProfileInfo(formatDate(profileData?.birthday)));
         const verify = {
           phone_number: profileData.phone_number,
           mobile_carrier:

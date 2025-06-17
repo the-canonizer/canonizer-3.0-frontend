@@ -7,6 +7,7 @@ import Layout from "src/hoc/layout";
 import WelcomeContent from "./WelcomeArea";
 import FeaturedTopic from "./FeaturedTopic";
 import HotTopics from "./HotTopics";
+import ConsensusVideoPodcasts from "./ConsensusVideoPodcast";
 import WhatsNew from "./WhatsNew";
 import PreferedTopics from "./PreferedTopic";
 import RecentActivities from "./RecentActivities";
@@ -62,8 +63,11 @@ const HomePageContainer = () => {
             <PreferedTopics />
           </Col>
         ) : null}
-        <Col md={24} className="mb-0" data-testid="hotTopics" id="hot-topics">
+        {/* <Col md={24} className="mb-0" data-testid="hotTopics" id="hot-topics">
           <HotTopics />
+        </Col> */}
+        <Col md={24} className="mb-0" data-testid="consensusVideoPodcast" id="consensus-video-podcast">
+          <ConsensusVideoPodcasts />
         </Col>
       </Row>
     </Layout>

@@ -19,11 +19,13 @@ import {
   setFeaturedTopic,
   setHotTopic,
   setPrefTopic,
+  setConsensusVideoPodcasts,
 } from "src/store/slices/hotTopicSlice";
 import {
   GetFeaturedTopicDetails,
   GetHotTopicDetails,
   GetPreferedTopicDetails,
+  GetConsensusVideoPodcastDetails
 } from "src/network/api/topicAPI";
 import { store } from "src/store";
 import { getCookiesExpirationTime, isShowAds } from "src/utils/generalUtility";
@@ -34,7 +36,7 @@ const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
   ssr: false,
 });
 
-function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
+function Home({ current_date, hotTopicData, featuredData, prefData,consensusVideoPodcastData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -46,6 +48,7 @@ function Home({ current_date, hotTopicData, featuredData, prefData }: any) {
     dispatch(setHotTopic(hotTopicData));
     dispatch(setFeaturedTopic(featuredData));
     dispatch(setPrefTopic(prefData));
+    dispatch(setConsensusVideoPodcasts(consensusVideoPodcastData));
     getCanonizedWhatsNewContentApi();
   }, []);
   /* eslint-enable */
@@ -122,6 +125,7 @@ export async function getServerSideProps({ req, res }) {
   const resData = await GetHotTopicDetails(1, 6, token as string);
   const featuredData = await GetFeaturedTopicDetails(token as string);
   const prefData = await GetPreferedTopicDetails(1, 6, true, token as string);
+  const consensusVideoPodcastData = await GetConsensusVideoPodcastDetails(1, 6, token as string);
 
   return {
     props: {
@@ -129,6 +133,7 @@ export async function getServerSideProps({ req, res }) {
       hotTopicData: resData?.data?.items ? resData?.data?.items : [],
       featuredData: featuredData?.data?.items ? featuredData?.data?.items : [],
       prefData: prefData?.data?.items ? prefData?.data?.items : null,
+      consensusVideoPodcastData : consensusVideoPodcastData?.data?.items ? consensusVideoPodcastData?.data?.items:null,
     },
   };
 }

@@ -718,4 +718,32 @@ export default class UserRequest extends Request {
       {}
     );
   }
+
+  static GetUserPreferences(authToken) {
+    const body = {};
+
+    return new Request(
+      K.Network.URL.GetUserPreferences,
+      K.Network.Method.GET,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static UpdateUserPreferences(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.UpdateUserPreferences,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
 }

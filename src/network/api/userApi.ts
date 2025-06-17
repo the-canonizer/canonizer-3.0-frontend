@@ -1167,3 +1167,46 @@ export const facebookAccountDeletionStatus = async (confirmation_code) => {
     return err.error.data;
   }
 };
+
+export const GetUserPreferences = async (token = "") => {
+  let state = store.getState();
+  const { auth } = state;
+  let tcn = "";
+  if (token) {
+    tcn = token;
+  } else {
+    tcn = auth?.token;
+  }
+  const res = await NetworkCall.fetch(UserRequest.GetUserPreferences(tcn))
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
+
+export const UpdateUserPreferences = async (values: object) => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.UpdateUserPreferences(values, auth?.token)
+  )
+    .then((value) => {
+      let payload = {
+        ...state.auth.loggedInUser,
+        first_name: value.data.first_name,
+        last_name: value.data.last_name,
+        phone_number: value.data.phone_number,
+        birthday: value.data.birthday,
+        email: value.data.email,
+      };
+      store.dispatch(setLoggedInUser(payload));
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
