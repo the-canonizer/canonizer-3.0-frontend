@@ -317,7 +317,12 @@ const CampStatementCard = ({ loadingIndicator }) => {
             campStatement[0]?.parsed_value &&
             asof == "review" &&
             campStatement?.at(0)?.in_review_changes == 0 ? (
-              "There is no statement in review."
+              // "There is no statement in review."
+              <div
+              dangerouslySetInnerHTML={{
+                __html: `<div class="ck-content editorContent">${campStatement[0]?.parsed_value}</div>`,
+              }}
+            />
             ) : campStatement?.length && campStatement[0]?.parsed_value ? (
               <div
                 dangerouslySetInnerHTML={{
