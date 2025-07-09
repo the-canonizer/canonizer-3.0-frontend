@@ -32,7 +32,11 @@ function TopicCampsTab({
         return (
           <List.Item className="font-inter text-sm font-medium bg-white w-full px-2">
             <AntLink
-              href={decodedProperties?.url?.replace(/\s+/g, "-")}
+              href={
+                decodedProperties?.url?.startsWith("topic")
+                    ? `/${decodedProperties.url.replace(/\s+/g, "-")}`
+                    : decodedProperties?.url?.replace(/\s+/g, "-")
+              }
               className="w-full !text-canBlue hover:!text-canHoverBlue"
             >
               <Fragment>
