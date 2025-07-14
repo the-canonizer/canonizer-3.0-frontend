@@ -368,9 +368,9 @@ export default function DirectSupportedCampsUI({
             link.
           </>
         ) : campIds?.length > 1 ? (
-          "You are about to remove your support from the camps: "
+          "" //"You are about to remove your support from the camps: "
         ) : (
-          "You are about to remove your support from the camp: "
+         "" // "You are about to remove your support from the camp: "
         )}
       </p>
 
@@ -582,6 +582,7 @@ export default function DirectSupportedCampsUI({
   }
 
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
+  
 
   return (
     <div>
