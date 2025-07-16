@@ -193,6 +193,7 @@ const HistoryComparison = ({
         <p>
           Go Live Time: <span>{covertToTime(campStatement?.go_live_time)}</span>
         </p>
+        {/*
         <p>
           Topic Tags{"(s)"}:
           <span>
@@ -208,6 +209,7 @@ const HistoryComparison = ({
           Hide Rank:{" "}
           <span>{campStatement?.is_rank_hidden === 1 ? "Yes" : "No"}</span>
         </p>
+        */}
         {historyOf === "statement" && (
           <Collapse
             expandIconPosition="end"
