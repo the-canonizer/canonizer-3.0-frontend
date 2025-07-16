@@ -17,6 +17,10 @@ const HistoryComparison = ({
   textColor = "",
 }: any) => {
   const router = useRouter();
+
+  // Will use it to hide rank and topic tags from statement/compare
+  const shouldHide = router.asPath.includes("statement/compare") || router.asPath.includes("camp/compare");
+
   const historyOf = router?.asPath?.split("/")?.at(1);
 
   const covertToTime = (unixTime) =>
@@ -193,7 +197,8 @@ const HistoryComparison = ({
         <p>
           Go Live Time: <span>{covertToTime(campStatement?.go_live_time)}</span>
         </p>
-        {/*
+       
+        {/* 
         <p>
           Topic Tags{"(s)"}:
           <span>
@@ -210,6 +215,27 @@ const HistoryComparison = ({
           <span>{campStatement?.is_rank_hidden === 1 ? "Yes" : "No"}</span>
         </p>
         */}
+
+        {!shouldHide && (
+        <>
+          <p>
+            Topic Tags{"(s)"}:
+            <span>
+              {campStatement?.tags?.length > 0
+                ? campStatement?.tags?.map((tag, index) => {
+                    let lastIndex = index + 1 === campStatement?.tags?.length;
+                    return commaSeparated(tag?.title, lastIndex);
+                  })
+                : "None"}
+            </span>
+          </p>
+          <p>
+            Hide Rank:{" "}
+            <span>{campStatement?.is_rank_hidden === 1 ? "Yes" : "No"}</span>
+          </p>
+        </>
+      )}
+        
         {historyOf === "statement" && (
           <Collapse
             expandIconPosition="end"
