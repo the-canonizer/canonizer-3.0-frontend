@@ -811,7 +811,10 @@ body {
     @apply text-sm font-normal;
   }
 }
-
+.full-screen .editorContent h2,h3,h4{
+    padding-top: 25px;
+  }
+  
 .editorContent {
   h2 {
     @apply text-3xl;

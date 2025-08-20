@@ -311,7 +311,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
           }`}
         >
           <div
-            className={`${styles.campStatement} text-canBlack opacity-80 text-sm font-normal leading-6 [&_a]:!text-canBlue [&_a]:hover:!text-canHoverBlue`}
+            className={`${styles.campStatement} text-canBlack opacity-80 text-sm font-normal leading-6 [&_a]:!text-canBlue [&_a]:hover:!text-canHoverBlue ${fullScreen ? 'full-screen':''}`}
           >
             {campStatement?.length &&
             campStatement[0]?.parsed_value &&
