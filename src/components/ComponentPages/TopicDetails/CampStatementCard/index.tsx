@@ -190,7 +190,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }}
       className={
         fullScreen
-          ? "[&_.ant-card-body]:h-full [&_.ant-card-body]:w-full [&_.ant-card-body]:items-center fixed top-0  left-0 w-full h-full z-[9999] bg-white border-none flex justify-start items-start shadow-md flex-col [&_.ant-card-head]:w-full"
+          ? "[&_.ant-card-body]:h-full [&_.ant-card-body]:w-full [&_.ant-card-body]:items-center fixed top-0  left-0 w-full h-full z-[9999] bg-white border-none flex justify-start items-start shadow-md flex-col overflow-hidden !overflow-y-auto [&_.ant-card-head]:w-full"
           : `border-0 h-100  bg-white [&_.ant-card-body]:p-0  [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:h-full [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8  
           ${
             router?.query?.status == "in_review"
@@ -293,7 +293,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
       }
     >
       <div
-        className={`camp-agrrement-new overflow-hidden !overflow-y-auto w-full pr-4 ${
+        className={`camp-agrrement-new overflow-hidden  !overflow-y-auto w-full pr-4 ${
           !campStatement?.[0]?.value?.length
             ? "h-full flex justify-center my-auto"
             : ""
@@ -317,7 +317,12 @@ const CampStatementCard = ({ loadingIndicator }) => {
             campStatement[0]?.parsed_value &&
             asof == "review" &&
             campStatement?.at(0)?.in_review_changes == 0 ? (
-              "There is no statement in review."
+              // "There is no statement in review."
+              <div
+              dangerouslySetInnerHTML={{
+                __html: `<div class="ck-content editorContent">${campStatement[0]?.parsed_value}</div>`,
+              }}
+            />
             ) : campStatement?.length && campStatement[0]?.parsed_value ? (
               <div
                 dangerouslySetInnerHTML={{
