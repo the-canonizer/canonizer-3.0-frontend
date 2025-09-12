@@ -63,6 +63,8 @@ function ManageStatements({ isEdit = false }) {
   const [isPopupLoading, setIsPopupLoading] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
+  const [editCampName, setEditCampName] = useState("");
+  const [editTopicName, setEditTopicName] = useState("");
   const [isSaveDraft, setIsSaveDraft] = useState(false);
   const [time, setTime] = useState({
     current_time: null,
@@ -292,6 +294,8 @@ function ManageStatements({ isEdit = false }) {
           setEditCampStatementData(editRes?.data?.statement?.note);
           setEditStatementData(editRes.data);
           setEditorState(statement?.parsed_value);
+          setEditCampName(editRes?.data?.topic?.camp_name);
+          setEditTopicName(editRes?.data?.topic?.topic_name);
           editData = editRes.data;
         }
       }
@@ -913,6 +917,16 @@ function ManageStatements({ isEdit = false }) {
                   label: !isEdit
                     ? "Adding a camp statement"
                     : "Updating camp statement",
+                },
+                {
+                  label: !isEdit
+                    ? "Adding a camp statement"
+                    : editTopicName,
+                },
+                {
+                  label: !isEdit
+                    ? ""
+                    : editCampName,
                 },
               ]}
             />
