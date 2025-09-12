@@ -328,6 +328,7 @@ const UpdateTopic = () => {
             key: "topic-history",
           },
           { label: "Update Topic", key: "update-topic" },
+          { label: currentTopic?.topic_name, key: `update-${currentTopic?.topic_name}`},
         ]}
       />
 
