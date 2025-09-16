@@ -443,6 +443,7 @@ const CreateNewCamp = () => {
     }
 
     if (res && res.status_code === 400) {
+       openNotificationWithIcon(res?.message, "error");
       if (res?.error) {
         const errors_key = Object.keys(res.error);
 
