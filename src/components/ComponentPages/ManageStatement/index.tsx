@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Form, Row, Col, Typography, Modal } from "antd";
+import { Form, Row, Col, Typography, Modal, Breadcrumb, Popover } from "antd";
 import { useRouter } from "next/router";
 import {
   CloudUploadOutlined,
   ExclamationCircleFilled,
   FileTextOutlined,
   HomeOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 // import OpenAI from "openai";
 
@@ -24,7 +25,6 @@ import {
   replaceSpecialCharacters,
 } from "src/utils/generalUtility";
 import DataNotFound from "../DataNotFound/dataNotFound";
-import Breadcrumbs from "components/shared/Breadcrumbs";
 import CustomSpinner from "components/shared/CustomSpinner";
 
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
@@ -34,6 +34,7 @@ import StatementAIPreview from "./UI/aiPreview";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
+import Link from "next/link";
 
 // const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly.
 
@@ -54,6 +55,7 @@ function ManageStatements({ isEdit = false }) {
     status: false,
     name: "",
   });
+  const [isMobile, setIsMobile] = useState(false);
   const [editStatementData, setEditStatementData] = useState(null);
   const [submitIsDisable, setSubmitIsDisable] = useState(true);
   const [nickNameData, setNickNameData] = useState([]);
@@ -63,7 +65,8 @@ function ManageStatements({ isEdit = false }) {
   const [isPopupLoading, setIsPopupLoading] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [editCampStatementData, setEditCampStatementData] = useState("");
-  const [editCampName, setEditCampName] = useState("");
+  type CampType = { camp_name?: string; [key: string]: any };
+  const [editCampName, setEditCampName] = useState<CampType | string>("");
   const [editTopicName, setEditTopicName] = useState("");
   const [isSaveDraft, setIsSaveDraft] = useState(false);
   const [time, setTime] = useState({
@@ -294,7 +297,11 @@ function ManageStatements({ isEdit = false }) {
           setEditCampStatementData(editRes?.data?.statement?.note);
           setEditStatementData(editRes.data);
           setEditorState(statement?.parsed_value);
-          setEditCampName(editRes?.data?.topic?.camp_name);
+          setEditCampName(
+            editRes?.data?.parent_camp.find(
+              (p) => p.camp_num == router?.query?.statement[1]
+            )
+          );
           setEditTopicName(editRes?.data?.topic?.topic_name);
           editData = editRes.data;
         }
@@ -887,6 +894,16 @@ function ManageStatements({ isEdit = false }) {
     setEditorState(improvedContent?.content);
     onAiPreveiwClose(e);
   };
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.matchMedia("(min-width: 992px)").matches);
+    };
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, []);
 
   return (
     <div>
@@ -901,7 +918,7 @@ function ManageStatements({ isEdit = false }) {
             md={12}
             className="flex justify-start items-center"
           >
-            <Breadcrumbs
+            {/* <Breadcrumbs
               id="breadcrumbs"
               items={[
                 // {
@@ -920,16 +937,70 @@ function ManageStatements({ isEdit = false }) {
                 },
                 {
                   label: !isEdit
-                    ? "Adding a camp statement"
+                    ? editTopicName
                     : editTopicName,
                 },
                 {
                   label: !isEdit
-                    ? ""
+                    ? editCampName
                     : editCampName,
                 },
               ]}
-            />
+            /> */}
+
+            <Breadcrumb
+              className="cn-breadcrumbs"
+              separator={
+                <i className="icon-angle-right-arrow !leading-[0]"></i>
+              }
+            >
+              <Breadcrumb.Item className="flex gap-1.5">
+                <Link href={getBackURL()}>
+                  <a className="!break-all hover:!text-canHoverBlue">
+                    {!isEdit ? "Adding a camp statement" : editTopicName}
+                  </a>
+                </Link>
+                {isMobile && (
+                  <Popover
+                    placement="bottom"
+                    content={editTopicName}
+                    className="title-popover"
+                    overlayClassName="max-lg:hidden popover-content-wrap"
+                  >
+                    <InfoCircleOutlined />
+                  </Popover>
+                )}
+              </Breadcrumb.Item>
+
+              {typeof editCampName === "object" &&
+                editCampName !== null &&
+                "camp_name" in editCampName && (
+                  <Breadcrumb.Item className="flex gap-1.5">
+                    <Link href={getBackURL()}>
+                      <a className="!text-canGreen !break-all hover:!text-canHoverBlue">
+                        {typeof editCampName === "object" &&
+                        editCampName !== null
+                          ? (editCampName && editCampName.camp_name) ?? ""
+                          : editCampName ?? ""}
+                      </a>
+                    </Link>
+                    {isMobile && (
+                      <Popover
+                        placement="bottom"
+                        content={
+                          typeof editCampName === "object" &&
+                          editCampName !== null
+                            ? editCampName.camp_name
+                            : ""
+                        }
+                        overlayClassName="max-lg:hidden"
+                      >
+                        <InfoCircleOutlined />
+                      </Popover>
+                    )}
+                  </Breadcrumb.Item>
+                )}
+            </Breadcrumb>
           </Col>
           <Col
             id="save-draft-col"
