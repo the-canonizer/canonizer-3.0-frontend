@@ -252,7 +252,7 @@ function HistoryCard({
         query: { returnUrl: `/manage/${historyOf}/${campStatement?.id}` },
       });
     } else {
-      router?.push(`/manage/${historyOf}/${campStatement?.id}`);
+      router?.push(`/manage/${historyOf}/${campStatement?.id}/${campStatement?.camp_num}`);
     }
   };
 
