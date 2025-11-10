@@ -1,8 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import { Form, Row, Col, Typography, Modal, Breadcrumb, Popover } from "antd";
+import {
+  Form,
+  Row,
+  Col,
+  Typography,
+  Modal,
+  Breadcrumb,
+  Popover,
+  Tooltip,
+  Tag,
+  Button,
+} from "antd";
 import { useRouter } from "next/router";
 import {
   CloudUploadOutlined,
+  EditOutlined,
   ExclamationCircleFilled,
   FileTextOutlined,
   HomeOutlined,
@@ -21,6 +33,7 @@ import {
   updateStatementApi,
 } from "src/network/api/campManageStatementApi";
 import {
+  changeSlashToArrow,
   convertToSlug,
   replaceSpecialCharacters,
 } from "src/utils/generalUtility";
@@ -35,6 +48,9 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
 import Link from "next/link";
+import { getHistoryApi } from "src/network/api/history";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import K from "src/constants";
 
 // const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly.
 
@@ -68,6 +84,9 @@ function ManageStatements({ isEdit = false }) {
   type CampType = { camp_name?: string; [key: string]: any };
   const [editCampName, setEditCampName] = useState<CampType | string>("");
   const [editTopicName, setEditTopicName] = useState("");
+  const [topic_num, setTopicNum] = useState("");
+  const [topicId, setTopicId] = useState("");
+  const [recordId, setRecordId] = useState("");
   const [isSaveDraft, setIsSaveDraft] = useState(false);
   const [time, setTime] = useState({
     current_time: null,
@@ -79,10 +98,15 @@ function ManageStatements({ isEdit = false }) {
   const [isPrePopupLoading] = useState(false);
   const [isAIPreviewOpen, setIsAIPreviewOpen] = useState(false);
   const [improvedContent, setImprovedContent] = useState(null);
+  const [isTopicPage, setIsTopicPage] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  const [tagsArrayList, setTagsArrayList] = useState([]);
+  const tagsToShow = showAll ? tagsArrayList : tagsArrayList?.slice(0, 4);
 
   const values = Form.useWatch([], form);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const isFirstRender = useRef(true);
+  const didMount = useRef(false);
 
   const getEpochTime = () => {
     return Math.floor(Date.now() / 1000);
@@ -92,13 +116,27 @@ function ManageStatements({ isEdit = false }) {
     return data?.some((camp) => camp?.camp_is_archive === 1);
   };
 
-  const { asofdate, asof, currentGetCheckSupportExistsData } = useSelector(
-    (state: RootState) => ({
-      asofdate: state.filters?.filterObject?.asofdate,
-      asof: state?.filters?.filterObject?.asof,
-      currentGetCheckSupportExistsData:
-        state.topicDetails.currentGetCheckSupportExistsData,
-    })
+  const {
+    campRecord,
+    topicRecord,
+    asofdate,
+    asof,
+    currentGetCheckSupportExistsData,
+    campStatement,
+  } = useSelector((state: RootState) => ({
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state?.filters?.filterObject?.asof,
+    currentGetCheckSupportExistsData:
+      state.topicDetails.currentGetCheckSupportExistsData,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    topicRecord: state?.topicDetails?.currentTopicRecord,
+    campStatement: state?.topicDetails?.campStatement,
+  }));
+  const [campSubscriptionID, setCampSubscriptionID] = useState(
+    campRecord?.subscriptionId
+  );
+  const [topicSubscriptionID, setTopicSubscriptionID] = useState(
+    topicRecord?.topicSubscriptionId
   );
 
   const getBreadCrumbApiCall = async () => {
@@ -134,6 +172,414 @@ function ManageStatements({ isEdit = false }) {
       setEditorState(`<h2><b>${contentText}</b></h2><p>&nbsp;</p>`);
     }
   };
+
+  const warningText = (
+    <div className="popoverParent">
+      <span>Some changes are currently under review in this camp.</span>
+    </div>
+  );
+
+  const covertToTime = (unixTime) => {
+    return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+  };
+
+  const campHrefForPopover = `/camp/history/${
+    topicRecord?.topic_num
+  }-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/1-Agreement`;
+
+  const handleTopicUrl = () => {
+    const fullPath = `/topic/history/${
+      topicRecord?.topic_num
+    }-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/1-Agreement`;
+    router?.push({ pathname: fullPath });
+  };
+
+  const handleNavigation = () => {
+    const urlPart = `/camp/history/${
+      topic_num || topicId
+    }-${replaceSpecialCharacters(editTopicName || "", "-")}`;
+    const url = `${urlPart}/1-Agreement`;
+    router.push(url);
+  };
+
+  const topicContent = (
+    <div className="popoverParent">
+      <Row>
+        <Col span={24} className="relative">
+          <div className="popover_header flex justify-between gap-1 items-center">
+            <div>
+              <span className="text-xs 2xl:text-sm text-canLight mb-1.5 font-normal capitalize">
+                Topic Name:
+              </span>
+              <p className="font-bold mb-5 text-sm text-canBlack">
+                {!!topicSubscriptionID && (
+                  <Tooltip
+                    title="You have subscribed to the entire topic."
+                    key="camp_subscribed_icon"
+                  >
+                    <small style={{ alignSelf: "center" }}>
+                      <i className="icon-subscribe text-canBlue"></i>
+                    </small>
+                  </Tooltip>
+                )}{" "}
+                {topicRecord && topicRecord?.topic_name?.length > 50
+                  ? `${topicRecord?.topic_name.substring(0, 20)}....`
+                  : topicRecord?.topic_name}
+              </p>
+            </div>
+          </div>
+          <hr className="horizontal_line my-5" />
+          <Row gutter={1} className="pb-[4.5rem]">
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-canLight text-xs 2xl:text-sm capitalize">
+                Author:
+              </span>
+              <Link
+                href={{
+                  pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
+                  query: { canon: topicRecord?.namespace_id || 1 },
+                }}
+              >
+                <a className="!text-canBlue text-sm font-medium underline hover:!text-canHoverBlue">
+                  {topicRecord?.submitter_nick_name}
+                </a>
+              </Link>
+            </Col>
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Submitted On:
+              </span>
+              <span className="text-sm 2xl !text-black font-medium">
+                {topicRecord && covertToTime(topicRecord?.submit_time)}
+              </span>
+            </Col>
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Submitted By:
+              </span>
+              <Link
+                href={{
+                  pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
+                  query: { canon: topicRecord?.namespace_id || 1 },
+                }}
+              >
+                <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
+                  {topicRecord?.submitter_nick_name}
+                </a>
+              </Link>
+            </Col>
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Go Live Time:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord && covertToTime(topicRecord?.go_live_time)}
+              </span>
+            </Col>
+            <Col md={12} sm={12} xs={12} className="flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Canon:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
+              </span>
+            </Col>
+            {tagsArrayList && tagsArrayList?.length > 0 ? (
+              <Col md={24} sm={24} xs={24} className="mt-3">
+                <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                  Tags:
+                </span>
+                <div className="vertical-chips mt-2 flex flex-wrap gap-2">
+                  {tagsToShow?.map((item: any, index) => (
+                    <div key={index}>
+                      <Tag
+                        className="rounded-full mr-0 bg-[#F0F2FA] border-transparent font-semibold text-base px-5 py-2.5 leading-none text-canBlack"
+                        closable={false}
+                      >
+                        <span data-testid="styles_Bluecolor">
+                          {item?.content}
+                        </span>
+                      </Tag>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-center mt-4">
+                  {tagsArrayList && tagsArrayList?.length > 4 && (
+                    <Button
+                      type="link"
+                      className=" text-canBlue view-toggle-btn"
+                      onClick={() => setShowAll(!showAll)}
+                    >
+                      {showAll ? "Show Less" : "Show More"}
+                    </Button>
+                  )}
+                </div>
+              </Col>
+            ) : null}
+          </Row>
+          <div className="content-btn-wrap">
+            <PrimaryButton
+              className="mx-auto flex items-center justify-center font-medium h-auto gap-1"
+              onClick={() => handleTopicUrl()}
+            >
+              {K?.exceptionalMessages?.manageTopicButton}
+              <EditOutlined />
+            </PrimaryButton>
+          </div>
+        </Col>
+      </Row>
+    </div>
+  );
+
+  const campContent = (
+    <div className="popoverParent">
+      <Row>
+        <Col span={24} className="relative">
+          <div className="popover_header flex justify-between gap-1 items-center">
+            <div>
+              <span className="text-xs 2xl:text-sm text-canLight mb-1.5 font-normal capitalize">
+                Camp Name:
+              </span>
+              <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
+                {!!topicRecord?.agreement_camp_record?.subscriptionId && (
+                  <Tooltip
+                    title="You have subscribed to this camp."
+                    key="camp_subscribed_icon"
+                  >
+                    <small style={{ alignSelf: "center" }}>
+                      <i className="icon-subscribe text-canBlue"></i>
+                    </small>
+                  </Tooltip>
+                )}{" "}
+                <Link
+                  href={`/topic/${
+                    topicRecord?.topic_num
+                  }-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/${
+                    campRecord?.camp_num
+                  }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`}
+                >
+                  {topicRecord?.agreement_camp_record &&
+                  topicRecord?.agreement_camp_record?.camp_name?.length > 50
+                    ? `${topicRecord?.agreement_camp_record?.camp_name.substring(
+                        0,
+                        20
+                      )}....`
+                    : topicRecord?.agreement_camp_record?.camp_name}
+                </Link>
+              </p>
+            </div>
+            {topicRecord?.agreement_camp_record?.in_review_changes > 0 && (
+              <Popover
+                content={warningText}
+                className="title-popover"
+                placement="bottomLeft"
+                overlayClassName="warning-popover"
+                id="section-popover"
+              >
+                <Tag
+                  className="text-[#DD841C] ml-3 mr-0 bg-[#F19C391A] py-1.5 px-4 text-sm border-0 rounded-full cursor-pointer"
+                  onClick={() => handleNavigation()}
+                  id="section-tag"
+                >
+                  Under Review
+                </Tag>
+              </Popover>
+            )}
+          </div>
+          <hr className="horizontal_line my-5" />
+          <Row gutter={1} className="pb-[4.5rem]">
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Submitted By:
+              </span>
+              <Link
+                href={{
+                  pathname: `/user/supports/${topicRecord?.agreement_camp_record?.submitter_nick_id}`,
+                  query: { canon: topicRecord?.namespace_id || 1 },
+                }}
+              >
+                <a className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline">
+                  {topicRecord?.agreement_camp_record?.submitter_nick_name}
+                </a>
+              </Link>
+            </Col>
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Submitted On:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord?.agreement_camp_record &&
+                  covertToTime(topicRecord?.agreement_camp_record?.submit_time)}
+              </span>
+            </Col>
+            {topicRecord?.agreement_camp_record?.camp_about_nick_name && (
+              <>
+                <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+                  <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                    Camp about nickname:
+                  </span>
+                  <Link
+                    href={{
+                      pathname: `/user/supports/${topicRecord?.agreement_camp_record?.camp_about_nick_id}`,
+                      query: { canon: topicRecord?.namespace_id || 1 },
+                    }}
+                  >
+                    <a className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium">
+                      {topicRecord?.agreement_camp_record &&
+                        topicRecord?.agreement_camp_record
+                          ?.camp_about_nick_name}
+                    </a>
+                  </Link>
+                </Col>
+              </>
+            )}
+            {topicRecord?.agreement_camp_record?.camp_about_url && (
+              <Col
+                md={12}
+                sm={12}
+                xs={12}
+                className="mb-3 flex flex-col break-words"
+              >
+                <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                  Camp about URL:
+                </span>
+                <a
+                  href={
+                    topicRecord?.agreement_camp_record &&
+                    topicRecord?.agreement_camp_record?.camp_about_url
+                  }
+                  className="text-sm block !text-canBlue hover:!text-canHoverBlue font-medium"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {topicRecord?.agreement_camp_record &&
+                    topicRecord?.agreement_camp_record?.camp_about_url}
+                </a>
+              </Col>
+            )}
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Single level camps only:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord?.agreement_camp_record &&
+                topicRecord?.agreement_camp_record.is_one_level == 0
+                  ? "No"
+                  : "Yes"}
+              </span>
+            </Col>
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Disable additional sub camps:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord?.agreement_camp_record &&
+                topicRecord?.agreement_camp_record.is_disabled == 0
+                  ? "No"
+                  : "Yes"}
+              </span>
+            </Col>
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Camp archive:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord?.agreement_camp_record &&
+                topicRecord?.agreement_camp_record.is_archive == 0
+                  ? "No"
+                  : "Yes"}
+              </span>
+            </Col>
+            <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Go live time:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord?.agreement_camp_record &&
+                  covertToTime(
+                    topicRecord?.agreement_camp_record?.go_live_time
+                  )}
+              </span>
+            </Col>
+            <Col md={12} sm={12} xs={12} className=" flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Canon:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
+              </span>
+            </Col>
+            <Col md={12} sm={12} xs={12} className=" flex flex-col">
+              <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                Topic Name:
+              </span>
+              <span className="text-sm text-canBlack font-medium">
+                {topicRecord && topicRecord?.topic_name?.length > 50
+                  ? `${topicRecord?.topic_name.substring(0, 20)}....`
+                  : topicRecord?.topic_name}
+              </span>
+            </Col>
+            {topicRecord?.agreement_camp_record?.camp_leader_nick_name && (
+              <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+                <span className="text-xs 2xl:text-sm text-canLight capitalize">
+                  Camp Leader:
+                </span>
+                <Link
+                  className="flex flex-wrap"
+                  href={{
+                    pathname: `/user/supports/${topicRecord?.agreement_camp_record?.camp_leader_nick_id}`,
+                    query: {
+                      canon: topicRecord?.namespace_id,
+                    },
+                  }}
+                >
+                  <span className="!text-canBlue cursor-pointer font-medium">
+                    {topicRecord?.agreement_camp_record?.camp_leader_nick_name}
+                  </span>
+                </Link>
+              </Col>
+            )}
+          </Row>
+          <div className="content-btn-wrap">
+            <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
+              <Link href={campHrefForPopover}>
+                <a className="flex items-center justify-center h-auto mx-auto gap-1">
+                  <span className="flex items-center justify-center h-auto mx-auto gap-1">
+                    {K?.exceptionalMessages?.manageCampButton}
+                    <EditOutlined />
+                  </span>
+                </a>
+              </Link>
+            </PrimaryButton>
+          </div>
+        </Col>
+      </Row>
+    </div>
+  );
+
+  const transformDataForTags = (data) => {
+    return data?.map((item, index) => {
+      return {
+        id: item.id,
+        content: item.title,
+      };
+    });
+  };
+
+  useEffect(() => {
+    setTagsArrayList(transformDataForTags(topicRecord?.tags));
+  }, [topicRecord]);
+
+  useEffect(() => {
+    if (isTopicPage) {
+      if (didMount.current) {
+        setCampSubscriptionID(campRecord?.subscriptionId);
+        setTopicSubscriptionID(topicRecord?.topicSubscriptionId);
+      } else didMount.current = true;
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [campRecord?.subscriptionId, topicRecord?.topicSubscriptionId]);
 
   useEffect(() => {
     getBreadCrumbApiCall();
@@ -211,7 +657,7 @@ function ManageStatements({ isEdit = false }) {
     )}`;
   };
 
-  const getBackURL = () => {
+  const getBackURL = (typ: string = "") => {
     const backdata = editStatementData;
     const { is_draft, statement }: any = router?.query || {};
     const [statementPart0, statementPart1] = statement || [];
@@ -224,15 +670,22 @@ function ManageStatements({ isEdit = false }) {
         "-"
       )}/${replaceSpecialCharacters(part1, "-")}`;
 
-    const createHistoryURL = () =>
-      `/statement/history/${
-        backdata?.topic?.topic_num
-      }-${replaceSpecialCharacters(backdata?.topic?.topic_name, "-")}/${
-        lastParentCamp?.camp_num
-      }-${replaceSpecialCharacters(lastParentCamp?.camp_name, "-")}`;
+    const createHistoryURL = (t) => {
+      if (t === "topic") {
+        return `/manage/${t}/${recordId}`;
+      } else {
+        return `/manage/${t}/${topicId}`;
+      }
+    };
+
+    // `/statement/history/${
+    //   backdata?.topic?.topic_num
+    // }-${replaceSpecialCharacters(backdata?.topic?.topic_name, "-")}/${
+    //   lastParentCamp?.camp_num
+    // }-${replaceSpecialCharacters(lastParentCamp?.camp_name, "-")}`;
 
     if (isEdit) {
-      return is_draft ? topicURL() : createHistoryURL();
+      return is_draft ? topicURL() : createHistoryURL(typ);
     }
 
     return createTopicURL(statementPart0, statementPart1);
@@ -267,8 +720,17 @@ function ManageStatements({ isEdit = false }) {
       let noStatus = false;
 
       if (isEdit) {
+        const routerStatementId = Number(
+          router?.query?.statement?.[0]?.split("-")?.[0]
+        );
+        const reduxStatementId = Number(campStatement?.[0]?.id);
+
         const editRes = await getEditStatementApi({
-          record_id: router?.query?.statement?.[0]?.split("-")[0],
+          record_id: !reduxStatementId
+            ? campStatement?.[0]?.draft_record_id
+              ? routerStatementId
+              : routerStatementId + 1
+            : reduxStatementId,
           event_type: "edit",
         });
 
@@ -303,6 +765,8 @@ function ManageStatements({ isEdit = false }) {
             )
           );
           setEditTopicName(editRes?.data?.topic?.topic_name);
+          setTopicNum(editRes?.data?.topic?.topic_num);
+          setTopicId(editRes?.data?.topic?.id);
           editData = editRes.data;
         }
       }
@@ -343,7 +807,7 @@ function ManageStatements({ isEdit = false }) {
         query: { returnUrl: router?.asPath },
       });
     }
-  }, [isUserAuthenticated]);
+  }, [isUserAuthenticated, campStatement[0]?.id]);
 
   const getTopicAndCampIds = () => {
     const topicNum = isEdit
@@ -894,6 +1358,34 @@ function ManageStatements({ isEdit = false }) {
     setEditorState(improvedContent?.content);
     onAiPreveiwClose(e);
   };
+
+  const campStatementApiCall = async (topic_num: string | number) => {
+    try {
+      const reqBody = {
+        topic_num: topic_num,
+        camp_num: 1,
+        type: "all",
+        per_page: 4,
+        page: 1,
+      };
+      let res = await getHistoryApi(reqBody, 1, "topic");
+
+      if (res?.status_code == 200) {
+        setRecordId(res?.data?.live_record_id);
+      }
+    } catch (error) {
+      /**/
+    }
+  };
+
+  useEffect(() => {
+    if (topic_num === undefined || topic_num === null) return;
+    const fetchCampStatement = async () => {
+      await campStatementApiCall(topic_num);
+    };
+    fetchCampStatement();
+  }, [topic_num]);
+
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.matchMedia("(min-width: 992px)").matches);
@@ -955,7 +1447,7 @@ function ManageStatements({ isEdit = false }) {
               }
             >
               <Breadcrumb.Item className="flex gap-1.5">
-                <Link href={getBackURL()}>
+                <Link href={getBackURL("topic")}>
                   <a className="!break-all hover:!text-canHoverBlue">
                     {!isEdit ? "Adding a camp statement" : editTopicName}
                   </a>
@@ -963,7 +1455,7 @@ function ManageStatements({ isEdit = false }) {
                 {isMobile && (
                   <Popover
                     placement="bottom"
-                    content={editTopicName}
+                    content={topicContent}
                     className="title-popover"
                     overlayClassName="max-lg:hidden popover-content-wrap"
                   >
@@ -976,7 +1468,7 @@ function ManageStatements({ isEdit = false }) {
                 editCampName !== null &&
                 "camp_name" in editCampName && (
                   <Breadcrumb.Item className="flex gap-1.5">
-                    <Link href={getBackURL()}>
+                    <Link href={getBackURL("camp")}>
                       <a className="!text-canGreen !break-all hover:!text-canHoverBlue">
                         {typeof editCampName === "object" &&
                         editCampName !== null
@@ -987,12 +1479,7 @@ function ManageStatements({ isEdit = false }) {
                     {isMobile && (
                       <Popover
                         placement="bottom"
-                        content={
-                          typeof editCampName === "object" &&
-                          editCampName !== null
-                            ? editCampName.camp_name
-                            : ""
-                        }
+                        content={campContent}
                         overlayClassName="max-lg:hidden"
                       >
                         <InfoCircleOutlined />

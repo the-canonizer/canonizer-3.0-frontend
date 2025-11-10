@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Button, Typography } from "antd";
 
 import { updateCampApi } from "src/network/api/campManageStatementApi";
@@ -6,7 +7,7 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import useIsUserAuthenticated from "src/hooks/isUserAuthenticated";
-import { getAllUsedNickNames } from "src/network/api/campDetailApi";
+import { getAllUsedNickNames, getCanonizedCampStatementApi } from "src/network/api/campDetailApi";
 import { RootState, store } from "src/store";
 import { setTree } from "src/store/slices/campDetailSlice";
 import { getHistoryApi } from "src/network/api/history";
@@ -26,7 +27,7 @@ function HistoryContainer() {
   const router = useRouter();
   const dispatch = useDispatch();
   const didMount = useRef(false);
-
+  
   const [activeTab, setActiveTab] = useState("all");
 
   const [nickName, setNickName] = useState([]);
@@ -59,10 +60,15 @@ function HistoryContainer() {
 
   const count = useRef(1);
 
-  const { history, asofdate, algorithm } = useSelector((state: RootState) => ({
+  const {history, asofdate, algorithm, asof, haveStatementPreview, openConsensusTreePopup} = useSelector((state: RootState) => ({
     history: state?.topicDetails?.history,
+    asof: state?.filters?.filterObject?.asof,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
+    haveStatementPreview: state?.topic?.haveStatementPreview,
+    openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
+    campStatement: state?.topicDetails?.campStatement,
+    
   }));
 
   const [isTreesApiCallStop, setIsTreesApiCallStop] = useState(false);
@@ -185,6 +191,30 @@ function HistoryContainer() {
       /**/
     }
   };
+
+  useEffect(() => {
+    const getStatement = async () => {
+      const body = {
+        topic_num: +router?.query?.camp?.at(0)?.split("-")?.at(0),
+        camp_num: +(router?.query?.camp?.at(1)?.split("-")?.at(0) ?? 1),
+        as_of: router.query?.asof || "default",
+        as_of_date:
+          router.query?.asof == "default" || router.query?.asof == "review"
+            ? Date.now() / 1000
+            : router.query?.asofdate
+            ? moment
+                .utc(+router.query.asofdate * 1000)
+                .format("DD-MM-YYYY H:mm:ss")
+            : moment.utc(asofdate * 1000).format("DD-MM-YYYY H:mm:ss"),
+      };
+
+      await getCanonizedCampStatementApi(body);
+    };
+
+    if (router.isReady) {
+      getStatement();
+    }
+  }, [router.asPath]);
 
   const handleTabButton = async (tabName) => {
     setActiveTab(tabName);
