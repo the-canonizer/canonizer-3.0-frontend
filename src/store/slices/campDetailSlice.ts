@@ -6,6 +6,7 @@ export const treeSlice = createSlice({
     tree: null,
     newsFeed: null,
     campStatement: null,
+    restrictSupporters: [],
     campSupportingTree: null,
     currentTopicRecord: null,
     currentCampRecord: null,
@@ -77,6 +78,9 @@ export const treeSlice = createSlice({
     },
     setCampStatement: (state, action) => {
       state.campStatement = action.payload;
+    },
+    setRestrictSupporters: (state, action) => {
+      state.restrictSupporters = action.payload;
     },
     setCurrentTopicRecord: (state, action) => {
       state.currentTopicRecord = action.payload;
@@ -279,6 +283,7 @@ export const {
   setGlobalUserProfileDataUpdatedLastName,
   setGlobalUserProfileDataUpdatedEmail,
   // setOpenConsensusTreePopup,
+  setRestrictSupporters
 } = treeSlice.actions;
 
 export default treeSlice.reducer;

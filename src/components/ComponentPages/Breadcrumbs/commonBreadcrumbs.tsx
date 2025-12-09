@@ -11,7 +11,7 @@ import {
   Tag,
   Tooltip,
 } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -33,6 +33,8 @@ import { RootState } from "src/store";
 import {
   changeSlashToArrow,
   getCookies,
+  getRestrictedUser,
+  isUserRestricted,
   replaceSpecialCharacters,
 } from "src/utils/generalUtility";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
@@ -81,6 +83,8 @@ function CommanBreadcrumbs({
     algorithm,
     campStatement,
     tree,
+    loggedInUser,
+    restrictUser
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -93,7 +97,14 @@ function CommanBreadcrumbs({
     algorithm: state.filters?.filterObject?.algorithm,
     campStatement: state?.topicDetails?.campStatement,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    restrictUser: state?.topicDetails?.restrictSupporters,
+    loggedInUser: state.auth.loggedInUser,
   }));
+
+   const restrictedUserInfo = useMemo(
+      () => getRestrictedUser(restrictUser, loggedInUser),
+      [restrictUser, loggedInUser]
+    );
 
   const [campSubscriptionID, setCampSubscriptionID] = useState(
     campRecord?.subscriptionId
@@ -399,6 +410,8 @@ function CommanBreadcrumbs({
       return true; // Button should be enabled
     }
   };
+
+  const disabled = isUserRestricted(restrictUser, loggedInUser);
 
   const covertToTime = (unixTime) => {
     return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
@@ -792,7 +805,17 @@ function CommanBreadcrumbs({
             )}
           </Row>
           <div className="content-btn-wrap">
-            <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
+            <PrimaryButton  title={
+            disabled &&
+            `Reason: ${
+               restrictedUserInfo?.reason
+            } \nRestricted by: ${
+              restrictedUserInfo?.restrictedBy
+            } \nRemaining Time: ${
+              restrictedUserInfo?.remainingTime
+            }
+            `
+          } disabled={disabled} className="flex items-center justify-center h-auto mx-auto gap-1">
               <Link href={campHrefForPopover}>
                 <a className="flex items-center justify-center h-auto mx-auto gap-1">
                   <span className="flex items-center justify-center h-auto mx-auto gap-1">
@@ -1381,14 +1404,26 @@ function CommanBreadcrumbs({
           {!isHtmlContent &&
           isTopicPage &&
           campStatement?.length > 0 &&
-          (campStatement?.at(0)?.in_review_changes > 0 ||
+          ((Array.isArray(campStatement) &&
+            campStatement[0]?.in_review_changes > 0) ||
             campStatement?.at(0)?.grace_period_record_count > 0 ||
             campStatement?.at(0)?.parsed_value) ? (
             <div className="topicDetailsCollapseFooter printHIde camp">
               {breadCrumbRes?.propose_statement_edit?.status == "live" ||
               breadCrumbRes?.propose_statement_edit?.status == "objected" ? (
                 <PrimaryButton
-                  disabled={campRecord?.is_archive == 1 ? true : false}
+                title={
+            disabled &&
+            `Reason: ${
+               restrictedUserInfo?.reason
+            } \nRestricted by: ${
+              restrictedUserInfo?.restrictedBy
+            } \nRemaining Time: ${
+              restrictedUserInfo?.remainingTime
+            }
+            `
+          }
+                  disabled={campRecord?.is_archive || disabled}
                   className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
                   onClick={() => {
                     breadCrumbRes?.propose_statement_edit?.status == "objected"
