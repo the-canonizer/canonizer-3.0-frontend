@@ -9,9 +9,15 @@ import {
   Select,
   Typography,
   Collapse,
+  Modal,
+  Input,
+  message,
 } from "antd";
 import moment from "moment";
-import { CloseOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 
 import styles from "./topicDetails.module.scss";
 
@@ -27,8 +33,10 @@ import {
   getCurrentCampRecordApi,
   getCurrentTopicRecordApi,
   getNewsFeedApi,
+  getRestrictSupporters,
   getTopicActivityLogApi,
   getTreesApi,
+  restrictSupporters,
 } from "src/network/api/campDetailApi";
 import { RootState, store } from "src/store";
 import CampStatementCard from "components/ComponentPages/TopicDetails/CampStatementCard";
@@ -71,6 +79,8 @@ import { labels } from "src/messages/label";
 import { setStatementPreview } from "src/store/slices/topicSlice";
 import GoogleAd from "components/googleAds";
 import ScorePercentageCheckBox from "../ScorePercentageCheckBox";
+import { getHistoryApi } from "src/network/api/history";
+
 // import GoogleAd from "components/googleAds";
 
 const { Link: AntLink } = Typography;
@@ -99,6 +109,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     treeExpandValue,
     userEmail,
     haveStatementPreview,
+    campStatement,
+    history,
   } = useSelector((state: RootState) => ({
     algorithms: state.homePage?.algorithms,
     asof: state?.filters?.filterObject?.asof,
@@ -113,6 +125,8 @@ const TopicDetails = ({ serverSideCall }: any) => {
     treeExpandValue: state?.filters?.treeExpandValue,
     userEmail: state?.auth?.loggedInUser?.email,
     haveStatementPreview: state?.topic?.haveStatementPreview,
+    campStatement: state?.topicDetails?.campStatement,
+    history: state?.topicDetails?.history,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -124,6 +138,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [topicList, setTopicList] = useState([]);
   const [isSupportTreeCardModal, setIsSupportTreeCardModal] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDelegateSupportTreeCardModal, setIsDelegateSupportTreeCardModal] =
     useState(false);
   const [removeSupportSpinner, setRemoveSupportSpinner] = useState(false);
@@ -131,7 +146,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
   const [backGroundColorClass, setBackGroundColorClass] = useState("default");
   const [totalCampScoreForSupportTree, setTotalCampScoreForSupportTree] =
     useState<number>(null);
-  const [supportTreeForCamp, setSupportTreeForCamp] = useState<number>(null);
+
+  const [selectedSupporter, setSelectedSupporter] = useState(null);
+  const [reason, setReason] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const count = useRef(1);
+
+  const [supportTreeForCamp, setSupportTreeForCamp] = useState<any[]>([]);
   const [breadCrumbBolean, setBreadCrumbBolean] = useState(true);
   const supportRelatedInfo = (
     <div className="popoverSupport text-xs">
@@ -244,6 +266,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       { shallow: true } // Prevents a full page reload
     );
   }, [openConsensusTreePopup]);
+
   useEffect(() => {
     const getStatement = async () => {
       const body = {
@@ -265,13 +288,23 @@ const TopicDetails = ({ serverSideCall }: any) => {
       await getCanonizedCampStatementApi(body);
     };
     if (
-      haveStatementPreview &&
-      haveStatementPreview?.camp_id !== router?.query?.camp[0]?.split("-")[0] &&
-      !openConsensusTreePopup
+      haveStatementPreview ||
+      (haveStatementPreview?.camp_id !==
+        router?.query?.camp[0]?.split("-")[0] &&
+        !openConsensusTreePopup)
     ) {
+      console.log("haveStatementPreview", haveStatementPreview);
       getStatement();
     }
   }, [haveStatementPreview, openConsensusTreePopup]);
+
+  useEffect(() => {
+    const restrictSupporters = async () => {
+      await getRestrictSupporters(history?.live_record_id);
+    };
+
+    restrictSupporters();
+  }, []);
 
   useEffect(() => {
     if (
@@ -568,6 +601,115 @@ const TopicDetails = ({ serverSideCall }: any) => {
     dispatch(setCampWithScorevalue(value));
   };
 
+  const { campSupportingTree } = useSelector((state: RootState) => ({
+    campSupportingTree: Array.isArray(supportTreeForCamp)
+      ? supportTreeForCamp
+      : [],
+    asof: state?.filters?.filterObject?.asof,
+  }));
+
+  useEffect(() => {
+    const campStatementApiCall = async () => {
+      const reqBody = {
+        topic_num: router?.query.camp[0].split("-")[0],
+        camp_num: campRecord?.topic_num || 1,
+        type: null,
+        per_page: 4,
+        page: count.current,
+      };
+      let res = await getHistoryApi(reqBody, count.current, "topic");
+      // setCampId(res?.data);
+    };
+    if (
+      haveStatementPreview ||
+      (haveStatementPreview?.camp_id !==
+        router?.query?.camp[0]?.split("-")[0] &&
+        !openConsensusTreePopup)
+    ) {
+      campStatementApiCall();
+    }
+  }, [haveStatementPreview, openConsensusTreePopup]);
+
+  const handleSupporterClick = (supporter) => {
+    setSelectedSupporter(supporter);
+    setIsModalOpen(true);
+    setReason(""); // Reset reason when opening modal
+  };
+
+  async function getTreeApiCallback() {
+  // Set loading states
+  if (!showTreeSkeltonRef.current) {
+    showTreeSkeltonRef.current = true;
+  }
+  setLoadingIndicator(true);
+
+  // Only execute if component is mounted and not a server-side call
+  if (didMount.current && !serverSideCall.current) {
+    try {
+      const reqBodyForService = {
+        topic_num: router?.query?.camp[0]?.split("-")[0],
+        camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+        asOf: asof,
+        asofdate:
+          asof === "default" || asof === "review"
+            ? Date.now() / 1000
+            : asofdate,
+        algorithm: algorithm,
+        update_all: 1,
+        fetch_topic_history: viewThisVersionCheck ? 1 : null,
+        current_user: isUserAuthenticated ? userEmail : "",
+      };
+
+      // Call the API
+      const response = await getTreesApi(reqBodyForService);
+      
+      // Handle the response
+      return response;
+      
+    } catch (error) {
+      console.error("Error fetching tree data:", error);
+      // Handle error appropriately
+    } finally {
+      // Always reset loading state
+      setLoadingIndicator(false);
+    }
+  } else {
+    // Reset loading if conditions not met
+    setLoadingIndicator(false);
+  }
+}
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedSupporter(null);
+    setReason("");
+  };
+
+  const handleSubmit = async () => {
+    const formData = {
+      restricted_user_nick_name_id: selectedSupporter?.nick_name_id,
+      reason: reason,
+    };
+
+    try {
+      setLoading(true);
+
+      const res = await restrictSupporters(history?.live_record_id, formData); // ✅ await here
+
+      if (res?.message === "User restricted successfully") {
+        message.success(res?.message);
+        handleModalClose();
+         getTreeApiCallback();
+      } else {
+        message.error(res?.message || "Failed to restrict user");
+      }
+    } catch (error) {
+      message.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Fragment>
       <Layout
@@ -668,6 +810,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                           setTotalCampScoreForSupportTree={
                             setTotalCampScoreForSupportTree
                           }
+                          handleSupporterClick={handleSupporterClick}
                           hideRank={tree && tree?.["1"]?.rank_hidden}
                         />
                       </div>
@@ -783,7 +926,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                               height={7}
                               width={15}
                               preview={false}
-                            />
+                            />  
                           }
                           value={`${treeExpandValue}`}
                           defaultValue={`${treeExpandValue}`}
@@ -919,6 +1062,36 @@ const TopicDetails = ({ serverSideCall }: any) => {
         </div>
       </Layout>
       <BackTop className="printHIde" />
+      <Modal
+        title="Restrict User"
+        open={isModalOpen}
+        onOk={handleSubmit}
+        onCancel={handleModalClose}
+        confirmLoading={loading}
+        okText="Restrict"
+        cancelText="Cancel"
+      >
+        {selectedSupporter && (
+          <div>
+            <p className="mb-4">
+              <strong>User:</strong> {selectedSupporter.nick_name}
+            </p>
+            <div>
+              <label className="block mb-2 font-medium">
+                Reason for restriction: <span className="text-red-500">*</span>
+              </label>
+              <Input.TextArea
+                placeholder="Enter reason for restricting this user"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                rows={4}
+                maxLength={500}
+                showCount
+              />
+            </div>
+          </div>
+        )}
+      </Modal>
     </Fragment>
   );
 };
