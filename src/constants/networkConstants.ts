@@ -60,6 +60,8 @@ const NetworkConstants = {
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
     // topic details page api's
     GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
+    RestrictSupporters: `${BaseCanonizerApiUrl}/camps`,
+    GetRestrictSupporters: `${BaseCanonizerApiUrl}/camps`,
     GetNewsFeed: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     GetCampStatement: `${BaseCanonizerApiUrl}/get-camp-statement`,
     GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
