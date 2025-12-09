@@ -298,7 +298,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   useEffect(() => {
     const liveId =
       (history as any)?.details?.liveCamp?.live_record_id ??
-      (history as any)?.l ive_record_id;
+      (history as any)?.live_record_id;
 
     const restrictSupporters = async () => {
       await getRestrictSupporters(liveId);
@@ -1101,3 +1101,4 @@ const TopicDetails = ({ serverSideCall }: any) => {
 };
 
 export default TopicDetails;
+
