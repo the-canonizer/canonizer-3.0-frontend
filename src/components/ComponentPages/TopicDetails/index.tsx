@@ -14,10 +14,7 @@ import {
   message,
 } from "antd";
 import moment from "moment";
-import {
-  CloseOutlined,
-  InfoCircleOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, InfoCircleOutlined } from "@ant-design/icons";
 
 import styles from "./topicDetails.module.scss";
 
@@ -299,8 +296,12 @@ const TopicDetails = ({ serverSideCall }: any) => {
   }, [haveStatementPreview, openConsensusTreePopup]);
 
   useEffect(() => {
+    const liveId =
+      (history as any)?.details?.liveCamp?.live_record_id ??
+      (history as any)?.l ive_record_id;
+
     const restrictSupporters = async () => {
-      await getRestrictSupporters(history?.live_record_id);
+      await getRestrictSupporters(liveId);
     };
 
     restrictSupporters();
@@ -637,47 +638,46 @@ const TopicDetails = ({ serverSideCall }: any) => {
   };
 
   async function getTreeApiCallback() {
-  // Set loading states
-  if (!showTreeSkeltonRef.current) {
-    showTreeSkeltonRef.current = true;
-  }
-  setLoadingIndicator(true);
+    // Set loading states
+    if (!showTreeSkeltonRef.current) {
+      showTreeSkeltonRef.current = true;
+    }
+    setLoadingIndicator(true);
 
-  // Only execute if component is mounted and not a server-side call
-  if (didMount.current && !serverSideCall.current) {
-    try {
-      const reqBodyForService = {
-        topic_num: router?.query?.camp[0]?.split("-")[0],
-        camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-        asOf: asof,
-        asofdate:
-          asof === "default" || asof === "review"
-            ? Date.now() / 1000
-            : asofdate,
-        algorithm: algorithm,
-        update_all: 1,
-        fetch_topic_history: viewThisVersionCheck ? 1 : null,
-        current_user: isUserAuthenticated ? userEmail : "",
-      };
+    // Only execute if component is mounted and not a server-side call
+    if (didMount.current && !serverSideCall.current) {
+      try {
+        const reqBodyForService = {
+          topic_num: router?.query?.camp[0]?.split("-")[0],
+          camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+          asOf: asof,
+          asofdate:
+            asof === "default" || asof === "review"
+              ? Date.now() / 1000
+              : asofdate,
+          algorithm: algorithm,
+          update_all: 1,
+          fetch_topic_history: viewThisVersionCheck ? 1 : null,
+          current_user: isUserAuthenticated ? userEmail : "",
+        };
 
-      // Call the API
-      const response = await getTreesApi(reqBodyForService);
-      
-      // Handle the response
-      return response;
-      
-    } catch (error) {
-      console.error("Error fetching tree data:", error);
-      // Handle error appropriately
-    } finally {
-      // Always reset loading state
+        // Call the API
+        const response = await getTreesApi(reqBodyForService);
+
+        // Handle the response
+        return response;
+      } catch (error) {
+        console.error("Error fetching tree data:", error);
+        // Handle error appropriately
+      } finally {
+        // Always reset loading state
+        setLoadingIndicator(false);
+      }
+    } else {
+      // Reset loading if conditions not met
       setLoadingIndicator(false);
     }
-  } else {
-    // Reset loading if conditions not met
-    setLoadingIndicator(false);
   }
-}
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -694,12 +694,16 @@ const TopicDetails = ({ serverSideCall }: any) => {
     try {
       setLoading(true);
 
-      const res = await restrictSupporters(history?.live_record_id, formData); // ✅ await here
+      const liveId =
+        (history as any)?.details?.liveCamp?.live_record_id ??
+        (history as any)?.live_record_id;
+
+      const res = await restrictSupporters(liveId, formData); // ✅ await here
 
       if (res?.message === "User restricted successfully") {
         message.success(res?.message);
         handleModalClose();
-         getTreeApiCallback();
+        getTreeApiCallback();
       } else {
         message.error(res?.message || "Failed to restrict user");
       }
@@ -926,7 +930,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
                               height={7}
                               width={15}
                               preview={false}
-                            />  
+                            />
                           }
                           value={`${treeExpandValue}`}
                           defaultValue={`${treeExpandValue}`}
