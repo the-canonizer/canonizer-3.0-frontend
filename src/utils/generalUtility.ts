@@ -514,3 +514,65 @@ export const convertToSlug = (url) => {
     .replace(/-+/g, "-") // Remove multiple dashes
     .replace(/^\/+|\/+$/g, ""); // Trim leading/trailing slashes
 };
+
+// Types
+interface RestrictedEntry {
+  user?: { id: number };
+}
+
+interface LoggedInUser {
+  id: number;
+}
+
+/**
+ * Checks if logged-in user exists in restricted users list.
+ * Handles all edge cases safely.
+ */
+export const isUserRestricted = (
+  restrictedList: RestrictedEntry[] | null | undefined,
+  loggedInUser: LoggedInUser | null | undefined
+): boolean => {
+  if (!restrictedList?.length || !loggedInUser?.id) return false;
+
+  return restrictedList.some(
+    item => item?.nick_name?.user?.id === loggedInUser.id
+  );
+};
+
+
+
+export const getRestrictedUser = (restrictedList, loggedInUser) => {
+  const restrictedUser = restrictedList?.find(
+    item => item?.nick_name?.user?.id === loggedInUser?.id
+  );
+
+  if (!restrictedUser) return null;
+
+  let remainingTime = null;
+  let isExpired = false;
+  
+  if (restrictedUser.end_time) {
+    const endTime = moment  (restrictedUser.end_time);
+    const now = moment();
+
+    if (endTime.isBefore(now)) {
+      isExpired = true;
+      remainingTime = 'Restriction expired';
+    } else {
+      // Humanized format: "in 5 hours", "in 2 days"
+      remainingTime = `Unrestrict ${endTime.fromNow()}`;
+      // OR for "5 hours left" format:
+      // remainingTime = `${endTime.toNow(true)} remaining`;
+    }
+  }
+
+  return {
+    reason: restrictedUser.reason || 'No reason provided',
+    restrictedBy: `${restrictedUser.nick_name_leader.user?.first_name || ''} ${restrictedUser.leader?.last_name || ''}`.trim() || 'Unknown',
+    remainingTime,
+    isExpired,
+    endTime: restrictedUser.end_time,
+    fullData: restrictedUser
+  };
+};
+
