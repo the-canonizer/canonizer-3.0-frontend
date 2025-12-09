@@ -518,6 +518,11 @@ export const convertToSlug = (url) => {
 // Types
 interface RestrictedEntry {
   user?: { id: number };
+  nick_name?: { user?: { id: number } };
+  end_time?: string;
+  reason?: string;
+  nick_name_leader?: { user?: { first_name?: string; last_name?: string } };
+  leader?: { last_name?: string };
 }
 
 interface LoggedInUser {
