@@ -131,12 +131,10 @@ const SupportTreeCard = ({
     manageSupportStatusCheck,
     openDrawerForManageSupport,
     totalScoreforTreeCard,
-    loggedInUser,
   } = useSelector((state: RootState) => ({
     manageSupportStatusCheck: state.topicDetails.manageSupportStatusCheck,
     openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
     totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
-    loggedInUser: state.auth.loggedInUser,
   }));
 
   const { isUserAuthenticated } = isAuth();
@@ -325,7 +323,6 @@ const SupportTreeCard = ({
       initialTree: state?.topicDetails?.tree,
     })
   );
-
   const findInitialTreeSupport = (tree) => {
     Object.keys(tree)?.some((item) => {
       if (router?.query?.camp?.at(1)?.split("-")?.at(0)) {
@@ -490,15 +487,26 @@ const SupportTreeCard = ({
 
           // If restrictUser is an array
           const isRestricted = restrictUser.some(
-            (user) => user?.nick_name?.id === data[item]?.nick_name_id
+            (user) =>
+              user?.nick_name?.user?.id &&
+              user?.nick_name?.id === data[item]?.nick_name_id &&
+              ["active", "lifted"].includes(user?.status)
           );
 
-          const isCampLeader = () => {
-            const restrictedUser = restrictUser?.some(
-              (item) => item?.nick_name_leader?.user?.id === loggedInUser?.id
+          const canRestrictUser = (rowUser) => {
+            const loggedInUserIsLeader = supportTreeForCamp?.some(
+              (u) =>
+                u?.camp_leader === true &&
+                userNickNameList?.includes(u?.nick_name_id)
             );
 
-            return restrictedUser;
+            const isRowUserMe = userNickNameList?.includes(
+              rowUser?.nick_name_id
+            );
+
+            const isRowUserLeader = rowUser?.camp_leader === true;
+
+            return loggedInUserIsLeader && !isRowUserMe && !isRowUserLeader;
           };
 
           return (
@@ -613,7 +621,49 @@ const SupportTreeCard = ({
                         (Array.isArray(data[item]?.delegates) &&
                           data[item].delegates.findIndex((obj) =>
                             userNickNameList?.includes(obj?.nick_name_id)
-                          ) > -1) ? null : (
+                          ) > -1) ? 
+                          <Popover
+                            id="topic_detail_user_support_tree_card_popover_info"
+                            placement="right"
+                            content={
+                              !isUserAuthenticated
+                                ? "Log in to participate"
+                                : "This will delegate your support to the selected supporter"
+                            }
+                          >
+                            <a
+                              className="printHIde custom-btn group"
+                              id="topic_detail_user_support_tree_card_delegate_section"
+                            >
+                              <div className="hidden group-hover:flex items-baseline gap-3">
+                                <Button
+                                  id="supportTreeDelegateYourSupport"
+                                  disabled={true}
+                                  className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
+                                >
+                                  <Image
+                                    id="supportTreeDelegateYourSupportimg"
+                                    src="/images/user-minus-regular.svg"
+                                    alt="svg"
+                                    height={16}
+                                    width={16}
+                                    preview={false}
+                                  />
+                                  {"Delegate Your Suppport"}
+                                </Button>
+
+                                {canRestrictUser(data[item]) && (
+                                  <StopOutlined
+                                    onClick={() =>
+                                      handleSupporterClick(data[item])
+                                    }
+                                    className="text-red-500 cursor-pointer"
+                                  />
+                                )}
+                              </div>
+                            </a>
+                          </Popover>
+                           : (
                           <Popover
                             id="topic_detail_user_support_tree_card_popover_info"
                             placement="right"
@@ -635,8 +685,10 @@ const SupportTreeCard = ({
                                     !isUserAuthenticated ||
                                     campRecord?.is_archive === 1
                                   }
-                                onClick={() => handleDelegatedClick(data[item])}
-                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
+                                  onClick={() =>
+                                    handleDelegatedClick(data[item])
+                                  }
+                                  className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
                                 >
                                   <Image
                                     id="supportTreeDelegateYourSupportimg"
@@ -649,12 +701,12 @@ const SupportTreeCard = ({
                                   {"Delegate Your Suppport"}
                                 </Button>
 
-                                {isCampLeader() && (
+                                {canRestrictUser(data[item]) && (
                                   <StopOutlined
                                     onClick={() =>
                                       handleSupporterClick(data[item])
                                     }
-                                    className="text-red-500"
+                                    className="text-red-500 cursor-pointer"
                                   />
                                 )}
                               </div>
