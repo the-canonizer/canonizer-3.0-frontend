@@ -194,6 +194,12 @@ function ManageStatements({ isEdit = false }) {
     router?.push({ pathname: fullPath });
   };
 
+  const campHref = `/camp/history/${
+    topicRecord?.topic_num
+  }-${replaceSpecialCharacters(topicRecord?.topic_name, "-")}/${
+    campRecord?.camp_num
+  }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`;
+
   const handleNavigation = () => {
     const urlPart = `/camp/history/${
       topic_num || topicId
@@ -557,6 +563,154 @@ function ManageStatements({ isEdit = false }) {
     </div>
   );
 
+  const contentForCamp = (
+    <div className="popoverParent">
+      <Row gutter={5}>
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Submitted By:
+          </span>
+          <Link
+            href={{
+              pathname: `/user/supports/${campRecord?.submitter_nick_id}`,
+              query: { canon: topicRecord?.namespace_id || 1 },
+            }}
+          >
+            <a className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline">
+              {campRecord?.submitter_nick_name}
+            </a>
+          </Link>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Submitted On:
+          </span>
+          <span className="text-sm text-canBlack font-medium">
+            {campRecord && covertToTime(campRecord?.submit_time)}
+          </span>
+        </Col>
+        {campRecord?.camp_about_nick_name && (
+          <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+            <span className="text-xs 2xl:text-sm text-canLight capitalize">
+              Camp about nickname:
+            </span>
+            <Link
+              href={{
+                pathname: `/user/supports/${campRecord?.camp_about_nick_id}`,
+                query: { canon: topicRecord?.namespace_id || 1 },
+              }}
+            >
+              <a className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium">
+                {campRecord && campRecord?.camp_about_nick_name}
+              </a>
+            </Link>
+          </Col>
+        )}
+        {campRecord?.camp_about_url && (
+          <Col
+            md={12}
+            sm={12}
+            xs={12}
+            className="mb-3 flex flex-col break-words"
+          >
+            <span className="text-xs 2xl:text-sm text-canLight capitalize">
+              Camp about URL:
+            </span>
+            <a
+              href={campRecord && campRecord?.camp_about_url}
+              className="text-sm block !text-canBlue hover:!text-canHoverBlue font-medium"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {campRecord && campRecord?.camp_about_url}
+            </a>
+          </Col>
+        )}
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Single level camps only:
+          </span>
+          <span className="text-sm text-canBlack font-medium">
+            {campRecord && campRecord?.is_one_level == 0 ? "No" : "Yes"}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Disable additional sub camps:
+          </span>
+          <span className="text-sm text-canBlack font-medium">
+            {campRecord && campRecord?.is_disabled == 0 ? "No" : "Yes"}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Camp archive:
+          </span>
+          <span className="text-sm text-canBlack font-medium">
+            {campRecord && campRecord?.is_archive == 0 ? "No" : "Yes"}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Go live time:
+          </span>
+          <span className="text-sm text-canBlack font-medium">
+            {campRecord && covertToTime(campRecord?.go_live_time)}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className=" flex flex-col">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Canon:
+          </span>
+          <span className="text-sm text-canBlack font-medium">
+            {topicRecord && changeSlashToArrow(topicRecord?.namespace_name)}
+          </span>
+        </Col>
+        <Col md={12} sm={12} xs={12} className=" flex flex-col">
+          <span className="text-xs 2xl:text-sm text-canLight capitalize">
+            Topic Name:
+          </span>
+          <span className="text-sm text-canBlack font-medium">
+            {topicRecord && topicRecord?.topic_name?.length > 50
+              ? `${topicRecord?.topic_name?.substring(0, 20)}....`
+              : topicRecord?.topic_name}
+          </span>
+        </Col>
+        {campRecord?.camp_leader_nick_name && (
+          <Col md={12} sm={12} xs={12} className=" flex flex-col mt-4">
+            <span className="text-xs 2xl:text-sm text-canLight capitalize">
+              Camp Leader:
+            </span>
+            <Link
+              className="flex flex-wrap"
+              href={{
+                pathname: `/user/supports/${campRecord?.camp_leader_nick_id}`,
+                query: {
+                  canon: topicRecord?.namespace_id,
+                },
+              }}
+            >
+              <span className="!text-canBlue cursor-pointer font-medium">
+                {campRecord?.camp_leader_nick_name}
+              </span>
+            </Link>
+          </Col>
+        )}
+      </Row>
+      <hr className="horizontal_line my-5" />
+      <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
+        <Link href={campHref}>
+          <a className="flex items-center justify-center h-auto mx-auto gap-1">
+            <span className="flex items-center justify-center h-auto mx-auto gap-1">
+              {K?.exceptionalMessages?.manageCampButton}
+              <EditOutlined />
+            </span>
+          </a>
+        </Link>
+      </PrimaryButton>
+    </div>
+  );
+
   const transformDataForTags = (data) => {
     return data?.map((item, index) => {
       return {
@@ -729,11 +883,11 @@ function ManageStatements({ isEdit = false }) {
           record_id: !reduxStatementId
             ? campStatement?.[0]?.draft_record_id
               ? routerStatementId
-              : routerStatementId + 1
-            : reduxStatementId,
+              :  !campStatement?.[0]?.submitter_nick_name ? routerStatementId  : routerStatementId + 1 
+            :  reduxStatementId,
           event_type: "edit",
+          
         });
-
         if (
           editRes?.status_code === 200 &&
           !!editRes?.data?.statement?.is_draft
@@ -1359,6 +1513,29 @@ function ManageStatements({ isEdit = false }) {
     onAiPreveiwClose(e);
   };
 
+  const title2 = (
+    <div className="popover_header">
+      <span className="text-xs 2xl:text-sm text-canLight mb-1 capitalize">
+        Camp Name:
+      </span>
+      <p className="font-bold mb-5 text-sm text-canBlack line-clamp-1 overflow-hidden">
+        <Link
+          href={`/topic/${topicRecord?.topic_num}-${replaceSpecialCharacters(
+            topicRecord?.topic_name,
+            "-"
+          )}/${campRecord?.camp_num}-${replaceSpecialCharacters(
+            campRecord?.camp_name,
+            "-"
+          )}`}
+        >
+          {campRecord && campRecord?.camp_name?.length > 50
+            ? `${campRecord?.camp_name?.substring(0, 20)}....`
+            : campRecord?.camp_name}
+        </Link>
+      </p>
+    </div>
+  );
+
   const campStatementApiCall = async (topic_num: string | number) => {
     try {
       const reqBody = {
@@ -1446,25 +1623,68 @@ function ManageStatements({ isEdit = false }) {
                 <i className="icon-angle-right-arrow !leading-[0]"></i>
               }
             >
-              <Breadcrumb.Item className="flex gap-1.5">
-                <Link href={getBackURL("topic")}>
-                  <a className="!break-all hover:!text-canHoverBlue">
-                    {!isEdit ? "Adding a camp statement" : editTopicName}
-                  </a>
-                </Link>
-                {isMobile && (
-                  <Popover
-                    placement="bottom"
-                    content={topicContent}
-                    className="title-popover"
-                    overlayClassName="max-lg:hidden popover-content-wrap"
-                  >
-                    <InfoCircleOutlined />
-                  </Popover>
-                )}
-              </Breadcrumb.Item>
+              {isEdit ? (
+                <>
+                  <Breadcrumb.Item className="flex items-center gap-1.5">
+                    <Link href={getBackURL("topic")}>
+                      <a className="!break-all hover:!text-canHoverBlue">
+                        {editStatementData?.topic?.topic_name}
+                      </a>
+                    </Link>
+                    {isMobile && (
+                      <Popover
+                        placement="bottom"
+                        content={topicContent}
+                        className="title-popover"
+                        overlayClassName="max-lg:hidden popover-content-wrap"
+                      >
+                        <InfoCircleOutlined />
+                      </Popover>
+                    )}
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item className="flex gap-1.5">
+                    <Link href={getBackURL("camp")}>
+                      <a className="!break-all hover:!text-canHoverBlue">
+                        {editStatementData?.parent_camp?.length > 0
+                          ? editStatementData.parent_camp[
+                              editStatementData.parent_camp.length - 1
+                            ].camp_name
+                          : null}
+                      </a>
+                    </Link>
 
-              {typeof editCampName === "object" &&
+                    {isMobile && (
+                      <Popover
+                        content={contentForCamp}
+                        title={title2}
+                        overlayClassName="max-lg:hidden"
+                      >
+                        <InfoCircleOutlined />
+                      </Popover>
+                    )}
+                  </Breadcrumb.Item>
+                </>
+              ) : (
+                <Breadcrumb.Item className="flex gap-1.5">
+                  <Link href={getBackURL("camp")}>
+                    <a className="!break-all hover:!text-canHoverBlue">
+                      Adding a camp statement
+                    </a>
+                  </Link>
+
+                  {isMobile && (
+                    <Popover
+                      content={contentForCamp}
+                      title={title2}
+                      overlayClassName="max-lg:hidden"
+                    >
+                      <InfoCircleOutlined />
+                    </Popover>
+                  )}
+                </Breadcrumb.Item>
+              )}
+
+              {/* {typeof editCampName === "object" &&
                 editCampName !== null &&
                 "camp_name" in editCampName && (
                   <Breadcrumb.Item className="flex gap-1.5">
@@ -1486,7 +1706,7 @@ function ManageStatements({ isEdit = false }) {
                       </Popover>
                     )}
                   </Breadcrumb.Item>
-                )}
+                )} */}
             </Breadcrumb>
           </Col>
           <Col
