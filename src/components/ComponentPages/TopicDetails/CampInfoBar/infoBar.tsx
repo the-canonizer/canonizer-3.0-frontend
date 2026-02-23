@@ -217,16 +217,18 @@ const InfoBar = ({
         )}
       </Menu.Item>
       {isUserAuthenticated && is_admin && (
-        <Menu.Item key="0" icon={<i className="icon-newspaper"></i>}>
-          {router?.pathname == "/support/[...manageSupport]" ? (
-            <Link href={router?.asPath.replace("support", "addnews")}>
-              Add News
-            </Link>
-          ) : (
-            <Link href={router?.asPath.replace("topic", "addnews")}>
-              Add News
-            </Link>
-          )}
+        <Menu.Item
+          key="0"
+          icon={<i className="icon-newspaper"></i>}
+          onClick={() => {
+            const path =
+              router?.pathname == "/support/[...manageSupport]"
+                ? router?.asPath.replace("support", "addnews")
+                : router?.asPath.replace("topic", "addnews");
+            router?.push(path);
+          }}
+        >
+          Add News
         </Menu.Item>
       )}
       <Menu.Item
@@ -564,7 +566,10 @@ const InfoBar = ({
                       >
                         <a
                           className={styles.iconMore}
-                          onClick={(e) => {e.preventDefault(); dispatch(setManageSupportStatusCheck(false))}}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            dispatch(setManageSupportStatusCheck(false));
+                          }}
                         >
                           <MoreOutlined />
                         </a>

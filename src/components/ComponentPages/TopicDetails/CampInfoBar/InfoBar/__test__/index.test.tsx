@@ -184,4 +184,80 @@ describe("Camp statement on camp details page", () => {
       })
     ).toBeInTheDocument();
   });
+
+  it("Should navigate to add news page when Add News menu item is clicked", async () => {
+    const mockRouter = createMockRouter({
+      pathname: "/topic/88-Mind-and-Consciousness-revie/1-Agreement",
+      asPath: "/topic/88-Mind-and-Consciousness-revie/1-Agreement",
+      query: {
+        camp: ["88-Mind-and-Consciousness-revie", "1-Agreement"],
+      },
+    });
+
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider value={mockRouter}>
+          <InfoBar payload={payload} isTopicPage={true} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    // Open the dropdown menu
+    const dropdownTrigger = document.querySelector(
+      ".ant-dropdown-trigger.iconMore.campForumDropdown"
+    );
+    fireEvent.click(dropdownTrigger);
+
+    // Find and click the Add News menu item
+    const addNewsMenuItem = screen.getByRole("menuitem", {
+      name: /add news/i,
+    });
+    expect(addNewsMenuItem).toBeInTheDocument();
+
+    fireEvent.click(addNewsMenuItem);
+
+    // Verify router.push was called with the correct path
+    await waitFor(() => {
+      expect(mockRouter.push).toHaveBeenCalledWith(
+        "/addnews/88-Mind-and-Consciousness-revie/1-Agreement"
+      );
+    });
+  });
+
+  it("Should navigate to add news page from support page", async () => {
+    const mockRouter = createMockRouter({
+      pathname: "/support/[...manageSupport]",
+      asPath: "/support/88-Mind-and-Consciousness-revie/1-Agreement",
+      query: {
+        manageSupport: ["88-Mind-and-Consciousness-revie", "1-Agreement"],
+      },
+    });
+
+    render(
+      <Provider store={store1}>
+        <RouterContext.Provider value={mockRouter}>
+          <InfoBar payload={payload} isTopicPage={true} />
+        </RouterContext.Provider>
+      </Provider>
+    );
+
+    // Open the dropdown menu
+    const dropdownTrigger = document.querySelector(
+      ".ant-dropdown-trigger.iconMore.campForumDropdown"
+    );
+    fireEvent.click(dropdownTrigger);
+
+    // Find and click the Add News menu item
+    const addNewsMenuItem = screen.getByRole("menuitem", {
+      name: /add news/i,
+    });
+    fireEvent.click(addNewsMenuItem);
+
+    // Verify router.push was called with the correct path (replacing support with addnews)
+    await waitFor(() => {
+      expect(mockRouter.push).toHaveBeenCalledWith(
+        "/addnews/88-Mind-and-Consciousness-revie/1-Agreement"
+      );
+    });
+  });
 });
