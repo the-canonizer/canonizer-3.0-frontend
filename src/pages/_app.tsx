@@ -25,6 +25,7 @@ import { getCookies } from "src/utils/generalUtility";
 import { createToken } from "src/network/api/userApi";
 import CustomSkelton from "@/components/common/customSkelton";
 import { logOut } from "@/components/common/headers/loggedInHeaderNavigation";
+import PageLoadingIndicator from "@/components/common/PageLoadingIndicator";
 import moment from "moment";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
@@ -40,70 +41,63 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
-  
-    const buildDateGreaterThan = (latestDate, currentDate) => {
-      const momLatestDateTime = moment(latestDate);
-      const momCurrentDateTime = moment(currentDate);
-   
-      return !!(momLatestDateTime.isAfter(momCurrentDateTime));
-    };
- 
- 
-   const refreshCacheAndReload = () => {
-      for (const key in localStorage) {
-        if (key !== "auth_token") {
-          localStorage.removeItem(key);
-        }
-      }
-     
-      const cookies = document.cookie.split("; ");
-        for (let cookie of cookies) {
-          const eqPos = cookie.indexOf("=");
-          const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-          if (name !== "loginToken"){
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-          }
-        }
- 
- 
-        if (window?.caches) {
-          window.caches.keys().then((names) => {
-            for (const name of names) {
-              caches.delete(name);
-            }
-          });
-      }
-   
+
+  const buildDateGreaterThan = (latestDate, currentDate) => {
+    const momLatestDateTime = moment(latestDate);
+    const momCurrentDateTime = moment(currentDate);
+
+    return !!momLatestDateTime.isAfter(momCurrentDateTime);
   };
 
- 
- 
-  useEffect(()=>{
+  const refreshCacheAndReload = () => {
+    for (const key in localStorage) {
+      if (key !== "auth_token") {
+        localStorage.removeItem(key);
+      }
+    }
+
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      if (name !== "loginToken") {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+      }
+    }
+
+    if (window?.caches) {
+      window.caches.keys().then((names) => {
+        for (const name of names) {
+          caches.delete(name);
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
     fetch("/meta.json")
-    .then((response) => response.json())
-    .then((meta) => {
-      console.log('meta ===>', meta);
+      .then((response) => response.json())
+      .then((meta) => {
+        console.log("meta ===>", meta);
         const latestVersionDate = meta?.buildDate;
         const currentVersionDate = localStorage.getItem("build_number");
-        
+
         const shouldForceRefresh = buildDateGreaterThan(
           meta?.buildDate,
           +currentVersionDate ?? 0
         );
-         if (shouldForceRefresh) {
+        if (shouldForceRefresh) {
           refreshCacheAndReload();
           localStorage.setItem("build_number", meta?.buildDate);
         }
-         console.log('cache',{
+        console.log("cache", {
           shouldForceRefresh: shouldForceRefresh,
           latestVersionDate: meta?.buildDate,
-          currentVersionDate: +currentVersionDate??0
-        })
-  
-    });
- 
-  },[])
- 
+          currentVersionDate: +currentVersionDate ?? 0,
+        });
+      });
+  }, []);
+
   useEffect(() => {
     const fetchToken = async () => {
       if (router?.asPath) {
@@ -168,6 +162,7 @@ function WrappedApp({
   return (
     <CookiesProvider>
       <Provider store={store}>
+        <PageLoadingIndicator />
         <ErrorBoundary>
           <HeadContentAndPermissionComponent
             componentName={Component.displayName || Component.name}
