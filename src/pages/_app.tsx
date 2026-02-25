@@ -84,7 +84,7 @@ function WrappedApp({
 
         const shouldForceRefresh = buildDateGreaterThan(
           meta?.buildDate,
-          +currentVersionDate ?? 0
+          +(currentVersionDate ?? "0")
         );
         if (shouldForceRefresh) {
           refreshCacheAndReload();
@@ -93,7 +93,7 @@ function WrappedApp({
         console.log("cache", {
           shouldForceRefresh: shouldForceRefresh,
           latestVersionDate: meta?.buildDate,
-          currentVersionDate: +currentVersionDate ?? 0,
+          currentVersionDate: +(currentVersionDate ?? "0"),
         });
       });
   }, []);
