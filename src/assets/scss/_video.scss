@@ -98,14 +98,14 @@
         position: relative;
 
         &.active {
-          color: #4484ce !important;
+          color: #2d6a4f !important;
           font-weight: 600;
           &::before {
             content: "";
             display: block;
             width: 4px;
             height: 46px;
-            background-color: #4484ce;
+            background-color: #2d6a4f;
             position: absolute;
             left: 0;
           }
@@ -150,7 +150,7 @@
         list-style-type: none;
         li {
           font-size: 14px;
-          color: #4484ce;
+          color: #2d6a4f;
           + li {
             margin-top: 1rem;
           }

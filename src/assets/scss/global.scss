@@ -3,8 +3,8 @@
 @import "./speed-controller";
 
 :root {
-  --primary: #4484ce;
-  --font-family-asap: "Asap", sans-serif;
+  --primary: #2d6a4f;
+  /* --font-family-asap: "Asap", sans-serif; */
   --yellow: #f89d15;
 
   /* Redesign variables */
@@ -223,11 +223,11 @@ del.diffmod img {
 
 .btn {
   &-blue {
-    background-color: #4484ce;
+    background-color: #2d6a4f;
 
     &:hover,
     &:focus {
-      background-color: darken(#4484ce, 10%);
+      background-color: darken(#2d6a4f, 10%);
     }
   }
 
@@ -584,7 +584,7 @@ del.diffmod img {
   }
   &.bydate {
     .ant-drawer-header {
-      border-bottom: 2px solid #4484ce;
+      border-bottom: 2px solid #2d6a4f;
       background-color: #eef3ff;
     }
   }
@@ -835,8 +835,8 @@ del.diffmod img {
 
 .ant-btn-primary {
   color: #fff;
-  border-color: #4484ce;
-  background: #4484ce;
+  border-color: #2d6a4f;
+  background: #2d6a4f;
   text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   box-shadow: 0 2px #0000000b;
 }
@@ -844,7 +844,8 @@ del.diffmod img {
 .ant-btn-primary:hover,
 .ant-btn-primary:focus,
 .ant-btn-primary:active {
-  background-color: #2a71c2;
+  background-color: #245a43;
+  border-color: #245a43;
 }
 
 .ant-btn-orange {
@@ -879,8 +880,8 @@ del.diffmod img {
 
 .ant-btn-bordered {
   color: #fff;
-  border-color: #4484ce;
-  color: #4484ce;
+  border-color: #2d6a4f;
+  color: #2d6a4f;
   text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   box-shadow: 0 2px #0000000b;
 }
@@ -893,7 +894,7 @@ del.diffmod img {
   border: solid 1px #d9d9d9;
 
   i {
-    color: #2e68db;
+    color: #2d6a4f;
     margin-right: 4px;
     position: relative;
     top: 2px;
@@ -922,7 +923,7 @@ del.diffmod img {
       }
 
       .ant-checkbox-inner {
-        border-color: #4484ce;
+        border-color: #2d6a4f;
 
         &::after {
           width: 5px;
@@ -934,7 +935,7 @@ del.diffmod img {
     }
 
     .ant-checkbox-inner {
-      border-color: #4484ce;
+      border-color: #2d6a4f;
 
       &::after {
         width: 5px;
@@ -1169,7 +1170,7 @@ del.diffmod img {
     justify-content: inherit;
 
     a {
-      color: #2e68db;
+      color: #2d6a4f;
     }
   }
 }
@@ -1182,8 +1183,8 @@ del.diffmod img {
   height: 30px;
   display: flex;
   align-items: center;
-  border-color: #4484ce;
-  color: #4484ce;
+  border-color: #2d6a4f;
+  color: #2d6a4f;
 }
 
 .number-style {
@@ -1217,7 +1218,7 @@ del.diffmod img {
 
 .ant-breadcrumb-separator {
   margin: 0;
-  color: #2e68db;
+  color: #2d6a4f;
   font-size: 18px;
 }
 
@@ -1547,7 +1548,7 @@ del.diffmod img {
   display: inline-block;
   font-size: 180px;
   line-height: 0;
-  color: #4484ce;
+  color: #2d6a4f;
 }
 
 .icon--menu {
@@ -1608,7 +1609,7 @@ del.diffmod img {
 }
 
 .ant-tabs-ink-bar {
-  background-color: #2e68db !important;
+  background-color: #2d6a4f !important;
 }
 
 .campHistoryCollapseCards {
@@ -1704,7 +1705,7 @@ del.diffmod img {
       }
       &.ant-collapse-item-active {
         .ant-collapse-header {
-          background-color: #4484ce;
+          background-color: #2d6a4f;
         }
       }
     }
@@ -1756,12 +1757,12 @@ del.diffmod img {
   thead {
     tr {
       th {
-        background-color: #f8f8f8;
+        background-color: var(--surface);
         color: #1c1b24;
         font-size: 16px;
         padding: 10px;
         font-weight: 600;
-        font-family: var(--font-family-asap);
+        font-family: "DM Sans", sans-serif;
       }
     }
   }
@@ -1835,10 +1836,10 @@ del.diffmod img {
       }
 
       &.ant-pagination-item-active {
-        border-color: #2e68db;
+        border-color: #2d6a4f;
 
         a {
-          color: #2e68db;
+          color: #2d6a4f;
         }
       }
     }
@@ -1921,7 +1922,7 @@ del.diffmod img {
 
   &.bydate {
     .ant-collapse-content {
-      border-color: #4484ce;
+      border-color: #2d6a4f;
     }
   }
 
@@ -2140,7 +2141,7 @@ del.diffmod img {
 }
 
 // .UploadFile .modal_cross .ant-modal-content .ant-modal-header .ant-modal-title {
-//   color: #2e68db !important;
+//   color: #2d6a4f !important;
 //   font-size: 20px;
 //   font-family: Asap;
 //   font-weight: 600;
@@ -2151,7 +2152,7 @@ del.diffmod img {
   color: #0f2a4d;
   font-size: 20px;
   font-weight: 600;
-  font-family: var(--font-family-asap);
+  font-family: "DM Sans", sans-serif;
 }
 
 span.ant-modal-close-x {
@@ -2169,7 +2170,7 @@ span.ant-modal-close-x {
 }
 
 body .UploadFile_menu_item__Fnasz .anticon {
-  color: #4484ce;
+  color: #2d6a4f;
 }
 
 body .UploadFile_menu_item__Fnasz {
@@ -2220,7 +2221,7 @@ div[role="option"]::before {
 
   border: 1px solid #f0f0f0 !important;
   background: transparent;
-  color: #4484ce;
+  color: #2d6a4f;
   font-weight: 600;
   font-size: 14px;
   padding: 4px 12px;
@@ -2620,15 +2621,15 @@ div[role="option"]::before {
   &.bydate {
     .ant-collapse-header,
     &.topics-list-card-header {
-      border-top: 2px solid #4484ce;
+      border-top: 2px solid #2d6a4f;
       background-color: #eef3ff;
     }
     &.radio-group-sider {
       .ant-radio.ant-radio-checked {
         .ant-radio-inner {
-          border-color: #4484ce;
+          border-color: #2d6a4f;
           &::after {
-            background-color: #4484ce;
+            background-color: #2d6a4f;
           }
         }
       }
@@ -2823,7 +2824,7 @@ div[role="option"]::before {
 
       &:hover,
       &.active {
-        background-color: #4484ce;
+        background-color: #2d6a4f;
         color: #fff;
         i {
           color: #fff;
@@ -3001,7 +3002,7 @@ div[role="option"]::before {
 .upload-wrap {
   position: relative;
   .ant-upload-list-item-info {
-    border: 1px solid #2c6cb5;
+    border: 1px solid #2d6a4f;
   }
   .ant-btn-default {
     position: absolute;
@@ -3009,9 +3010,9 @@ div[role="option"]::before {
     left: 50%;
     z-index: 10;
     font-size: 20px;
-    border-color: #2c6cb5;
-    color: #2c6cb5;
-    background-color: #f8f8f8;
+    border-color: #2d6a4f;
+    color: #2d6a4f;
+    background-color: var(--surface);
     padding: 0 5px;
     height: auto;
     min-height: auto;
@@ -3114,4 +3115,83 @@ div[role="option"]::before {
   .leftSideBar.miniSideBar {
     width: auto;
 }
+}
+
+/* ── Global Ant Design design-system overrides ── */
+
+/* Links */
+a {
+  color: var(--accent);
+  &:hover,
+  &:focus {
+    color: var(--accent-light);
+  }
+}
+
+/* Inputs & selects */
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border-color: var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  &:hover {
+    border-color: var(--accent) !important;
+  }
+  &:focus,
+  &.ant-input-focused,
+  &.ant-input-affix-wrapper-focused {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.12) !important;
+  }
+}
+
+/* Cards */
+.ant-card {
+  border-radius: var(--radius) !important;
+  border-color: var(--border) !important;
+  .ant-card-head {
+    border-bottom-color: var(--border-light);
+  }
+}
+
+/* Tabs */
+.ant-tabs-ink-bar {
+  background: var(--accent) !important;
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--accent) !important;
+}
+.ant-tabs-tab:hover {
+  color: var(--accent-light) !important;
+}
+
+/* Switches & checkboxes */
+.ant-switch-checked {
+  background-color: var(--accent) !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+.ant-radio-checked .ant-radio-inner {
+  border-color: var(--accent) !important;
+  &::after {
+    background-color: var(--accent) !important;
+  }
+}
+
+/* Pagination */
+.ant-pagination-item-active {
+  border-color: var(--accent) !important;
+  a {
+    color: var(--accent) !important;
+  }
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ink);
+}
+.ant-typography {
+  color: var(--ink);
 }

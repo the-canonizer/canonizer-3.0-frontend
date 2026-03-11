@@ -502,24 +502,13 @@ const HeaderMenu = ({ loggedUser }: any) => {
   const links = [
     {
       link: "/browse",
-      linkTitle: "Browse",
+      linkTitle: "Explore",
       id: 1,
     },
     {
-      link: process.env.NEXT_PUBLIC_BLOG_URL,
-      linkTitle: "Blog",
-      id: 5,
-      external: true,
-    },
-    {
       link: "/topic/132-Help/1-Agreement?is_tree_open=1",
-      linkTitle: "Help",
+      linkTitle: "About",
       id: 3,
-    },
-    {
-      link: "/videos",
-      linkTitle: "Videos",
-      id: 6,
     },
   ];
 
@@ -656,11 +645,11 @@ const HeaderMenu = ({ loggedUser }: any) => {
                 className={router?.asPath === item.link ? styles.active : ""}
                 key={item.id + "_" + item.link + "___" + idx}
               >
-                {router?.asPath.includes("/topic") || item.external ? (
+                {router?.asPath.includes("/topic") || (item as any).external ? (
                   <a
                     href={item.link}
                     rel="noopener noreferrer"
-                    target={item.external ? "_blank" : "_self"}
+                    target={(item as any).external ? "_blank" : "_self"}
                   >
                     {item.linkTitle}
                   </a>

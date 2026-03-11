@@ -2,6 +2,87 @@
   padding: 1.5rem 1.75rem;
 }
 
+.loadingState {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--purple);
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loadingText {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.loadingSub {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+.errorState {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--ink-muted);
+
+  svg {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.75rem;
+    color: var(--orange);
+  }
+
+  > div:nth-child(2) {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+}
+
+.errorDetail {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin-bottom: 1rem;
+}
+
+.retryBtn {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-bg-subtle);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: var(--accent);
+    color: white;
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--ink-muted);
+  font-size: 0.875rem;
+}
+
 .aiBadge {
   display: inline-flex;
   align-items: center;

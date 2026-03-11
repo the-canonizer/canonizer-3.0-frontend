@@ -15,47 +15,13 @@ const TopicCreationBTN = () => {
   return (
     <div className={styles.topicBTN} key="topic-btn-area">
       {authenticated ? (
-        <>
-          <Link href="/create/topic" key="create-topic-btn">
-            <a className="ant-btn">
-              {
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src="/images/topic-icon-orange.svg"
-                  alt="svg"
-                  className="icon-topic"
-                />
-              }
-              Create Topic
-            </a>
-          </Link>
-        </>
+        <Link href="/create/topic" key="create-topic-btn">
+          <a className="ant-btn">Start a Topic</a>
+        </Link>
       ) : (
-        <>
-          <button
-            className="ant-btn"
-            onClick={() => {
-              const returnUrl = "/create/topic";
-              router.push(
-                {
-                  pathname: "/login",
-                  query: { returnUrl },
-                },
-                null,
-                { shallow: true }
-              );
-            }}
-          >
-            {
-              <img
-                src="/images/topic-icon-orange.svg"
-                alt="svg"
-                className="icon-topic"
-              />
-            }
-            Create Topic
-          </button>
-        </>
+        <Link href="/registration">
+          <a className="ant-btn">Sign Up Free</a>
+        </Link>
       )}
     </div>
   );

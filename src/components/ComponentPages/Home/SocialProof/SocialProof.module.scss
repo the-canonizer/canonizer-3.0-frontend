@@ -1,0 +1,48 @@
+.bar {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  padding: 1.25rem 2rem;
+  background: var(--surface-warm);
+  border-bottom: 1px solid var(--border-light);
+  animation: fadeIn 0.4s ease 0.15s both;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.value {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .bar {
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .value {
+    font-size: 1.1rem;
+  }
+}

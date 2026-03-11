@@ -1,5 +1,6 @@
 .wrapper {
   display: none;
+  /* Visible when parent has browseChipsVisible class — see browse.module.scss */
   margin-bottom: 2.5rem;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;

@@ -64,7 +64,7 @@ describe("LoggedOutHeader", () => {
       name: /Picture of the author/i,
     });
     const browseLink = screen.getAllByRole("link", {
-      name: /Browse/i,
+      name: /Explore/i,
     })[0];
     const createTopicLink = screen.getAllByRole("link", {
       name: /Create Topic/i,

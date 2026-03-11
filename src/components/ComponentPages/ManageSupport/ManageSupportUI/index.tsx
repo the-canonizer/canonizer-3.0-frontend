@@ -541,17 +541,17 @@ const ManageSupportUI = ({
                           //     manageSupportList.length === 1 && index === 0
                           //       ? currentGetCheckSupportExistsData.support_flag == 0 && index === manageSupportList.length - 1
                           //         ? "#12c879"
-                          //         : "#4484ce"
+                          //         : "#2d6a4f"
                           //       : manageSupportList.length === 1
                           //       ? currentGetCheckSupportExistsData.support_flag == 0 && index === manageSupportList.length + 1
                           //         ? "#12c879"
-                          //         : "#4484ce"
+                          //         : "#2d6a4f"
                           //       : currentGetCheckSupportExistsData.support_flag == 0 && index === manageSupportList.length - 1
                           //         ? "#12c879"
-                          //         : "#4484ce",
+                          //         : "#2d6a4f",
                           // }}
                           style={{
-                            color: reqBodyData.camp_num == typedTag.camp_num && currentGetCheckSupportExistsData.support_flag === 0 ? "#12c879" : "#4484ce"
+                            color: reqBodyData.camp_num == typedTag.camp_num && currentGetCheckSupportExistsData.support_flag === 0 ? "#12c879" : "#2d6a4f"
                           }}
                         >
                           {typedTag?.camp_name}

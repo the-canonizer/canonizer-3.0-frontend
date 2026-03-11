@@ -20,7 +20,7 @@ export const getTreesApi = async (reqBody) => {
     store.dispatch(setTree(trees?.data || []));
     return {
       treeData: trees?.data?.at(0),
-      status_code: trees?.code,
+      status_code: trees?.status_code ?? null,
       message: trees?.message || "",
     };
   } catch (error) {
@@ -28,7 +28,7 @@ export const getTreesApi = async (reqBody) => {
     let data = error?.error?.data;
     return {
       treeData: data?.data?.at(0) || {},
-      status_code: data?.code,
+      status_code: data?.status_code ?? null,
       message: data?.message || "",
       error: data?.error || {},
     };
