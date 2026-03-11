@@ -1,45 +1,28 @@
-import { Row, Col } from "antd";
 import dynamic from "next/dynamic";
 
-import useAuthentication from "../../../hooks/isUserAuthenticated";
-import HotTopic from "src/components/common/hotTopic";
-
-const SideBar = dynamic(() => import("./SideBar"));
-const TopicsList = dynamic(() => import("./TopicsList"));
-const RecentActivities = dynamic(() => import("./RecentActivities"));
-const HelpCard = dynamic(() => import("./HelpCard"));
+const HeroSection = dynamic(() => import("./HeroSection"));
+const CategoryChips = dynamic(() => import("./CategoryChips"));
+const FeaturedTopic = dynamic(() => import("./FeaturedTopic"));
+const TopicGrid = dynamic(() => import("./TopicGrid"));
+const ActiveTopics = dynamic(() => import("./ActiveTopics"));
+const HowItWorks = dynamic(() => import("./HowItWorks"));
 
 const HomePageContainer = () => {
-  const { isUserAuthenticated } = useAuthentication();
-
   return (
     <>
-      <aside className="leftSideBar miniSideBar" data-testid="sideBar">
-        <SideBar />
-      </aside>
-      <div className="pageContentWrap">
-        <Row gutter={8}>
-          <Col xs={24} sm={24} xl={24} data-testid="hotTopicColumn">
-            <HotTopic />
-          </Col>
-          <Col xs={24} sm={24} xl={12} data-testid="topicsList">
-            <TopicsList />
-          </Col>
-          {isUserAuthenticated && (
-            <Col xs={24} sm={24} xl={12} data-testid="recentActivities">
-              <RecentActivities />
-            </Col>
-          )}
-          <Col
-            xs={24}
-            sm={24}
-            xl={isUserAuthenticated ? 24 : 12}
-            className={isUserAuthenticated && "logged-in-view"}
-            data-testid="helpCard"
-          >
-            <HelpCard />
-          </Col>
-        </Row>
+      <HeroSection />
+      <div
+        style={{
+          maxWidth: 1100,
+          margin: "0 auto",
+          padding: "2rem",
+        }}
+      >
+        <CategoryChips />
+        <FeaturedTopic />
+        <TopicGrid />
+        <ActiveTopics />
+        <HowItWorks />
       </div>
     </>
   );

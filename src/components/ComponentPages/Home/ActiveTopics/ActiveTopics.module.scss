@@ -1,0 +1,136 @@
+.section {
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.35s ease 0.15s both;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--orange);
+  }
+}
+
+.list {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.1s;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    background: var(--surface-warm);
+  }
+
+  & + & {
+    border-top: 1px solid var(--border-light);
+  }
+}
+
+.rank {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail {
+  font-size: 0.725rem;
+  color: var(--ink-muted);
+}
+
+.engagement {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.pillSupport {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.pillPartial {
+  background: var(--orange-bg);
+  color: var(--orange);
+}
+
+.pillDisagree {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+.arrow {
+  color: var(--ink-muted);
+  opacity: 0.3;
+  flex-shrink: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.noData {
+  padding: 2rem;
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
