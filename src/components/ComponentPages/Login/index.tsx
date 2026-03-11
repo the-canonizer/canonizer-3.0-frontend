@@ -12,6 +12,7 @@ import {
 } from "src/store/slices/uiSlice";
 import {
   getNickNameList,
+  createToken,
   login,
   resendOTPForRegistration,
   verifyOtp,
@@ -130,6 +131,7 @@ const Login = ({ isModal, isTest = false }: any) => {
       setErrorMsg("");
       let formBody = { email: emailPhone };
 
+      await createToken();
       const res = await resendOTPForRegistration(formBody);
 
       if (res && res.status_code === 200) {
@@ -177,6 +179,7 @@ const Login = ({ isModal, isTest = false }: any) => {
   const onResendClick = async () => {
     let formBody = { email: formData.email };
 
+    await createToken();
     await resendOTPForRegistration(formBody);
   };
 

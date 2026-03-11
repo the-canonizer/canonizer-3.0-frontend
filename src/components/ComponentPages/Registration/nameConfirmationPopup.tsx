@@ -6,6 +6,7 @@ import { Form } from "antd";
 import NameConfirmation from "./UI/nameConfirmation";
 import { hideSocialNamePopup } from "../../../store/slices/uiSlice";
 import {
+  createToken,
   verifyEmailOnSocial,
   SendOTPForVerify,
   resendOTPForRegistration,
@@ -124,6 +125,7 @@ const EmailPopup = ({ isModal = false }: any) => {
       email: formData["email"],
     };
 
+    await createToken();
     await resendOTPForRegistration(formBody);
   };
 
