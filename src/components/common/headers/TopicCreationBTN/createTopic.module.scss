@@ -1,23 +1,31 @@
 .topicBTN {
   background-color: inherit;
-  button {
+
+  a, button {
     margin-bottom: 0 !important;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    font-size: 14px;
-    font-weight: 600;
-    color: #0f2a4d;
-    border: solid 1px #d9d9d9;
-    flex-flow: row;
-    padding: 6px 10px;
-    i {
-      font-size: 1.1875rem;
-      color: var(--primary);
-      margin-right: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white !important;
+    background: var(--accent) !important;
+    border: none !important;
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.875rem;
+    transition: all 0.15s;
+    text-decoration: none;
+
+    .icon-topic {
+      display: none;
+    }
+
+    &:hover {
+      background: var(--accent-light) !important;
+      color: white !important;
     }
   }
+
   @media screen and (max-width: 767px) {
     padding: 15px 15px 0;
   }
