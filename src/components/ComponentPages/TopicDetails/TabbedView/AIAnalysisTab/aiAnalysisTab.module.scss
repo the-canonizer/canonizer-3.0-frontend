@@ -1,0 +1,134 @@
+.aiAnalysisWrapper {
+  padding: 1.5rem 1.75rem;
+}
+
+.aiBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.675rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--purple);
+  background: var(--purple-bg);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 0.6rem;
+
+  svg { width: 12px; height: 12px; }
+}
+
+.synthesisTitle {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+
+.synthesisBody {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--ink-light);
+  margin-bottom: 1.25rem;
+}
+
+.commonGround {
+  background: var(--accent-bg-subtle);
+  border: 1px solid #c5ddd0;
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.commonGroundLabel {
+  font-size: 0.675rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.commonGroundText {
+  font-family: var(--font-display);
+  font-size: 0.925rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.bridgeSection {
+  margin-bottom: 1.25rem;
+}
+
+.bridgeLabel {
+  font-size: 0.675rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blue);
+  margin-bottom: 0.5rem;
+}
+
+.insightCard {
+  background: var(--blue-bg);
+  border: 1px solid #c5d8f0;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.825rem;
+  line-height: 1.5;
+  color: var(--ink-light);
+
+  em {
+    color: var(--ink);
+    font-style: normal;
+    font-weight: 500;
+  }
+}
+
+.tensionsSection {
+  margin-bottom: 1rem;
+}
+
+.tensionLabel {
+  font-size: 0.675rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
+}
+
+.tensionItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.825rem;
+  color: var(--ink-light);
+  line-height: 1.5;
+}
+
+.tensionDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+}
+
+.aiFooter {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  font-style: italic;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  svg { width: 12px; height: 12px; opacity: 0.5; }
+}

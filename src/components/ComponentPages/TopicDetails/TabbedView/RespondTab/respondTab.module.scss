@@ -1,0 +1,255 @@
+.respondTabWrapper {
+  padding: 1.5rem 1.75rem;
+}
+
+.respondHeader {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.respondSubheader {
+  font-size: 0.825rem;
+  color: var(--ink-muted);
+  margin-bottom: 1.25rem;
+}
+
+.respondOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.respondBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.15rem 0.75rem;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  background: var(--surface-card);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.thumbIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    transition: all 0.2s;
+  }
+}
+
+.respondAgree {
+  .thumbIcon {
+    background: var(--accent-bg);
+    color: var(--accent);
+  }
+
+  &:hover, &.active {
+    border-color: var(--accent);
+    background: var(--accent-bg-subtle);
+
+    .thumbIcon {
+      background: var(--accent);
+      color: white;
+    }
+  }
+}
+
+.respondPartial {
+  .thumbIcon {
+    background: var(--orange-bg);
+    color: var(--orange);
+  }
+
+  &:hover, &.active {
+    border-color: var(--orange);
+    background: var(--orange-bg);
+
+    .thumbIcon {
+      background: var(--orange);
+      color: white;
+    }
+  }
+}
+
+.respondDisagree {
+  .thumbIcon {
+    background: var(--red-bg);
+    color: var(--red);
+  }
+
+  &:hover, &.active {
+    border-color: var(--red);
+    background: var(--red-bg);
+
+    .thumbIcon {
+      background: var(--red);
+      color: white;
+    }
+  }
+}
+
+.respondBtnLabel {
+  font-weight: 600;
+  font-size: 0.825rem;
+  color: var(--ink);
+}
+
+.respondBtnDesc {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.respondCount {
+  position: absolute;
+  top: 7px;
+  right: 9px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  background: var(--surface-warm);
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+}
+
+/* Drawer */
+.responseDrawer {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  animation: slideDown 0.25s ease;
+}
+
+.drawerAgree {
+  background: var(--accent-bg-subtle);
+  border: 1px solid #b7e4c7;
+}
+
+.drawerPartial {
+  background: var(--orange-bg);
+  border: 1px solid #f5d0a9;
+}
+
+.drawerDisagree {
+  background: var(--red-bg);
+  border: 1px solid #f0c0c2;
+}
+
+.drawerTitle {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+
+.drawerDesc {
+  font-size: 0.825rem;
+  color: var(--ink-light);
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.drawerTextarea {
+  width: 100%;
+  min-height: 72px;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+  background: white;
+  color: var(--ink);
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+  }
+}
+
+.drawerActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.drawerBtn {
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.drawerBtnCancel {
+  background: transparent;
+  color: var(--ink-muted);
+  &:hover { color: var(--ink); }
+}
+
+.drawerBtnSubmit {
+  background: var(--accent);
+  color: white;
+  &:hover { background: var(--accent-light); }
+}
+
+.drawerBtnSubmitOrange {
+  background: var(--orange);
+  color: white;
+  &:hover { opacity: 0.9; }
+}
+
+.drawerBtnSubmitRed {
+  background: var(--red);
+  color: white;
+  &:hover { opacity: 0.9; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 860px) {
+  .respondOptions {
+    grid-template-columns: 1fr;
+  }
+
+  .respondBtn {
+    flex-direction: row;
+    padding: 0.85rem;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .respondBtnDesc {
+    text-align: left;
+  }
+}

@@ -1,0 +1,54 @@
+.tabbedViewWrapper {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+
+  :global {
+    .ant-tabs-nav {
+      margin-bottom: 0;
+      padding: 0;
+      background: var(--surface-warm);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ant-tabs-tab {
+      flex: 1;
+      justify-content: center;
+      padding: 0.85rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      transition: all 0.15s;
+      margin: 0;
+
+      &:hover {
+        color: var(--ink-light);
+        background: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .ant-tabs-tab-active {
+      background: var(--surface-card);
+
+      .ant-tabs-tab-btn {
+        color: var(--accent);
+        font-weight: 600;
+      }
+    }
+
+    .ant-tabs-ink-bar {
+      background: var(--accent);
+      height: 2px;
+    }
+
+    .ant-tabs-content-holder {
+      background: var(--surface-card);
+    }
+
+    .ant-tabs-nav-list {
+      width: 100%;
+    }
+  }
+}
