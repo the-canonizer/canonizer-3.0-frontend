@@ -62,7 +62,7 @@ const ActiveTopics = () => {
                 </div>
                 <div className={styles.engagement}>
                   <span className={`${styles.pill} ${styles.pillSupport}`}>
-                    👍 {score}
+                    {score} support
                   </span>
                 </div>
                 <span className={styles.arrow}>

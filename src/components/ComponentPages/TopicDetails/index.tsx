@@ -47,6 +47,7 @@ import { replaceSpecialCharacters } from "src/utils/generalUtility";
 import { setCampActivityData } from "src/store/slices/recentActivitiesSlice";
 import LatestFilter from "../LatestFilter";
 import { fallBackSrc } from "src/assets/data-images";
+import FirstVisitBanner from "./FirstVisitBanner";
 
 const { Link: AntLink } = Typography;
 
@@ -311,6 +312,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
 
   return (
     <Fragment>
+      <FirstVisitBanner />
       <div className={styles.page}>
         {/* Breadcrumb */}
         <div className={styles.breadcrumb}>

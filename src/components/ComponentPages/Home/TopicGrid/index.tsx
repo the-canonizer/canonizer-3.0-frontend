@@ -76,7 +76,7 @@ const TopicGrid = () => {
   }
 
   return (
-    <div>
+    <div id="topic-feed">
       <div className={styles.sectionHeader}>
         <span className={styles.sectionTitle}>
           Recent Topics
