@@ -26,7 +26,6 @@ interface SiblingCamp {
 const getSiblingCamps = (tree: any, currentCampNum: number): SiblingCamp[] => {
   if (!tree) return [];
   const siblings: SiblingCamp[] = [];
-  // The tree root is keyed by camp_id. Children of agreement (camp 1) are siblings.
   const root = tree["1"];
   if (!root?.children) return [];
   Object.keys(root.children).forEach((key) => {
@@ -47,6 +46,7 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
   const [activeDrawer, setActiveDrawer] = useState<string | null>(null);
   const [feedbackText, setFeedbackText] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showSignupPrompt, setShowSignupPrompt] = useState(false);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -78,20 +78,11 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
   const nickNameId = (userNickNames as any)?.[0]?.id;
   const alreadySupports = supportData?.support_flag === 1;
 
-  // Check support status on mount / when camp changes
   useEffect(() => {
     if (isAuthenticated && topicNum && campNum) {
       GetCheckSupportExists(queryParams({ topic_num: topicNum, camp_num: campNum }));
     }
   }, [isAuthenticated, topicNum, campNum]);
-
-  const requireAuth = (): boolean => {
-    if (!isAuthenticated) {
-      dispatch(showLoginModal());
-      return false;
-    }
-    return true;
-  };
 
   const refreshTree = async () => {
     const reqBody = {
@@ -106,14 +97,34 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
   };
 
   const handleSelect = (type: string) => {
-    if (!requireAuth()) return;
+    if (!isAuthenticated) {
+      // Let the drawer open so they can see the UI
+      if (activeDrawer === type) {
+        // Second click — show signup prompt
+        setShowSignupPrompt(true);
+      } else {
+        setActiveDrawer(type);
+        setFeedbackText("");
+        setShowSignupPrompt(false);
+      }
+      return;
+    }
     setActiveDrawer(activeDrawer === type ? null : type);
     setFeedbackText("");
+    setShowSignupPrompt(false);
+  };
+
+  const handleUnauthSubmit = () => {
+    setShowSignupPrompt(true);
   };
 
   // --- Support ---
   const handleSupport = async () => {
-    if (!requireAuth() || submitting) return;
+    if (!isAuthenticated) {
+      handleUnauthSubmit();
+      return;
+    }
+    if (submitting) return;
     setSubmitting(true);
     try {
       const body = {
@@ -142,7 +153,7 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
 
   // --- Remove support ---
   const handleRemoveSupport = async () => {
-    if (!requireAuth() || submitting) return;
+    if (!isAuthenticated || submitting) return;
     setSubmitting(true);
     try {
       const body = {
@@ -170,7 +181,11 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
 
   // --- Almost There ---
   const handleAlmostThere = async () => {
-    if (!requireAuth() || submitting) return;
+    if (!isAuthenticated) {
+      handleUnauthSubmit();
+      return;
+    }
+    if (submitting) return;
     setSubmitting(true);
     try {
       const body = {
@@ -201,7 +216,11 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
 
   // --- Disagree: join a sibling camp ---
   const handleJoinSibling = async (siblingCampNum: number) => {
-    if (!requireAuth() || submitting) return;
+    if (!isAuthenticated) {
+      handleUnauthSubmit();
+      return;
+    }
+    if (submitting) return;
     setSubmitting(true);
     try {
       const body = {
@@ -236,6 +255,42 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
   const topicName = topicRecord?.topic_name || "";
   const campName = currentCampRecord?.camp_name || "Agreement";
   const createCampUrl = `/camp/create/${topicNum}-${replaceSpecialCharacters(topicName, "-")}/${campNum}-${replaceSpecialCharacters(campName, "-")}`;
+
+  const signupPrompt = (
+    <div className={styles.signupPrompt}>
+      <svg
+        className={styles.signupIcon}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+      <div className={styles.signupText}>
+        Almost there &mdash; create a free account to save your response
+      </div>
+      <div className={styles.signupActions}>
+        <Link href="/registration">
+          <a className={`${styles.drawerBtn} ${styles.drawerBtnSubmit}`}>
+            Sign up free
+          </a>
+        </Link>
+        <button
+          className={`${styles.drawerBtn} ${styles.drawerBtnCancel}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(showLoginModal());
+          }}
+        >
+          Log in
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className={styles.respondTabWrapper}>
@@ -349,21 +404,25 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
                 value={feedbackText}
                 onChange={(e) => setFeedbackText(e.target.value)}
               />
-              <div className={styles.drawerActions}>
-                <button
-                  className={`${styles.drawerBtn} ${styles.drawerBtnCancel}`}
-                  onClick={() => setActiveDrawer(null)}
-                >
-                  Skip
-                </button>
-                <button
-                  className={`${styles.drawerBtn} ${styles.drawerBtnSubmit}`}
-                  disabled={submitting}
-                  onClick={handleSupport}
-                >
-                  {submitting ? "Submitting..." : "Submit"}
-                </button>
-              </div>
+              {showSignupPrompt ? (
+                signupPrompt
+              ) : (
+                <div className={styles.drawerActions}>
+                  <button
+                    className={`${styles.drawerBtn} ${styles.drawerBtnCancel}`}
+                    onClick={() => setActiveDrawer(null)}
+                  >
+                    Skip
+                  </button>
+                  <button
+                    className={`${styles.drawerBtn} ${styles.drawerBtnSubmit}`}
+                    disabled={submitting}
+                    onClick={handleSupport}
+                  >
+                    {submitting ? "Submitting..." : "Submit"}
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>
@@ -384,21 +443,25 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
             value={feedbackText}
             onChange={(e) => setFeedbackText(e.target.value)}
           />
-          <div className={styles.drawerActions}>
-            <button
-              className={`${styles.drawerBtn} ${styles.drawerBtnCancel}`}
-              onClick={() => setActiveDrawer(null)}
-            >
-              Cancel
-            </button>
-            <button
-              className={`${styles.drawerBtn} ${styles.drawerBtnSubmitOrange}`}
-              disabled={submitting}
-              onClick={handleAlmostThere}
-            >
-              {submitting ? "Submitting..." : "Submit Feedback"}
-            </button>
-          </div>
+          {showSignupPrompt ? (
+            signupPrompt
+          ) : (
+            <div className={styles.drawerActions}>
+              <button
+                className={`${styles.drawerBtn} ${styles.drawerBtnCancel}`}
+                onClick={() => setActiveDrawer(null)}
+              >
+                Cancel
+              </button>
+              <button
+                className={`${styles.drawerBtn} ${styles.drawerBtnSubmitOrange}`}
+                disabled={submitting}
+                onClick={handleAlmostThere}
+              >
+                {submitting ? "Submitting..." : "Submit Feedback"}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -434,19 +497,23 @@ const RespondTab = ({ campStatement, campRecord }: RespondTabProps) => {
             </div>
           )}
 
-          <div className={styles.drawerActions}>
-            <button
-              className={`${styles.drawerBtn} ${styles.drawerBtnCancel}`}
-              onClick={() => setActiveDrawer(null)}
-            >
-              Cancel
-            </button>
-            <Link href={createCampUrl}>
-              <a className={`${styles.drawerBtn} ${styles.drawerBtnSubmitRed}`}>
-                Create My Own Position
-              </a>
-            </Link>
-          </div>
+          {showSignupPrompt ? (
+            signupPrompt
+          ) : (
+            <div className={styles.drawerActions}>
+              <button
+                className={`${styles.drawerBtn} ${styles.drawerBtnCancel}`}
+                onClick={() => setActiveDrawer(null)}
+              >
+                Cancel
+              </button>
+              <Link href={createCampUrl}>
+                <a className={`${styles.drawerBtn} ${styles.drawerBtnSubmitRed}`}>
+                  Create My Own Position
+                </a>
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </div>

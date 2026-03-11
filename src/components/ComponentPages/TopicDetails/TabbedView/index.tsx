@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Tabs } from "antd";
 import styles from "./tabbedView.module.scss";
 import RespondTab from "./RespondTab";
@@ -18,8 +19,6 @@ interface TabbedViewProps {
   backGroundColorClass: string;
 }
 
-const noop = () => {};
-
 const TabbedView = ({
   campStatement,
   campRecord,
@@ -29,10 +28,23 @@ const TabbedView = ({
   scrollToCampStatement,
   backGroundColorClass,
 }: TabbedViewProps) => {
+  const router = useRouter();
   const statementText = campStatement?.[0]?.parsed_value || campStatement?.[0]?.value || "";
 
   const [, setTotalCampScoreForSupportTree] = useState(null);
   const [, setSupportTreeForCamp] = useState(null);
+  const [activeKey, setActiveKey] = useState("respond");
+  const [pulseRespond, setPulseRespond] = useState(false);
+
+  // Auto-open Respond tab with pulse when ?respond=true
+  useEffect(() => {
+    if (router?.query?.respond === "true") {
+      setActiveKey("respond");
+      setPulseRespond(true);
+      const timer = setTimeout(() => setPulseRespond(false), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [router?.query?.respond]);
 
   const treeTabLabel = (
     <span className={styles.treeTabLabel}>
@@ -48,12 +60,18 @@ const TabbedView = ({
 
   return (
     <div className={styles.tabbedViewWrapper}>
-      <Tabs defaultActiveKey="respond" destroyInactiveTabPane={false}>
+      <Tabs
+        activeKey={activeKey}
+        onChange={setActiveKey}
+        destroyInactiveTabPane={false}
+      >
         <TabPane tab="Respond" key="respond">
-          <RespondTab
-            campStatement={campStatement}
-            campRecord={campRecord}
-          />
+          <div className={pulseRespond ? styles.pulseWrap : undefined}>
+            <RespondTab
+              campStatement={campStatement}
+              campRecord={campRecord}
+            />
+          </div>
         </TabPane>
         <TabPane tab="AI Analysis" key="ai-analysis">
           <AIAnalysisTab

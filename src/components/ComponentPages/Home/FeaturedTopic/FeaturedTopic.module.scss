@@ -27,6 +27,15 @@
   &:hover {
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
+    border-color: var(--accent);
+
+    .hoverOverlay {
+      opacity: 1;
+    }
+
+    .hoverPill {
+      transform: translateY(0);
+    }
   }
 }
 
@@ -120,6 +129,35 @@
 .dot2 { background: var(--orange); }
 .dot3 { background: var(--purple); }
 .dot4 { background: var(--red); }
+
+/* Hover overlay */
+.hoverOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: linear-gradient(transparent, rgba(45, 106, 79, 0.08));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.65rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.hoverPill {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: white;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(4px);
+  transition: transform 0.2s;
+}
 
 .noData {
   text-align: center;

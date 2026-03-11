@@ -12,23 +12,47 @@
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--ink);
-  margin-bottom: 0;
+  margin-bottom: 1.25rem;
 }
 
 .steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .step {
-  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+
+  &:hover {
+    background: var(--surface-warm);
+  }
+}
+
+.stepOpen {
+  border-left-color: var(--accent);
+  background: var(--accent-bg-subtle);
+
+  &:hover {
+    background: var(--accent-bg-subtle);
+  }
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
 }
 
 .stepNum {
   width: 36px;
   height: 36px;
+  min-width: 36px;
   border-radius: 50%;
   background: var(--accent-bg);
   color: var(--accent);
@@ -37,14 +61,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.6rem;
+  transition: all 0.25s;
+}
+
+.stepNumOpen {
+  background: var(--accent);
+  color: white;
+}
+
+.stepTextGroup {
+  flex: 1;
+  min-width: 0;
 }
 
 .stepTitle {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--ink);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.15rem;
 }
 
 .stepDesc {
@@ -53,19 +87,276 @@
   line-height: 1.5;
 }
 
+.stepChevron {
+  color: var(--ink-muted);
+  transition: transform 0.25s;
+  flex-shrink: 0;
+}
+
+.stepChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Expanded body */
+.stepBody {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.expandedContent {
+  padding-top: 1rem;
+  margin-left: calc(36px + 0.85rem); /* align with text group */
+}
+
+.expandedLabel {
+  font-size: 0.725rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-bottom: 0.6rem;
+}
+
+.expandedCta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.25rem;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  margin-top: 0.75rem;
+
+  &:hover {
+    background: var(--accent-light);
+    color: white;
+  }
+}
+
+.expandedMuted {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  margin-top: 0.5rem;
+}
+
+.expandedMutedItalic {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* Step 1: topic chips */
+.topicChips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.topicChip {
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  font-size: 0.775rem;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: white;
+  }
+}
+
+/* Step 2: sample position card */
+.sampleCard {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+}
+
+.sampleName {
+  font-weight: 600;
+  font-size: 0.825rem;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.sampleDesc {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
+}
+
+.sampleBar {
+  height: 5px;
+  border-radius: 99px;
+  overflow: hidden;
+  display: flex;
+  background: var(--surface-warm);
+}
+
+.sampleBarSeg {
+  height: 100%;
+}
+
+.segG { background: var(--accent); }
+.segO { background: var(--orange); }
+.segR { background: var(--red); }
+
+/* Step 3: mini respond buttons */
+.miniRespond {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.miniBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  background: var(--surface-card);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.miniBtnGreen {
+  color: var(--accent);
+  &:hover {
+    border-color: var(--accent);
+    background: var(--accent-bg-subtle);
+  }
+}
+
+.miniBtnOrange {
+  color: var(--orange);
+  &:hover {
+    border-color: var(--orange);
+    background: var(--orange-bg);
+  }
+}
+
+.miniBtnRed {
+  color: var(--red);
+  &:hover {
+    border-color: var(--red);
+    background: var(--red-bg);
+  }
+}
+
+/* Step 4: AI synthesis */
+.aiSynthesis {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+}
+
+.aiBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--purple);
+  background: var(--purple-bg);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  margin-bottom: 0.5rem;
+}
+
+.aiText {
+  font-size: 0.8rem;
+  color: var(--ink-light);
+  line-height: 1.55;
+  margin-bottom: 0.65rem;
+}
+
+.commonGround {
+  background: var(--accent-bg-subtle);
+  border: 1px solid #b7e4c7;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+}
+
+.commonGroundTitle {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.2rem;
+}
+
+.commonGroundText {
+  font-size: 0.75rem;
+  color: var(--ink-light);
+  line-height: 1.5;
+}
+
+/* Bottom CTA */
+.ctaRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.65rem 1.75rem;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: all 0.15s;
+
+  &:hover {
+    background: var(--accent-light);
+    color: white;
+    transform: translateY(-1px);
+  }
+}
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 860px) {
-  .steps {
-    grid-template-columns: repeat(2, 1fr);
+  .expandedContent {
+    margin-left: 0;
   }
-}
 
-@media (max-width: 600px) {
-  .steps {
-    grid-template-columns: 1fr;
+  .miniRespond {
+    flex-direction: column;
   }
 }

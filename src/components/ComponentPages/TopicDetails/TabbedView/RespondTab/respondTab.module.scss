@@ -267,6 +267,38 @@
   color: var(--ink-muted);
 }
 
+/* Inline sign-up prompt */
+.signupPrompt {
+  margin-top: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--accent-bg-subtle);
+  border: 1px solid #b7e4c7;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  animation: slideDown 0.25s ease;
+}
+
+.signupIcon {
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.signupText {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.signupActions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }

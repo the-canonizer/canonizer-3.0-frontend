@@ -154,6 +154,9 @@ const TopicGrid = () => {
                     />
                   </div>
                 </div>
+                <div className={styles.hoverOverlay}>
+                  <span className={styles.hoverPill}>Take a position &rarr;</span>
+                </div>
               </a>
             </Link>
           );

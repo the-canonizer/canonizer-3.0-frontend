@@ -8,7 +8,7 @@ import styles from "./FeaturedTopic.module.scss";
 
 const FeaturedTopic = () => {
   const { topicData } = useSelector((state: RootState) => ({
-    topicData: state?.hotTopic?.topicData,
+    topicData: (state as any)?.hotTopic?.topicData,
   }));
 
   const featured = topicData?.[0];
@@ -103,6 +103,9 @@ const FeaturedTopic = () => {
                   ))}
                 </div>
               )}
+            </div>
+            <div className={styles.hoverOverlay}>
+              <span className={styles.hoverPill}>Take a position &rarr;</span>
             </div>
           </div>
         </a>
