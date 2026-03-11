@@ -232,6 +232,41 @@
   &:hover { opacity: 0.9; }
 }
 
+/* Sibling camps list (disagree drawer) */
+.siblingList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.siblingItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.siblingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.siblingName {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.siblingScore {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+}
+
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
