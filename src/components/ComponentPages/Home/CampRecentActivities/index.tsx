@@ -116,7 +116,7 @@ export default function CampRecentActivities() {
             K?.exceptionalMessages?.noRecentActivityFound
           )}
           <div className={styles.footerLink}>
-            {userData?.is_admin && hasShowViewAll ? (
+            {(userData as any)?.is_admin && hasShowViewAll ? (
               <Link
                 href={{
                   pathname: "/activities",
