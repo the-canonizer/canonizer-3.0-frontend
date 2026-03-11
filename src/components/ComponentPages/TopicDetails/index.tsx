@@ -431,6 +431,10 @@ const TopicDetails = ({ serverSideCall }: any) => {
                 campStatement={campStatement}
                 campRecord={campRecord}
                 tree={tree}
+                topicName={topicName}
+                getTreeLoadingIndicator={getTreeLoadingIndicator}
+                scrollToCampStatement={scrollToCampStatement}
+                backGroundColorClass={backGroundColorClass}
               />
             </Fragment>
           )}

@@ -52,3 +52,13 @@
     }
   }
 }
+
+.treeTabLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  svg {
+    flex-shrink: 0;
+  }
+}
