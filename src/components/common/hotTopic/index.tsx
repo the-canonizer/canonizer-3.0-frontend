@@ -115,10 +115,9 @@ function HotTopic() {
                             topic?.camp_name || "Agreement"
                           }`,
                         }}
+                        className={styles.links}
                       >
-                        <a className={styles.links}>
                           View Topic <DoubleRightOutlined />
-                        </a>
                       </Link>
                     )}
                   </div>

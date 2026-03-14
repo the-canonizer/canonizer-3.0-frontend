@@ -45,8 +45,7 @@ function Footer() {
       <Row gutter={20} id="footer-row">
         <Col xs={24} sm={24} md={7} lg={8} id="footer-col-1">
           <div className="mb-3" id="footer-logo">
-            <Link href="/" passHref>
-              <a id="footer-logo-link">
+            <Link href="/" id="footer-logo-link">
                 <Image
                   src="/images/logo-white.svg"
                   alt="Canonizer"
@@ -55,7 +54,6 @@ function Footer() {
                   id="footer-logo-image"
                   draggable={false}
                 />
-              </a>
             </Link>
           </div>
           <p className="text-xs font-inter font-normal text-white md:!pr-8" id="footer-description">
@@ -70,10 +68,8 @@ function Footer() {
             </a>
             project designed to build consensus and bring people together. Your collaboration can make all the difference.{" "}
             {!isUserAuthenticated && (
-              <Link href="/registration">
-                <a className="font-semibold underline" id="footer-join-link">
+              <Link href="/registration" className="font-semibold underline" id="footer-join-link">
                   Join us!
-                </a>
               </Link>
             )}
           </p>
@@ -101,10 +97,8 @@ function Footer() {
                         {item.linkTitle}
                       </a>
                     ) : (
-                      <Link href={item.link}>
-                        <a id={`footer-explore-link-${item.id}`}>
+                      <Link href={item.link} id={`footer-explore-link-${item.id}`}>
                           {item.linkTitle}
-                        </a>
                       </Link>
                     )}
                   </li>
@@ -129,10 +123,8 @@ function Footer() {
                         {item.linkTitle}
                       </a>
                     ) : (
-                      <Link href={item.link}>
-                        <a id={`footer-learn-more-link-${item.id}`}>
+                      <Link href={item.link} id={`footer-learn-more-link-${item.id}`}>
                           {item.linkTitle}
-                        </a>
                       </Link>
                     )}
                   </li>
@@ -147,13 +139,11 @@ function Footer() {
             <Typography.Paragraph className="text-xs text-white" id="footer-contact-title">
               Have comments or questions?
             </Typography.Paragraph>
-            <Link href="mailto:support@canonizer.com">
-              <a className="text-white font-medium break-words text-xs" id="footer-contact-link">
+            <Link href="mailto:support@canonizer.com" className="text-white font-medium break-words text-xs" id="footer-contact-link">
                 <i className="icon-envelope mr-1 text-xs" id="footer-contact-icon"></i>{" "}
                 <span className="underline" id="footer-contact-email">
                   support@canonizer.com
                 </span>
-              </a>
             </Link>
           </div>
         </Col>

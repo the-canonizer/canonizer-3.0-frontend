@@ -111,17 +111,13 @@ const ProfileInfoTab = ({
       </div>
       {isMobile ? (
         <div className={`mobile_tag ${styles.mobMenuWithIcons}`}>
-          <Link href="/settings">
-            <a onClick={toggleMobNav}>
+          <Link href="/settings" onClick={toggleMobNav}>
               <SettingOutlined />
               Account Settings
-            </a>
           </Link>
-          <Link href="/settings?tab=supported_camps" passHref>
-            <a onClick={toggleMobNav}>
+          <Link href="/settings?tab=supported_camps" onClick={toggleMobNav}>
               <CheckCircleOutlined />
               Supported Camps
-            </a>
           </Link>
           <a onClick={logOut}>
             <LogoutOutlined />

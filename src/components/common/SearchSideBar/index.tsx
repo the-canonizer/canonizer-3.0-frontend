@@ -110,18 +110,15 @@ export default function SearchSideBar() {
           <div className="search_tabs lg:flex-col flex overflow-x-auto gap-5">
             <Link
               href={{ pathname: "/search", query: { q: router?.query?.q } }}
-              passHref
+              className={`${
+                router?.asPath.includes("/search?") ? "active" : "btn"
+              }`}
             >
-              <a
-                className={`${
-                  router?.asPath.includes("/search?") ? "active" : "btn"
-                }`}
-              >
                 <Button
                   size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 
-                    active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal 
-                    disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue 
+                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0
+                    active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal
+                    disabled:!font-semibold active:!text-canBlue disabled:!border-b-2 disabled:!border-canBlue
                     active:!border-none hover:!border-transparent focus:!border-transparent`}
                   disabled={router?.pathname === "/search"}
                   onClick={() =>
@@ -135,7 +132,6 @@ export default function SearchSideBar() {
                 >
                   All Results
                 </Button>
-              </a>
             </Link>
             <Link
               href={{
@@ -144,16 +140,13 @@ export default function SearchSideBar() {
                   q: router?.query?.q,
                 },
               }}
-              passHref
+              className={`${
+                router?.asPath.includes("/search/topic?") ? "active" : "btn"
+              }`}
             >
-              <a
-                className={`${
-                  router?.asPath.includes("/search/topic?") ? "active" : "btn"
-                }`}
-              >
                 <Button
                   size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue
                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent`}
                   disabled={router?.pathname == "/search/topic" ? true : false}
                   onClick={() =>
@@ -167,23 +160,19 @@ export default function SearchSideBar() {
                 >
                   Topic <span> &nbsp;({topicTotal})</span>
                 </Button>
-              </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/camp",
                 query: { q: router?.query?.q },
               }}
-              passHref
+              className={`${
+                router?.asPath.includes("/search/camp?") ? "active" : "btn"
+              }`}
             >
-              <a
-                className={`${
-                  router?.asPath.includes("/search/camp?") ? "active" : "btn"
-                }`}
-              >
                 <Button
                   size="large"
-                  className={` p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                  className={` p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue
                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent`}
                   disabled={router?.pathname == "/search/camp" ? true : false}
                   onClick={() => {
@@ -197,25 +186,21 @@ export default function SearchSideBar() {
                 >
                   Camp <span> &nbsp;({campTotal})</span>
                 </Button>
-              </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/camp_statement",
                 query: { q: router?.query?.q },
               }}
-              passHref
+              className={`${
+                router?.asPath.includes("/search/camp_statement?")
+                  ? "active"
+                  : "btn"
+              }`}
             >
-              <a
-                className={`${
-                  router?.asPath.includes("/search/camp_statement?")
-                    ? "active"
-                    : "btn"
-                }`}
-              >
                 <Button
                   size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue
                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent`}
                   disabled={
                     router?.pathname == "/search/camp_statement" ? true : false
@@ -236,25 +221,21 @@ export default function SearchSideBar() {
                     {statementTotal})
                   </span>
                 </Button>
-              </a>
             </Link>
             <Link
               href={{
                 pathname: "/search/nickname",
                 query: { q: router?.query?.q },
               }}
-              passHref
+              className={` ${
+                router?.asPath.includes("/search/nickname?")
+                  ? "active"
+                  : "btn"
+              }`}
             >
-              <a
-                className={` ${
-                  router?.asPath.includes("/search/nickname?")
-                    ? "active"
-                    : "btn"
-                }`}
-              >
                 <Button
                   size="large"
-                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue 
+                  className={`p-0 shadow-none border-transparent !rounded-0 !border-t-0 !border-l-0 !border-r-0 active:!bg-transparent disabled:!bg-transparent disabled:!text-canBlue text-base font-normal disabled:!font-semibold active:!text-canBlue disabled:!border-b-2  disabled:!border-canBlue
                   active:!border-none active:!border-transparent  hover:!border-transparent focus:!border-transparent `}
                   disabled={
                     router.pathname == "/search/nickname" ? true : false
@@ -276,7 +257,6 @@ export default function SearchSideBar() {
                     {storeOnPressEnterSearchCountForMetaData?.nickname_total})
                   </span>
                 </Button>
-              </a>
             </Link>
           </div>
         )}

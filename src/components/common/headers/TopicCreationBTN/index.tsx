@@ -16,8 +16,7 @@ const TopicCreationBTN = () => {
     <div className={styles.topicBTN} key="topic-btn-area">
       {authenticated ? (
         <>
-          <Link href="/create/topic" key="create-topic-btn">
-            <a className="ant-btn">
+          <Link href="/create/topic" key="create-topic-btn" className="ant-btn">
               {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -27,7 +26,6 @@ const TopicCreationBTN = () => {
                 />
               }
               Create Topic
-            </a>
           </Link>
         </>
       ) : (

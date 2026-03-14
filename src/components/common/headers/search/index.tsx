@@ -617,10 +617,9 @@ const TopicItems = ({ searchTopics, searchValue }) => {
           >
             <Link
               id={`topic-link-${item.id}`}
-              className="!font-semibold"
+              className="!font-semibold flex justify-between w-full items-start break-all whitespace-break-spaces"
               href={`/${replaceSpecialCharactersInLink(item.link)}`}
             >
-              <a className="flex justify-between w-full items-start break-all whitespace-break-spaces">
                 <span className="flex flex-col w-full">
                   <div className="flex items-center justify-between w-full gap-2">
                     <span
@@ -658,7 +657,6 @@ const TopicItems = ({ searchTopics, searchValue }) => {
                     </Popover>
                   </div>
                 </span>
-              </a>
             </Link>
           </List.Item>
         )}
@@ -738,8 +736,7 @@ const CampItems = ({ searchCamps, searchValue }: any) => {
               key={item.id}
               className="w-full flex font-medium !border-b !border-canGrey2 !py-3.5 !px-0 first:!pt-0"
             >
-              <Link href={`/${topic?.camp_link || ""}`}>
-                <a className="flex justify-between w-full items-start break-all whitespace-break-spaces">
+              <Link href={`/${topic?.camp_link || ""}`} className="flex justify-between w-full items-start break-all whitespace-break-spaces">
                   <span className="flex flex-col w-full break-all whitespace-break-spaces">
                     <div className="flex items-center justify-between w-full gap-2">
                       <span
@@ -760,9 +757,8 @@ const CampItems = ({ searchCamps, searchValue }: any) => {
                         <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent !mb-0 flex gap-2 break-all whitespace-break-spaces items-start justify-start">
                           <div className="w-[15px] h-[15px] mt-1">{/* Icon if needed */}</div>
                           <span className="break-normal whitespace-nowrap">Topic:</span>
-                          <a
+                          <span
                             className="text-base text-canBlue font-medium line-clamp-1"
-                            href={`/${topic?.camp_link || ""}`}
                             dangerouslySetInnerHTML={{
                               __html: getHighlightedTextSafe(topic.topic_name, searchValue),
                             }}
@@ -775,9 +771,8 @@ const CampItems = ({ searchCamps, searchValue }: any) => {
                         <Typography.Paragraph className="text-base font-medium bg-transparent border-0 p-0 hover:bg-transparent focus:bg-transparent !mb-0 flex gap-2 break-all whitespace-break-spaces items-start justify-start">
                           <div className="w-[15px] h-[15px] mt-1">{/* Icon if needed */}</div>
                           <span className="break-normal whitespace-nowrap">Camp:</span>
-                          <a
+                          <span
                             className="text-base text-canBlue font-medium line-clamp-1"
-                            href={`/${camp?.camp_link || ""}`}
                             dangerouslySetInnerHTML={{
                               __html: getHighlightedTextSafe(camp.camp_name, searchValue),
                             }}
@@ -786,7 +781,6 @@ const CampItems = ({ searchCamps, searchValue }: any) => {
                       )}
                     </div>
                   </span>
-                </a>
               </Link>
             </List.Item>
           );
@@ -854,16 +848,11 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                       height={19}
                     />
                     Topic:
-                    <Link href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
-                      <a
-                        id={`camp-statement-topic-link-${item.id}`}
-                        className="text-canBlue text-base font-inter font-medium line-clamp-1"
-                      >
+                    <Link href={`/${jsonData?.[0]?.[1]?.camp_link}`} id={`camp-statement-topic-link-${item.id}`} className="text-canBlue text-base font-inter font-medium line-clamp-1">
                         {getHighlightedText(
                           jsonData?.[0]?.[1]?.topic_name,
                           searchValue
                         )}
-                      </a>
                     </Link>
                   </Typography.Paragraph>
                   <Typography.Paragraph
@@ -873,16 +862,11 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                     <span className="break-normal whitespace-nowrap">
                       Camp:
                     </span>
-                    <Link href={`/${jsonData?.[0]?.[1]?.camp_link}`}>
-                      <a
-                        id={`camp-statement-link-${item.id}`}
-                        className="flex w-full items-start !text-canBlue hover:!text-canHoverBlue text-base font-medium"
-                      >
+                    <Link href={`/${jsonData?.[0]?.[1]?.camp_link}`} id={`camp-statement-link-${item.id}`} className="flex w-full items-start !text-canBlue hover:!text-canHoverBlue text-base font-medium">
                         {getHighlightedTextForCampStatement(
                           jsonData?.[0]?.[1]?.camp_name,
                           searchValue
                         )}
-                      </a>
                     </Link>
                   </Typography.Paragraph>
                 </div>
@@ -929,8 +913,7 @@ const NickNamesItems = ({ searchNickname, searchValue }) => {
               id={`nickname-list-item-${item.id}`}
               className="w-full flex !border-none !py-2 lg:!px-5 !px-2.5 bg-white rounded-lg mb-2"
             >
-              <Link id={`nickname-link-${item.id}`} href={`${item?.link}`}>
-                <a className="flex justify-between w-full items-start">
+              <Link id={`nickname-link-${item.id}`} href={`${item?.link}`} className="flex justify-between w-full items-start">
                   <span className="flex items-center gap-3.5 text-base font-normal">
                     <Image
                       id={`nickname-image-${item.id}`}
@@ -952,7 +935,6 @@ const NickNamesItems = ({ searchNickname, searchValue }) => {
                       {item?.support_count == "" ? 0 : item?.support_count}
                     </strong>{" "}
                   </span>
-                </a>
               </Link>
             </List.Item>
           );
@@ -970,15 +952,10 @@ const FooterItems = ({ searchValue, handleSearchfor }) => (
     <Link
       id="footer-link"
       href={{ pathname: "/search", query: { q: searchValue } }}
-      className="[&_.ant-select-item-option-active]:!bg-white [&_.ant-select-item]:!p-0 [&_.ant-select-item-option]:!p-0 [&_.ant-select-item-option-grouped]:!p-0 "
+      className="[&_.ant-select-item-option-active]:!bg-white [&_.ant-select-item]:!p-0 [&_.ant-select-item-option]:!p-0 [&_.ant-select-item-option-grouped]:!p-0 text-base uppercase font-inter font-semibold text-canBlack !p-0"
+      onClick={() => handleSearchfor()}
     >
-      <a
-        id="footer-view-all-results"
-        onClick={() => handleSearchfor()}
-        className="text-base uppercase font-inter font-semibold text-canBlack !p-0"
-      >
         View All Results
-      </a>
     </Link>
   </footer>
 );

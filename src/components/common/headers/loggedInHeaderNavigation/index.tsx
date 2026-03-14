@@ -102,20 +102,16 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   const menu = (
     <Menu onClick={onClick} className={styles.menuItems}>
       <Menu.Item key="0">
-        <Link href="/settings" passHref>
-          <a>
+        <Link href="/settings">
             <SettingOutlined />
             Account Settings
-          </a>
         </Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="1">
-        <Link href="/settings?tab=supported_camps" passHref>
-          <a>
+        <Link href="/settings?tab=supported_camps">
             <CheckCircleOutlined />
             Supported Camps
-          </a>
         </Link>
       </Menu.Item>
       <Menu.Divider />

@@ -586,16 +586,14 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                         href={K?.Network?.URL?.algoInfoUrl}
                         id="refine_filter_section_algorith_info_url"
                       >
-                        <a>
-                          <Image
-                            id="refine_filter_section_algorith_info_ur_circle_img"
-                            src="/images/circle-info-bread.svg"
-                            alt="svg"
-                            className="icon-topic"
-                            height={12}
-                            width={12}
-                          />
-                        </a>
+                        <Image
+                          id="refine_filter_section_algorith_info_ur_circle_img"
+                          src="/images/circle-info-bread.svg"
+                          alt="svg"
+                          className="icon-topic"
+                          height={12}
+                          width={12}
+                        />
                       </Link>
                     )}
                   </Popover>

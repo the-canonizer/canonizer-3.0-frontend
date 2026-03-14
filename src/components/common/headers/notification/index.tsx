@@ -31,13 +31,8 @@ const Notifications = () => {
         </div>
       }
       actions={[
-        <Link href="/notifications" passHref key="view_all">
-          <a
-            id="view-all-btn"
-            className="!text-canBlack font-medium hover:!text-canBlue"
-          >
+        <Link href="/notifications" key="view_all" id="view-all-btn" className="!text-canBlack font-medium hover:!text-canBlue">
             View All
-          </a>
         </Link>,
       ]}
     >

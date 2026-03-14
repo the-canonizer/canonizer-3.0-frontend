@@ -121,7 +121,7 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
 
   const ListItem = ({ cls = "", ...props }) => (
     <li
-      className={`flex-auto flex px-3 font-medium [&_a]:font-medium before:hidden after:hidden tab:before:block tab:after:block rounded-lg h-full ${styles.listItem} ${cls}`}
+      className={`flex-auto flex px-3 font-medium [&_a]:font-medium [&_a]:whitespace-nowrap [&_a]:flex [&_a]:items-center before:hidden after:hidden tab:before:block tab:after:block rounded-lg h-full ${styles.listItem} ${cls}`}
       key={props.key}
       id={`list-item-${props.key}`}
     >
@@ -144,23 +144,16 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
   const menu = (
     <Menu onClick={onClick}>
       <Menu.Item key="0" className="hover:text-canHoverBlue" id="menu-item-0">
-        <Link href="/settings?tab=profile_info" passHref>
-          <a
-            className="!text-sm font-normal hover:text-canHoverBlue"
-            id="link-profile-info"
-          >
+        <Link href="/settings?tab=profile_info" className="!text-sm font-normal hover:text-canHoverBlue" id="link-profile-info">
             <SettingOutlined className="mr-1" />
             Account Settings
-          </a>
         </Link>
       </Menu.Item>
       <Menu.Divider id="menu-divider-0" />
       <Menu.Item key="1" className="hover:text-canHoverBlue" id="menu-item-1">
-        <Link href="/settings?tab=direct_supported_camps" passHref>
-          <a className="!text-sm font-normal" id="link-supported-camps">
+        <Link href="/settings?tab=direct_supported_camps" className="!text-sm font-normal" id="link-supported-camps">
             <CheckCircleOutlined className="mr-1" />
             Supported Camps
-          </a>
         </Link>
       </Menu.Item>
       <Menu.Divider id="menu-divider-1" />
@@ -214,23 +207,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
             id="auth-buttons"
             className="flex tab:hidden justify-between items-center mt-5 overflow-hidden py-3 text-center gap-[30px]"
           >
-            <Link href="/registration">
-              <a
-                id="register-link"
-                className="h-[50px] leading-[0] flex items-center justify-center bg-canBlue hover:bg-canHoverBlue px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-white hover:text-white"
-              >
+            <Link href="/registration" id="register-link" className="h-[50px] leading-[0] flex items-center justify-center bg-canBlue hover:bg-canHoverBlue px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-white hover:text-white">
                 Register
                 <ArrowRightOutlined className="ml-2" />
-              </a>
             </Link>
-            <Link href="/login">
-              <a
-                id="login-link"
-                className="h-[50px] leading-[0] flex items-center justify-center px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-canBlack border-2 border-canBlue hover:text-canBlue hover:border-canHoverBlue"
-              >
+            <Link href="/login" id="login-link" className="h-[50px] leading-[0] flex items-center justify-center px-3 py-1 rounded-lg w-2/4 text-center text-sm font-medium font-inter text-canBlack border-2 border-canBlue hover:text-canBlue hover:border-canHoverBlue">
                 Login
                 <ArrowRightOutlined className="ml-2" />
-              </a>
             </Link>
           </div>
         ) : null}
@@ -284,18 +267,13 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
                 }`}
                 key={item.id + "_" + item.link + "___" + idx}
               >
-                <Link href={item.link}>
-                  <a
-                    id={`menu-item-${item.id}`}
-                    className="hover:text-canHoverBlue flex"
-                  >
+                <Link href={item.link} id={`menu-item-${item.id}`} className="hover:text-canHoverBlue flex whitespace-nowrap items-center">
                     {isMobile ? (
                       <span className="block tab:hidden mr-2">
                         {item?.icon}
                       </span>
                     ) : null}
                     {item.linkTitle}
-                  </a>
                 </Link>
               </ListItem>
             );
