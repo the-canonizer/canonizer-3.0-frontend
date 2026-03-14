@@ -34,7 +34,7 @@ function Details({ socialLinks, onUnlinkClick, onLinkClick, provider }) {
               data-testid="linkBtn"
             >
               Unlink
-              <Image src="/images/unlink-icon.svg" width={24} height={24} />
+              <Image src="/images/unlink-icon.svg" width={24} height={24} alt="" />
             </Button>
           </Popconfirm>
         </Fragment>
@@ -48,7 +48,7 @@ function Details({ socialLinks, onUnlinkClick, onLinkClick, provider }) {
           onClick={onLinkClick.bind(this, provider)}
         >
           Link
-          <Image src="/images/link-icon.svg" width={24} height={24} />
+          <Image src="/images/link-icon.svg" width={24} height={24} alt="" />
         </SecondaryButton>
       )}
     </Fragment>

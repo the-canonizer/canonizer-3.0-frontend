@@ -423,6 +423,7 @@ const CampTree = ({
                       src="/images/tree-green-icon.svg"
                       width={16}
                       height={16}
+                      alt=""
                     />
                   ) : (
                     <Image
@@ -430,6 +431,7 @@ const CampTree = ({
                       src="/images/tree-green-icon.svg"
                       width={16}
                       height={16}
+                      alt=""
                     />
                   )
                 ) : expanded ? (
@@ -438,6 +440,7 @@ const CampTree = ({
                     src="/images/tree-black-icon.svg"
                     width={16}
                     height={16}
+                    alt=""
                   />
                 ) : (
                   <Image
@@ -445,6 +448,7 @@ const CampTree = ({
                     src="/images/tree-black-icon.svg"
                     width={16}
                     height={16}
+                    alt=""
                   />
                 );
               }}

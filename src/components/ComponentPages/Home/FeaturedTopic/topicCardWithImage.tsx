@@ -136,7 +136,7 @@ const SingleTopicWithImage = ({
                 id={`div-view-counts-${topic?.id}`}
               >
                 <ViewCounts
-                  views={topic?.views}
+                  views={Number(topic?.views) || 0}
                   id={`view-counts-${topic?.id}`}
                 />
               </div>

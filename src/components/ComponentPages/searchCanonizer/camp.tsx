@@ -145,7 +145,7 @@ const CampSearch = () => {
             </Link>
             <div className="text-base flex flex-wrap items-center gap-2.5">
               <div className="flex gap-2.5">
-                <Image src="/images/note-sticky.svg" width={17} height={19} />
+                <Image src="/images/note-sticky.svg" width={17} height={19} alt="" />
                 <span className="text-base font-medium text-canBlack mr-1">
                   Topic:
                 </span>

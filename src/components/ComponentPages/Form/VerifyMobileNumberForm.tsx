@@ -225,7 +225,7 @@ function VerifyMobileNumberForm({
             </Row>
             <Modal
               title="OTP has been sent on your phone number."
-              visible={isOTPModalVisible}
+              open={isOTPModalVisible}
               footer=""
               onCancel={handleOTPCancel}
               className="[&_.ant-modal-body]:!p-5 [&_.ant-modal-content]:!rounded-xl"

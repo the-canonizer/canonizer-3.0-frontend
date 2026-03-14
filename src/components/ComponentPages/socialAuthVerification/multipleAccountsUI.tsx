@@ -9,7 +9,7 @@ const MultiUserModalForm = ({ visible, onFinish, closeModal, users }: any) => {
   return (
     <Modal
       style={{ top: "20px" }}
-      visible={visible}
+      open={visible}
       footer={
         <div className={styles.buttonDiv}>
           <Button

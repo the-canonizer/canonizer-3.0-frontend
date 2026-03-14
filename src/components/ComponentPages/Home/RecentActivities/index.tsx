@@ -19,7 +19,6 @@ import AllActivitiesSwitch from "./UI/allActivitiesSwitch";
 
 const antIcon = <LoadingOutlined spin />;
 
-const { TabPane } = Tabs;
 const { Text } = Typography;
 
 export default function RecentActivities() {
@@ -303,33 +302,38 @@ export default function RecentActivities() {
                 tabBarExtraContent={slot}
                 onChange={handleTabChange}
                 id="tabs"
-              >
-                {!isOnlyCamp && (
-                  <TabPane tab="Camps" key="topic/camps" id="tab-pane-camps">
-                    <TopicCampsTab
-                      getTopicsLoadingIndicator={getTopicsLoadingIndicator}
-                      recentActivities={recentActivities}
-                      handleTextOverflow={handleTextOverflow}
-                      getTopicCampName={getTopicCampName}
-                      covertToTime={covertToTime}
-                      bodyCount={15}
-                    />
-                  </TabPane>
-                )}
-                {
-                  <TabPane tab="Threads" key="threads" id="tab-pane-threads">
-                    <ThreadTab
-                      getTopicsLoadingIndicator={getTopicsLoadingIndicator}
-                      recentActivities={recentActivities}
-                      decodeUrlLink={decodeUrlLink}
-                      handleTextOverflow={handleTextOverflow}
-                      covertToTime={covertToTime}
-                      bodyCount={15}
-                      isOnlyCamp={!!isOnlyCamp}
-                    />
-                  </TabPane>
-                }
-              </Tabs>
+                items={[
+                  ...(!isOnlyCamp ? [{
+                    label: "Camps",
+                    key: "topic/camps",
+                    children: (
+                      <TopicCampsTab
+                        getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                        recentActivities={recentActivities}
+                        handleTextOverflow={handleTextOverflow}
+                        getTopicCampName={getTopicCampName}
+                        covertToTime={covertToTime}
+                        bodyCount={15}
+                      />
+                    ),
+                  }] : []),
+                  {
+                    label: "Threads",
+                    key: "threads",
+                    children: (
+                      <ThreadTab
+                        getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                        recentActivities={recentActivities}
+                        decodeUrlLink={decodeUrlLink}
+                        handleTextOverflow={handleTextOverflow}
+                        covertToTime={covertToTime}
+                        bodyCount={15}
+                        isOnlyCamp={!!isOnlyCamp}
+                      />
+                    ),
+                  },
+                ]}
+              />
             </div>
           ) : (
             <div
@@ -346,34 +350,35 @@ export default function RecentActivities() {
                 tabBarExtraContent={slot}
                 onChange={handleTabChange}
                 id="non-activities-tabs"
-              >
-                <TabPane
-                  tab="Camps"
-                  key="topic/camps"
-                  id="non-activities-tab-pane-camps"
-                >
-                  <TopicCampsTab
-                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
-                    recentActivities={recentActivities}
-                    handleTextOverflow={handleTextOverflow}
-                    getTopicCampName={getTopicCampName}
-                    covertToTime={covertToTime}
-                  />
-                </TabPane>
-                <TabPane
-                  tab="Threads"
-                  key="threads"
-                  id="non-activities-tab-pane-threads"
-                >
-                  <ThreadTab
-                    getTopicsLoadingIndicator={getTopicsLoadingIndicator}
-                    recentActivities={recentActivities}
-                    decodeUrlLink={decodeUrlLink}
-                    handleTextOverflow={handleTextOverflow}
-                    covertToTime={covertToTime}
-                  />
-                </TabPane>
-              </Tabs>
+                items={[
+                  {
+                    label: "Camps",
+                    key: "topic/camps",
+                    children: (
+                      <TopicCampsTab
+                        getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                        recentActivities={recentActivities}
+                        handleTextOverflow={handleTextOverflow}
+                        getTopicCampName={getTopicCampName}
+                        covertToTime={covertToTime}
+                      />
+                    ),
+                  },
+                  {
+                    label: "Threads",
+                    key: "threads",
+                    children: (
+                      <ThreadTab
+                        getTopicsLoadingIndicator={getTopicsLoadingIndicator}
+                        recentActivities={recentActivities}
+                        decodeUrlLink={decodeUrlLink}
+                        handleTextOverflow={handleTextOverflow}
+                        covertToTime={covertToTime}
+                      />
+                    ),
+                  },
+                ]}
+              />
             </div>
           )}
         </CommonCard>

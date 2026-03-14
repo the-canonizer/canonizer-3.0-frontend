@@ -32,6 +32,7 @@ const AdvanceSearchHeader: React.FC<AdvanceSearchHeaderProps> = ({
             src="/images/recent-activiity-arrow.svg"
             width={16}
             height={24}
+            alt=""
           />
           <h3
             className="lg:text-3xl text-xl text-canBlack font-medium"

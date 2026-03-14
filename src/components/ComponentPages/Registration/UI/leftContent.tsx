@@ -41,6 +41,7 @@ const LeftContent = ({ onBrowseClick }) => {
             src="/images/middle-vector.svg"
             className="w-10/12"
             preview={false}
+            alt=""
           />
         </div>
       </div>

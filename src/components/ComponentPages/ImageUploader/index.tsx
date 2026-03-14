@@ -195,6 +195,7 @@ const ImageUploader: React.FC = () => {
                       src="/images/image-edit-icon.svg"
                       width={16}
                       height={16}
+                      alt=""
                     />
                   </a>
                 </Tooltip>
@@ -204,7 +205,7 @@ const ImageUploader: React.FC = () => {
         ) : null}
       </div>
       <Modal
-        visible={isPreviewVisible}
+        open={isPreviewVisible}
         title={previewTitle}
         footer={null}
         onCancel={handleCancelPreview}

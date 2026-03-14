@@ -14,7 +14,6 @@ const LoginModal = () => {
   return (
     <Modal
       style={{ top: "20px", zIndex: 1100 }}
-      visible={isOpen}
       open={isOpen}
       footer={null}
       closable={false}

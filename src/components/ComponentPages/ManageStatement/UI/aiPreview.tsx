@@ -15,7 +15,7 @@ function StatementAIPreview({
 }) {
   return (
     <Modal
-      visible={isVisible}
+      open={isVisible}
       footer={
         <div
           id="footer-container"
