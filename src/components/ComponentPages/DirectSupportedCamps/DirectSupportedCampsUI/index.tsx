@@ -120,12 +120,11 @@ export default function DirectSupportedCampsUI({
           className="flex gap-2.5 line-clamp-1 cn-card-home"
           id="direct_supported_camp_title_link"
         >
-          <Link href={record.title_link}>
-            <a
+          <Link href={record.title_link}
               id="direct_supported_camp_link"
               className="text-sm font-medium flex items-center gap-2.5 text-canBlack"
-              role="button" // Declare it as a button
-              tabIndex={0} // Make it focusable with the Tab key
+              role="button"
+              tabIndex={0}
               onClick={() => {
                 dispatch(
                   setFilterCanonizedTopics({
@@ -136,7 +135,7 @@ export default function DirectSupportedCampsUI({
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault(); // Prevent scrolling when Space is pressed
+                  e.preventDefault();
                   dispatch(
                     setFilterCanonizedTopics({
                       asofdate: Date.now() / 1000,
@@ -145,12 +144,11 @@ export default function DirectSupportedCampsUI({
                   );
                 }
               }}
-              style={{ cursor: "pointer" }} // Provide visual feedback
+              style={{ cursor: "pointer" }}
             >
               {text.length > textMaxLimit
                 ? text.substring(0, textMaxLimit) + "..."
                 : text}
-            </a>
           </Link>
           <Image
             id="direct_supported_camp_minus_img"
@@ -315,23 +313,19 @@ export default function DirectSupportedCampsUI({
       {!isChangingOrder && (
         <span id="direct_supported_camp_removeSupportCampsData_title_link">
           {modalPopupText ? (
-            <Link href={{ pathname: removeSupportCampsData.title_link }}>
-              <a className="text-canGreen lg:text-2xl text-base font-semibold">
+            <Link href={{ pathname: removeSupportCampsData.title_link }} className="text-canGreen lg:text-2xl text-base font-semibold">
                 {removeSupportCampsData?.title?.length > textMaxLimit
                   ? removeSupportCampsData?.title?.substring(0, textMaxLimit) +
                     "..."
                   : removeSupportCampsData?.title}
-              </a>
             </Link>
           ) : (
             removeCampLink?.map((val, index) => (
-              <Link key={val?.camp_num} href={{ pathname: val?.camp_link }}>
-                <a className="text-canGreen text-2xl font-semibold">
+              <Link key={val?.camp_num} href={{ pathname: val?.camp_link }} className="text-canGreen text-2xl font-semibold">
                   {(index ? ", " : "") +
                     (val.camp_name?.length > textMaxLimit
                       ? val?.camp_name.substring(0, textMaxLimit) + "..."
                       : val?.camp_name)}
-                </a>
               </Link>
             ))
           )}
@@ -456,15 +450,14 @@ export default function DirectSupportedCampsUI({
                       className="flex gap-2.5 justify-between items-center w-full"
                       id="direct_supported_camp__title_link_mob"
                     >
-                      <Link href={record.title_link}>
-                        <a
+                      <Link href={record.title_link}
                           id="direct_supported_camp_link_mob"
                           className="text-lg font-semibold text-canBlack"
                           role="button"
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault(); // Prevent scrolling when Space is pressed
+                              e.preventDefault();
                               dispatch(
                                 setFilterCanonizedTopics({
                                   asofdate: Date.now() / 1000,
@@ -473,7 +466,7 @@ export default function DirectSupportedCampsUI({
                               );
                             }
                           }}
-                          style={{ cursor: "pointer" }} // Provide visual feedback
+                          style={{ cursor: "pointer" }}
                           onClick={() => {
                             dispatch(
                               setFilterCanonizedTopics({
@@ -486,7 +479,6 @@ export default function DirectSupportedCampsUI({
                           {record.title.length > textMaxLimit
                             ? record.title.substring(0, textMaxLimit) + "..."
                             : record.title}
-                        </a>
                       </Link>
                       <Image
                         id="direct_supported_camp_minus_img_mob"

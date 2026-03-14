@@ -115,13 +115,11 @@ export default function DelegatedSupportCampsUI({
       key: "title",
       render: (text, record) => (
         <div className="max-w-[300px] cn-card-home">
-          <Link href={record.title_link}>
-            <a
+          <Link href={record.title_link}
               className="text-sm font-medium text-canBlack"
               id="delegated_supported_columns_title_link"
             >
               {text.length > 30 ? text.substring(0, 20) + "..." : text}
-            </a>
           </Link>
         </div>
       ),
@@ -141,15 +139,11 @@ export default function DelegatedSupportCampsUI({
             <Link
               href={camp.camp_link}
               id="delegated_supported_columns_camp_link"
+              className="text-sm font-medium text-canBlue underline"
             >
-              <a
-                className="text-sm font-medium text-canBlue underline"
-                id="delegated_supported_columns_link"
-              >
                 {camp.camp_name.length > 30
                   ? camp.camp_name.substring(0, 20) + "..."
                   : camp.camp_name}
-              </a>
             </Link>
           </p>
         )),
@@ -162,13 +156,9 @@ export default function DelegatedSupportCampsUI({
         <Link
           href={record.delegated_to_nick_name_link}
           id="delegated_supported_columns_nickname_link"
+          className="text-sm font-medium text-canBlue underline"
         >
-          <a
-            className="text-sm font-medium text-canBlue underline"
-            id="delegated_supported_columns_nickname_link_1"
-          >
             {text}
-          </a>
         </Link>
       ),
     },
@@ -180,13 +170,9 @@ export default function DelegatedSupportCampsUI({
         <Link
           href={record.my_nick_name_link}
           id="delegated_supported_columns_my_nickname_link"
+          className="text-sm font-medium text-canBlue underline"
         >
-          <a
-            className="text-sm font-medium text-canBlue underline"
-            id="delegated_supported_columns_my_nickname_link_1"
-          >
             {text}
-          </a>
         </Link>
       ),
     },
@@ -227,8 +213,9 @@ export default function DelegatedSupportCampsUI({
           <Link
             href={props.title_link}
             id="delegated_supported_card_title_for_topic_prop_value_link"
+            className="text-sm font-medium"
           >
-            <a className="text-sm font-medium">{props.value}</a>
+            {props.value}
           </Link>
         </span>
       </div>
@@ -239,9 +226,7 @@ export default function DelegatedSupportCampsUI({
     return (
       <p>
         <span>{props.id_data}</span>
-        <Link href={props.camp_link}>
-          <a className="text-canBlue text-sm font-medium">{props.value}</a>
-        </Link>
+        <Link href={props.camp_link} className="text-canBlue text-sm font-medium">{props.value}</Link>
       </p>
     );
   }
@@ -251,17 +236,13 @@ export default function DelegatedSupportCampsUI({
       <div className="">
         <p className="border-b py-3 flex flex-col">
           <span className="uppercase text-sm font-medium">Delegated To:</span>
-          <Link href={props.supportedto_link}>
-            <a className="text-canBlue text-sm font-medium">
+          <Link href={props.supportedto_link} className="text-canBlue text-sm font-medium">
               {props.supportedto}
-            </a>
           </Link>
         </p>
         <p className="border-b py-3 flex flex-col">
           <b className="uppercase text-sm font-medium">Nickname:</b>
-          <Link href={props.NickNameLink}>
-            <a className="text-canBlue text-sm font-medium">{props.NickName}</a>
-          </Link>
+          <Link href={props.NickNameLink} className="text-canBlue text-sm font-medium">{props.NickName}</Link>
         </p>
       </div>
     );
@@ -362,13 +343,9 @@ export default function DelegatedSupportCampsUI({
                   <Link
                     id="delegated_supported_form_delegated_to_nick_name_link"
                     href={removeSupportCampsData.delegated_to_nick_name_link}
+                    className={styles.Bluecolor}
                   >
-                    <a
-                      className={styles.Bluecolor}
-                      id="delegated_supported_form_delegated_to_nick_name_link_1"
-                    >
                       {removeSupportCampsData.delegated_to_nick_name}
-                    </a>
                   </Link>
                   &quot;
                 </span>{" "}
@@ -382,9 +359,7 @@ export default function DelegatedSupportCampsUI({
                     href={removeSupportCampsData.title_link}
                     id="delegated_supported_form_title_blue_clr_link"
                   >
-                    <a id="delegated_supported_form_title_blue_clr_1">
                       {removeSupportCampsData.title}
-                    </a>
                   </Link>
                   &quot;
                 </span>{" "}
@@ -442,9 +417,7 @@ export default function DelegatedSupportCampsUI({
                   href={viewMoreDataValue.title_link}
                   id="delagate_supported_camp_modal_title_link"
                 >
-                  <a id="delagate_supported_camp_modal_title_link_1">
                     {viewMoreDataValue.title}
-                  </a>
                 </Link>{" "}
                 &quot;
               </span>{" "}
@@ -458,13 +431,9 @@ export default function DelegatedSupportCampsUI({
                 <Link
                   href={viewMoreDataValue.delegated_to_nick_name_link}
                   id="delagate_supported_camp_modal_delegated_to_nick_name_link"
+                  className={styles.Bluecolor}
                 >
-                  <a
-                    id="delagate_supported_camp_modal_delegated_to_nick_name_link_1"
-                    className={styles.Bluecolor}
-                  >
                     {viewMoreDataValue.delegated_to_nick_name}
-                  </a>
                 </Link>
               </p>
               <p id="delagate_supported_camp_modal_my_nick_name_text">
@@ -472,13 +441,9 @@ export default function DelegatedSupportCampsUI({
                 <Link
                   href={viewMoreDataValue.my_nick_name_link}
                   id="delagate_supported_camp_modal_my_nick_name_text_link"
+                  className={styles.Bluecolor}
                 >
-                  <a
-                    className={styles.Bluecolor}
-                    id="delagate_supported_camp_modal_my_nick_name_text_link_1"
-                  >
                     {viewMoreDataValue.my_nick_name}
-                  </a>
                 </Link>
               </p>
             </div>
@@ -499,13 +464,9 @@ export default function DelegatedSupportCampsUI({
                     <Link
                       href={val.camp_link}
                       id="delagate_supported_camp_modal_list_content_camp_num_link"
+                      className={styles.Bluecolor}
                     >
-                      <a
-                        className={styles.Bluecolor}
-                        id="delagate_supported_camp_modal_list_content_camp_num_link_1"
-                      >
                         {val.camp_name}
-                      </a>
                     </Link>
                   </p>
                 );

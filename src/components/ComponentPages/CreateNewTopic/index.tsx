@@ -84,13 +84,16 @@ const CreateNewTopic = () => {
   const onFinish = async (values: any) => {
     setIsLoading(true);
 
-    const body = {
+    const body: any = {
       topic_name: values.topic_name?.trim(),
       namespace: values.namespace,
       nick_name: values.nick_name,
-      tags: selectedCats?.map((cat) => cat?.id),
       is_rank_hidden: isRankHidden,
     };
+
+    if (selectedCats?.length > 0) {
+      body.tags = selectedCats.map((cat) => cat?.id);
+    }
 
     const res = await createTopic(body);
 

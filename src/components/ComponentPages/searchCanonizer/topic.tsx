@@ -136,7 +136,7 @@ const TopicSearch = () => {
 
     return (
       <li className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none last:pb-0">
-        <Link href={topicLink} passHref>
+        <Link href={topicLink}>
           <div className="flex justify-between items-center">
             <label
               className="text-base font-medium text-canBlack flex !mb-2"

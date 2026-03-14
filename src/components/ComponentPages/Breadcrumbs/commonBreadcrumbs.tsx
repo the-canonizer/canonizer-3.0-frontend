@@ -504,10 +504,9 @@ function CommanBreadcrumbs({
                   pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
                   query: { canon: topicRecord?.namespace_id || 1 },
                 }}
+                className="!text-canBlue text-sm font-medium underline hover:!text-canHoverBlue"
               >
-                <a className="!text-canBlue text-sm font-medium underline hover:!text-canHoverBlue">
                   {topicRecord?.submitter_nick_name}
-                </a>
               </Link>
             </Col>
             <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -527,10 +526,9 @@ function CommanBreadcrumbs({
                   pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
                   query: { canon: topicRecord?.namespace_id || 1 },
                 }}
+                className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium"
               >
-                <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
                   {topicRecord?.submitter_nick_name}
-                </a>
               </Link>
             </Col>
             <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -661,10 +659,9 @@ function CommanBreadcrumbs({
                   pathname: `/user/supports/${topicRecord?.agreement_camp_record?.submitter_nick_id}`,
                   query: { canon: topicRecord?.namespace_id || 1 },
                 }}
+                className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline"
               >
-                <a className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline">
                   {topicRecord?.agreement_camp_record?.submitter_nick_name}
-                </a>
               </Link>
             </Col>
             <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -687,12 +684,11 @@ function CommanBreadcrumbs({
                       pathname: `/user/supports/${topicRecord?.agreement_camp_record?.camp_about_nick_id}`,
                       query: { canon: topicRecord?.namespace_id || 1 },
                     }}
+                    className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium"
                   >
-                    <a className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium">
                       {topicRecord?.agreement_camp_record &&
                         topicRecord?.agreement_camp_record
                           ?.camp_about_nick_name}
-                    </a>
                   </Link>
                 </Col>
               </>
@@ -816,13 +812,11 @@ function CommanBreadcrumbs({
             }
             `
           } disabled={disabled} className="flex items-center justify-center h-auto mx-auto gap-1">
-              <Link href={campHrefForPopover}>
-                <a className="flex items-center justify-center h-auto mx-auto gap-1">
+              <Link href={campHrefForPopover} className="flex items-center justify-center h-auto mx-auto gap-1">
                   <span className="flex items-center justify-center h-auto mx-auto gap-1">
                     {K?.exceptionalMessages?.manageCampButton}
                     <EditOutlined />
                   </span>
-                </a>
               </Link>
             </PrimaryButton>
           </div>
@@ -872,10 +866,9 @@ function CommanBreadcrumbs({
               pathname: `/user/supports/${campRecord?.submitter_nick_id}`,
               query: { canon: topicRecord?.namespace_id || 1 },
             }}
+            className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline"
           >
-            <a className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline">
               {campRecord?.submitter_nick_name}
-            </a>
           </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -896,10 +889,9 @@ function CommanBreadcrumbs({
                 pathname: `/user/supports/${campRecord?.camp_about_nick_id}`,
                 query: { canon: topicRecord?.namespace_id || 1 },
               }}
+              className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium"
             >
-              <a className="text-sm !text-canBlue hover:!text-canHoverBlue font-medium">
                 {campRecord && campRecord?.camp_about_nick_name}
-              </a>
             </Link>
           </Col>
         )}
@@ -996,13 +988,11 @@ function CommanBreadcrumbs({
       </Row>
       <hr className="horizontal_line my-5" />
       <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
-        <Link href={campHref}>
-          <a className="flex items-center justify-center h-auto mx-auto gap-1">
+        <Link href={campHref} className="flex items-center justify-center h-auto mx-auto gap-1">
             <span className="flex items-center justify-center h-auto mx-auto gap-1">
               {K?.exceptionalMessages?.manageCampButton}
               <EditOutlined />
             </span>
-          </a>
         </Link>
       </PrimaryButton>
     </div>
@@ -1161,10 +1151,9 @@ function CommanBreadcrumbs({
                     href={`${topicLink}/1-Agreement?${
                       getQueryParams()?.returnQuery || ""
                     }`}
+                    className="!break-all hover:!text-canHoverBlue"
                   >
-                    <a className="!break-all hover:!text-canHoverBlue">
                       {breadCrumbRes?.topic_name}
-                    </a>
                   </Link>
                   {isMobile && (
                     <Popover
@@ -1232,10 +1221,9 @@ function CommanBreadcrumbs({
                         href={`${topicLink}/${
                           breadCrumbRes?.bread_crumb?.at(-1)?.camp_num
                         }-${breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}`}
+                        className="!text-canGreen !break-all hover:!text-canHoverBlue"
                       >
-                        <a className=" !text-canGreen !break-all hover:!text-canHoverBlue">
                           {breadCrumbRes?.bread_crumb?.at(-1)?.camp_name}
-                        </a>
                       </Link>
                       {isMobile && (
                         <Popover
@@ -1300,14 +1288,11 @@ function CommanBreadcrumbs({
                               )}
                             <Link
                               href={`${topicLink}/${camp?.camp_num}-${camp?.camp_name}`}
-                            >
-                              <a
-                                className={`${getLinkClass(
+                              className={`${getLinkClass(
                                   index
                                 )} !break-all hover:!text-canHoverBlue`}
-                              >
+                            >
                                 {camp?.camp_name}
-                              </a>
                             </Link>
                             {isMobile && (
                               <Popover
@@ -1345,10 +1330,9 @@ function CommanBreadcrumbs({
                             )}
                           <Link
                             href={`${topicLink}/${camp.camp_num}-${camp.camp_name}`}
+                            className="!break-all hover:!text-canHoverBlue"
                           >
-                            <a className="!break-all hover:!text-canHoverBlue">
                               {camp?.camp_name}
-                            </a>
                           </Link>
                         </>
                       )}

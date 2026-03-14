@@ -171,9 +171,7 @@ const SettingsUI = () => {
         />
       ),
       label: (
-        <Link href="/settings?tab=profile_info">
-          <a id="menu_item_profile_info_link">Personal Info</a>
-        </Link>
+        <Link href="/settings?tab=profile_info" id="menu_item_profile_info_link">Personal Info</Link>
       ),
       className: `listItem ${getMatchQuery("profile_info")}`,
     },
@@ -189,9 +187,7 @@ const SettingsUI = () => {
         />
       ),
       label: (
-        <Link href="/settings?tab=nick_name">
-          <a id="menu_item_nick_name_link">Nicknames</a>
-        </Link>
+        <Link href="/settings?tab=nick_name" id="menu_item_nick_name_link">Nicknames</Link>
       ),
       className: `listItem ${getMatchQuery("nick_name")}`,
     },
@@ -207,9 +203,7 @@ const SettingsUI = () => {
         />
       ),
       label: (
-        <Link href="/settings?tab=user_preferences">
-          <a id="menu_item_user_preferences_link">Preferences</a>
-        </Link>
+        <Link href="/settings?tab=user_preferences" id="menu_item_user_preferences_link">Preferences</Link>
       ),
       className: `listItem ${getMatchQuery("user_preferences")}`,
     },
@@ -233,10 +227,8 @@ const SettingsUI = () => {
         {
           key: "direct_supported_camps",
           label: (
-            <Link href="/settings?tab=direct_supported_camps">
-              <a id="menu_item_direct_supported_camps_link">
+            <Link href="/settings?tab=direct_supported_camps" id="menu_item_direct_supported_camps_link">
                 Direct Supported Camps
-              </a>
             </Link>
           ),
           className: `subItem ${getMatchQuery("direct_supported_camps")}`,
@@ -244,10 +236,8 @@ const SettingsUI = () => {
         {
           key: "delegate_supported_camp",
           label: (
-            <Link href="/settings?tab=delegate_supported_camp">
-              <a id="menu_item_delegate_supported_camp_link">
+            <Link href="/settings?tab=delegate_supported_camp" id="menu_item_delegate_supported_camp_link">
                 Delegated Supported Camps
-              </a>
             </Link>
           ),
           className: `subItem ${getMatchQuery("delegate_supported_camp")}`,
@@ -267,9 +257,7 @@ const SettingsUI = () => {
         />
       ),
       label: (
-        <Link href="/settings?tab=subscriptions">
-          <a id="menu_item_subscriptions_link">My Subscriptions</a>
-        </Link>
+        <Link href="/settings?tab=subscriptions" id="menu_item_subscriptions_link">My Subscriptions</Link>
       ),
       className: `listItem ${getMatchQuery("subscriptions")}`,
     },
@@ -294,18 +282,14 @@ const SettingsUI = () => {
         {
           key: "social_oauth_verification",
           label: (
-            <Link href="/settings?tab=social_oauth_verification">
-              <a id="menu_item_social_oauth_verification_link">Social Auth</a>
-            </Link>
+            <Link href="/settings?tab=social_oauth_verification" id="menu_item_social_oauth_verification_link">Social Auth</Link>
           ),
           className: `subItem ${getMatchQuery("social_oauth_verification")}`,
         },
         {
           key: "change_password",
           label: (
-            <Link href="/settings?tab=change_password">
-              <a id="menu_item_change_password_link">Password</a>
-            </Link>
+            <Link href="/settings?tab=change_password" id="menu_item_change_password_link">Password</Link>
           ),
           className: `subItem ${getMatchQuery("change_password")}`,
         },
@@ -495,12 +479,9 @@ const SettingsUI = () => {
                               >
                                 <Link
                                   href="/settings?tab=profile_info"
-                                  className="[&_.ant-menu-item-selected]:!text-canBlue"
+                                  className="flex items-center gap-3 [&_.ant-menu-item-selected]:!text-canBlue"
+                                  id="setting_section_select_tag_persnol_info_link"
                                 >
-                                  <a
-                                    className="flex items-center gap-3"
-                                    id="setting_section_select_tag_persnol_info_link"
-                                  >
                                     <span className="text-base font-medium text-canBlack">
                                       {" "}
                                       Personal Info
@@ -512,7 +493,6 @@ const SettingsUI = () => {
                                       height={24}
                                       alt=""
                                     />
-                                  </a>
                                 </Link>
                               </span>
                             ),
@@ -523,12 +503,9 @@ const SettingsUI = () => {
                               <span id="setting_section_select_tag_nickname">
                                 <Link
                                   href="/settings?tab=nick_name"
-                                  className="[&_.ant-menu-item]:!rounded-lg"
+                                  className="flex items-center gap-3 [&_.ant-menu-item]:!rounded-lg"
+                                  id="setting_section_select_tag_nickname_link"
                                 >
-                                  <a
-                                    className="flex items-center gap-3"
-                                    id="setting_section_select_tag_nickname_link"
-                                  >
                                     <span
                                       className="text-base font-medium text-canBlack"
                                       id="setting_section_select_tag_nickname_text"
@@ -543,7 +520,6 @@ const SettingsUI = () => {
                                       height={24}
                                       alt=""
                                     />
-                                  </a>
                                 </Link>
                               </span>
                             ),
@@ -552,8 +528,7 @@ const SettingsUI = () => {
                             value: "Preferences",
                             label: (
                               <span id="setting_section_select_tag_preferences">
-                                <Link href="/settings?tab=user_preferences">
-                                  <a
+                                <Link href="/settings?tab=user_preferences"
                                     className="flex items-center gap-3"
                                     id="setting_section_select_tag_preferences_link"
                                   >
@@ -571,7 +546,6 @@ const SettingsUI = () => {
                                       height={16}
                                       alt=""
                                     />
-                                  </a>
                                 </Link>
                               </span>
                             ),
@@ -627,8 +601,7 @@ const SettingsUI = () => {
                             value: "My Subscriptions",
                             label: (
                               <span id="setting_section_select_tag_my_subscription">
-                                <Link href={"/settings?tab=subscriptions"}>
-                                  <a
+                                <Link href={"/settings?tab=subscriptions"}
                                     className="flex items-center gap-3"
                                     id="setting_section_select_tag_my_subscription_link"
                                   >
@@ -643,7 +616,6 @@ const SettingsUI = () => {
                                       height={24}
                                       alt=""
                                     />
-                                  </a>
                                 </Link>
                               </span>
                             ),
@@ -656,8 +628,6 @@ const SettingsUI = () => {
                                   href={
                                     "/settings?tab=social_oauth_verification"
                                   }
-                                >
-                                  <a
                                     className="flex items-center gap-3"
                                     id="setting_section_select_tag_social_auth_link"
                                   >
@@ -672,7 +642,6 @@ const SettingsUI = () => {
                                       height={24}
                                       alt=""
                                     />
-                                  </a>
                                 </Link>
                               </span>
                             ),
@@ -681,8 +650,7 @@ const SettingsUI = () => {
                             value: "Change Password",
                             label: (
                               <span id="setting_section_select_tag_change_password">
-                                <Link href={"/settings?tab=change_password"}>
-                                  <a
+                                <Link href={"/settings?tab=change_password"}
                                     className="flex items-center gap-3"
                                     id="setting_section_select_tag_change_password_link"
                                   >
@@ -700,7 +668,6 @@ const SettingsUI = () => {
                                       height={24}
                                       alt=""
                                     />
-                                  </a>
                                 </Link>
                               </span>
                             ),

@@ -91,9 +91,7 @@ const HistoryComparison = ({
               Camp about URL:{" "}
               <span>
                 {validUrl(campStatement?.camp_about_url) ? (
-                  <Link href={campStatement?.camp_about_url || ""}>
-                    <a>{campStatement?.camp_about_url}</a>
-                  </Link>
+                  <Link href={campStatement?.camp_about_url || ""}>{campStatement?.camp_about_url}</Link>
                 ) : null}
               </span>
             </p>
@@ -104,9 +102,8 @@ const HistoryComparison = ({
                   href={`/user/supports/${
                     campStatement?.camp_about_nick_id || ""
                   }?canon=${topicNamespaceId || ""}`}
-                  passHref
                 >
-                  <a>{campStatement?.camp_about_nick_name}</a>
+                  {campStatement?.camp_about_nick_name}
                 </Link>
               </span>
             </p>
@@ -122,9 +119,8 @@ const HistoryComparison = ({
                       canon: topicNamespaceId || "",
                     },
                   }}
-                  passHref
                 >
-                  <a>{campStatement?.submitter_nick_name}</a>
+                  {campStatement?.submitter_nick_name}
                 </Link>
               </span>
             </p>
@@ -160,9 +156,8 @@ const HistoryComparison = ({
                     canon: topicNamespaceId || "",
                   },
                 }}
-                passHref
               >
-                <a>{campStatement?.submitter_nick_name}</a>
+                {campStatement?.submitter_nick_name}
               </Link>
             </span>
           </p>
@@ -181,9 +176,8 @@ const HistoryComparison = ({
                       canon: topicNamespaceId || "",
                     },
                   }}
-                  passHref
                 >
-                  <a>{campStatement?.camp_leader_nick_name}</a>
+                  {campStatement?.camp_leader_nick_name}
                 </Link>
               ) : (
                 <>No</>

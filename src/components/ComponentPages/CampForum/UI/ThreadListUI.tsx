@@ -314,14 +314,12 @@ const ThreadListUI = ({
                             href={`/user/supports/${
                               others["nick_name_id"] || ""
                             }?canon=${others["namespace_id"] || 1}`}
-                            passHref
+                            id={`user-link-${others["nick_name_id"]}`}
                           >
-                            <a id={`user-link-${others["nick_name_id"]}`}>
                               {others["nick_name"] === null ||
                               others["nick_name"] === ""
                                 ? ""
                                 : others["nick_name"]}
-                            </a>
                           </Link>{" "}
                           { dt ? `replied ${moment(getTime(dt))
                             .local()

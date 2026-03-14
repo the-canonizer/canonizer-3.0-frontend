@@ -370,10 +370,10 @@ const CreateCampFormUI = ({
                               ? topicRecord?.namespace_id
                               : filterObject?.namespace_id
                           }`}
+                          className="text-canBlue"
+                          id="camp-leader-link"
                         >
-                          <a className="text-canBlue" id="camp-leader-link">
                             {getCampLeaderData() + " "}
-                          </a>
                         </Link>
                         is currently the camp leader )
                       </span>

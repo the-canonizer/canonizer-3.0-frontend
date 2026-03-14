@@ -50,11 +50,9 @@ function TopicSubscriptionsTab({
             <Typography.Paragraph
               className={`${!(item?.camps?.length > 0) && "!mb-0"}`}
             >
-              <Link href={item.title_link}>
+              <Link href={item.title_link} className="text-sm font-normal !text-canBlue flex items-center">
                 <Typography.Text className="flex gap-2.5">
-                  <a className="text-sm font-normal !text-canBlue flex items-center">
                     {item.title}
-                  </a>
                   {item?.is_remove_subscription && (
                     <Popover content="Remove subscription" placement="top">
                       <SecondaryButton
@@ -100,10 +98,8 @@ function TopicSubscriptionsTab({
                       </Tooltip>
                     }
                   >
-                    <Link href={camp.camp_link}>
-                      <a className="text-xs font-normal text-canBlack">
+                    <Link href={camp.camp_link} className="text-xs font-normal text-canBlack">
                         {camp.camp_name}
-                      </a>
                     </Link>
                   </Tag>
                 ))}

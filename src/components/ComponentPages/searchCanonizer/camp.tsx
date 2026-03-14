@@ -129,11 +129,11 @@ const CampSearch = () => {
             className="flex flex-col py-3 first:pt-0 border-b border-canGrey2 last:border-none"
             key={x.type_value}
           >
-            <Link href={`/${parsedData?.[0]?.camp_link ?? "#"}`} passHref>
+            <Link href={`/${parsedData?.[0]?.camp_link ?? "#"}`}>
               <div className="flex justify-between items-center">
-                <a className="text-base font-medium text-canBlack flex !mb-2 break-words overflow-hidden">
+                <span className="text-base font-medium text-canBlack flex !mb-2 break-words overflow-hidden">
                   {getHighlightedText(x?.type_value, searchValue)}
-                </a>
+                </span>
                 <Image
                   src="/images/search-page-arrow.svg"
                   width={16}

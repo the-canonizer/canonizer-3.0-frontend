@@ -487,9 +487,7 @@ const CampTree = ({
                                 ?.replace("/topic/", "/forum/") + "/threads"
                             : data[item]?.link?.replace("#statement", "")
                         }?${getURLParams()}`}
-                      >
-                        <a
-                          className={`${
+                        className={`${
                             data[item].is_archive == 1
                               ? `font-bold !text-canBlack hover:!text-canBlack !break-all"  ${styles.archive_grey}`
                               : !isForumPage &&
@@ -524,7 +522,7 @@ const CampTree = ({
                               ? "font-bold"
                               : ""
                           }`}
-                        >
+                      >
                           {data[item].is_archive == 1 ? (
                             <Popover content="Archived Camp">
                               {includeReview
@@ -538,7 +536,6 @@ const CampTree = ({
                           ) : (
                             data[item]?.title
                           )}
-                        </a>
                       </Link>{" "}
                     </span>
                     <span className={styles.subScriptionIcon}>
@@ -611,15 +608,9 @@ const CampTree = ({
                                 : 1
                             }`,
                           }}
+                          className="!text-canGreen font-semibold italic text-sm"
                         >
-                          <a className="!text-canGreen font-semibold italic text-sm">
-                            {/* <Image
-                              src="/images/start-new-tree.svg"
-                              width={16}
-                              height={17}
-                            /> */}
                             {`Start new`}{" "}
-                          </a>
                         </Link>
                       </p>
                     }

@@ -696,10 +696,8 @@ function HistoryCard({
                   >
                     <p>{K?.exceptionalMessages?.objectedModalMsg}</p>
                     <p>{K?.exceptionalMessages?.objectedModalMsgForMoreInfo}</p>
-                    <Link href="/topic/132-Help/4-Disagreement">
-                      <a className="text-canBlue">
+                    <Link href="/topic/132-Help/4-Disagreement" className="text-canBlue">
                         https://canonizer.com/topic/132-Help/4-Disagreement
-                      </a>
                     </Link>
                   </Modal>
                 </>

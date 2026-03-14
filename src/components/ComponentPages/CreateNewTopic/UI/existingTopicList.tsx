@@ -104,8 +104,7 @@ const ExistingTopicList = ({
                   key={item?.id}
                   id={`list-item-${item?.id}`}
                 >
-                  <Link href={{ pathname: "/" + item?.link }}>
-                    <a
+                  <Link href={{ pathname: "/" + item?.link }}
                       className="flex justify-start items-start whitespace-break-spaces break-all text-wrap line-clamp-1"
                       target="_blank"
                       id={`list-item-link-${item?.id}`}
@@ -115,7 +114,6 @@ const ExistingTopicList = ({
                         id={`list-item-dot-${item?.id}`}
                       ></div>
                       {getHighlightedText(item?.type_value, topicName)}
-                    </a>
                   </Link>
                 </List.Item>
               )}
@@ -128,17 +126,14 @@ const ExistingTopicList = ({
                 pathname: "/search/topic",
                 query: { q: topicName },
               }}
-            >
-              <a
                 className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue "
                 target="_blank"
-                role="button" // Adds button role
-                tabIndex={0} // Makes it focusable via keyboard
+                role="button"
+                tabIndex={0}
                 onClick={() => {
                   dispatch(setSearchValue(""));
                   dispatch(
                     setFilterCanonizedTopics({
-                      // asofdate: Date.now() / 1000,
                       asof: "default",
                     })
                   );
@@ -151,7 +146,6 @@ const ExistingTopicList = ({
                 id="see-more-results"
               >
                 See more results
-              </a>
             </Link>
           )}
         </div>

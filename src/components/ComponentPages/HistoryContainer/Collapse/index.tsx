@@ -191,9 +191,7 @@ function HistoryCollapse({
       title: "Nick Name",
       dataIndex: "nickNameData",
       render: (text) => (
-        <Link href={text?.path} passHref>
-          <a>{text?.name}</a>
-        </Link>
+        <Link href={text?.path}>{text?.name}</Link>
       ),
     },
     {

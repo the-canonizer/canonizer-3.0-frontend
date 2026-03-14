@@ -249,8 +249,7 @@ const NicknameSearch = () => {
                               className="text-sm font-medium bg-white w-full px-5 py-2 rounded-xl mb-2 flex justify-between"
                               id="elastic_nickname_search_nickname_list_li"
                             >
-                              <Link href={`${x?.link}`}>
-                                <a
+                              <Link href={`${x?.link}`}
                                   className="flex gap-2.5"
                                   id="elastic_nickname_search_nickname_list_link"
                                 >
@@ -270,7 +269,6 @@ const NicknameSearch = () => {
                                       searchValue
                                     )}
                                   </label>
-                                </a>
                               </Link>
                               <span
                                 className="font-normal text-base"

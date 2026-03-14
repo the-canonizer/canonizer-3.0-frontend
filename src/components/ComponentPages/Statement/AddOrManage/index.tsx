@@ -1005,12 +1005,10 @@ export default function AddOrManage({ add }: any) {
                                           : filterObject?.namespace_id
                                       }`}
                                     >
-                                      <a>
                                         {campLeaderData &&
                                           campLeaderData?.find(
                                             (CL) => CL?.camp_leader === true
                                           )?.nick_name}
-                                      </a>
                                     </Link>
                                     <span className={styles.small}>
                                       is currently the camp leader

@@ -192,12 +192,10 @@ export const UserProfileCard = ({
                         title={
                           <div className="flex flex-col items-start justify-center gap-2">
                             <span className="flex items-center justify-start gap-4">
-                              <Link href={data.title_link}>
-                                <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
+                              <Link href={data.title_link} className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
                                   {data.title.length > 20
                                     ? `${data.title.substring(0, 20)}...`
                                     : data.title}
-                                </a>
                               </Link>
                             </span>
                             {data.delegate_nick_name_id && (
@@ -208,10 +206,9 @@ export const UserProfileCard = ({
                                     pathname: `/user/supports/${data.delegate_nick_name_id}`,
                                     query: { canon: data?.namespace_id },
                                   }}
+                                  className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium"
                                 >
-                                  <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
                                     {data.delegate_nick_name})
-                                  </a>
                                 </Link>
                               </div>
                             )}
@@ -232,16 +229,14 @@ export const UserProfileCard = ({
                               )}
                               <Link
                                 href={campData.camp_link}
-                                className="!whitespace-normal"
+                                className="!text-canBlue hover:!text-canHoverBlue !break-all text-sm font-normal !whitespace-normal !break-words"
                               >
-                                <a className="!text-canBlue hover:!text-canHoverBlue !break-all text-sm font-normal !whitespace-normal !break-words">
                                   {campData.camp_name.length > 30
                                     ? `${campData.camp_name.substring(
                                         0,
                                         30
                                       )}...`
                                     : campData.camp_name}
-                                </a>
                               </Link>
                             </Tag>
                           ))
@@ -250,10 +245,8 @@ export const UserProfileCard = ({
                             className="rounded-md text-sm font-medium border-0 text-canBlue py-1 px-4 bg-canLightGrey"
                             key={data.topic_num}
                           >
-                            <Link href={data.title_link}>
-                              <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-normal">
+                            <Link href={data.title_link} className="!text-canBlue hover:!text-canHoverBlue text-sm font-normal">
                                 Agreement
-                              </a>
                             </Link>
                           </Tag>
                         )}

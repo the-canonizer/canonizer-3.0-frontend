@@ -176,17 +176,14 @@ const TrandingTopics = () => {
                         "-"
                       )}/1-Agreement`,
                     }}
-                    passHref
+                    className="hover:*:text-canHoverBlue font-normal"
+                    onClick={() => setLoadMoreIndicator(false)}
+                    id={`topic-link-${item?.topic_id}`}
                   >
-                    <a
-                      className="hover:*:text-canHoverBlue font-normal"
-                      onClick={() => setLoadMoreIndicator(false)}
-                      id={`topic-link-${item?.topic_id}`}
-                    >
+
                       <Typography.Text id={`topic-name-${item?.topic_id}`}>
                         {item?.topic_name}
                       </Typography.Text>
-                    </a>
                   </Link>
                   <ScoreTag topic_score={item?.topic_score} />
                 </List.Item>

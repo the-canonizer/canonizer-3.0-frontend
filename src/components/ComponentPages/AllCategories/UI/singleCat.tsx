@@ -32,26 +32,22 @@ const Category = ({ tag }) => {
             id="flag-icon"
             className="text-canLight p-1 text-medium"
           />
-          <Link href={{ pathname: `/categories/${tag?.id}` }}>
-            <a
+          <Link href={{ pathname: `/categories/${tag?.id}` }}
               id="category-link"
               className="!text-canBlack text-lg font-inter font-medium hover:!canHoverBlue"
             >
               {tag?.title}
-            </a>
           </Link>
         </Paragraph>
       }
       className={`bg-white border-1 [&_.ant-card-head]:border-0 transition duration-300 [&_.ant-card-extra]:opacity-0 [&_.ant-card-extra]:transition [&_.ant-card-extra]:duration-300 [&_.ant-card-extra]:hover:opacity-100 [&_.ant-card-head]:pl-0 hocus:shadow-md [&_.ant-card-head-title]:w-10/12 [&_.ant-card-head-title]:md:w-8/12 [&_.ant-card-extra]:w-2/12 [&_.ant-card-extra]:md:w-4/12 [&_.ant-card-extra]:flex [&_.ant-card-extra]:justify-end [&_.ant-card-body]:py-0`}
       id="common-card"
       extra={
-        <Link href={{ pathname: `/categories/${tag?.id}` }} type="link">
-          <a
+        <Link href={{ pathname: `/categories/${tag?.id}` }} type="link"
             id="extra-link"
             className="p-0 text-xl flex justify-center items-center mr-2 text-canBlack hover:text-canBlue"
           >
             <RightOutlined id="right-icon" />
-          </a>
         </Link>
       }
     >

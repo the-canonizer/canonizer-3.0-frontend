@@ -150,9 +150,8 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                                       ? campRecord?.camp_leader_nick_id
                                       : ""
                                   }?canon=${topicRecord?.namespace_id || ""}`}
-                                  passHref
                                 >
-                                  <a>{campRecord[description.key]}</a>
+                                  {campRecord[description.key]}
                                 </Link>
                               </>
                             ) : (
@@ -194,9 +193,7 @@ const CurrentCampCard = ({ loadingIndicator, backGroundColorClass }: any) => {
               )}`}
               className="printHIde"
             >
-              <a className="printHIde">
                 {K?.exceptionalMessages?.manageCampButton}{" "}
-              </a>
             </Link>
           </CustomButton>
         </div>

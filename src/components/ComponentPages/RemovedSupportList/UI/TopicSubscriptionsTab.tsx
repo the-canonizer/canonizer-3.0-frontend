@@ -24,9 +24,7 @@ function TopicSubscriptionsTab({ subscriptionsList, onConfirm }: any) {
               For Topic{" "}
               <span>
                 &quot;
-                <Link href={data.title_link}>
-                  <a>{data.title}</a>
-                </Link>
+                <Link href={data.title_link}>{data.title}</Link>
                 &quot;
               </span>
             </Title>
@@ -50,9 +48,7 @@ function TopicSubscriptionsTab({ subscriptionsList, onConfirm }: any) {
                   >
                     <div>
                       <span className={styles.count}>{i + 1}. </span>
-                      <Link href={camp.camp_link}>
-                        <a className={styles.Bluecolor}> {camp.camp_name}</a>
-                      </Link>
+                      <Link href={camp.camp_link} className={styles.Bluecolor}> {camp.camp_name}</Link>
                     </div>
                   </Tag>
                 </Col>
@@ -63,9 +59,7 @@ function TopicSubscriptionsTab({ subscriptionsList, onConfirm }: any) {
                   </Text>
                   <br />
                   <Text className={`${styles.reasonLink} ${styles.Bluecolor}`}>
-                    <Link href={""} passHref target="_blank">
-                      <a>Reference Link</a>
-                    </Link>
+                    <Link href={""} target="_blank">Reference Link</Link>
                   </Text>
                 </Col>
               </Row>

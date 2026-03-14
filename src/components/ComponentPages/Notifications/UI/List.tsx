@@ -54,13 +54,10 @@ export default function NotificationList({
                     n_type: item?.notification_type?.toLowerCase(),
                   },
                 }}
-              >
-                <a
                   className="text-sm text-canBlack break-words whitespace-pre-wrap"
                   id={"link-" + item["id"]}
                 >
                   {item["message_body"]}
-                </a>
               </Link>
             }
             description={

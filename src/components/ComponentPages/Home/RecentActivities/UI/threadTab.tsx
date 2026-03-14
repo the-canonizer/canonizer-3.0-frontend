@@ -40,11 +40,7 @@ function ThreadTab({
             key={activity.id}
             className="font-inter text-sm font-medium bg-white w-full px-2"
           >
-            <Link href={decodeUrlLink(activity)} passHref>
-              <a
-                id={`link-${activity.id}`}
-                className="w-full !text-canBlue hover:!text-canHoverBlue"
-              >
+            <Link href={decodeUrlLink(activity)} id={`link-${activity.id}`} className="w-full !text-canBlue hover:!text-canHoverBlue">
                 <Text
                   id={`description-${activity.id}`}
                   className="!text-canBlack text-sm font-normal mb-0 block w-full"
@@ -104,7 +100,6 @@ function ThreadTab({
                 >
                   {covertToTime(activity.updated_at)}
                 </Text>
-              </a>
             </Link>
           </List.Item>
         );

@@ -60,8 +60,7 @@ const CategoriesList = () => {
 
       <div className="w-full flex flex-wrap mt-3 -mb-5" id="tags-container">
         {renderedTags?.map((cat) => (
-          <Link href={{ pathname: `/categories/${cat?.id}` }} key={cat?.id}>
-            <a id={`tag-link-${cat?.id}`}>
+          <Link href={{ pathname: `/categories/${cat?.id}` }} key={cat?.id} id={`tag-link-${cat?.id}`}>
               <Tags
                 className="rounded-lg py-3 px-6 border-0 text-canBlack bg-canBlue mt-0 mb-[15px] mr-[15px] hover:shadow-md"
                 icon={<TagOutlined className="rotate-[280deg]" />}
@@ -70,14 +69,11 @@ const CategoriesList = () => {
               >
                 {cat?.title}
               </Tags>
-            </a>
           </Link>
         ))}
         {isMobile ? (
-          <Link href="/categories" key="moretag">
-            <a className="text-canBlack font-semibold" id="more-tags-link">
+          <Link href="/categories" key="moretag" className="text-canBlack font-semibold" id="more-tags-link">
               +{tags?.length - 5} more
-            </a>
           </Link>
         ) : null}
       </div>

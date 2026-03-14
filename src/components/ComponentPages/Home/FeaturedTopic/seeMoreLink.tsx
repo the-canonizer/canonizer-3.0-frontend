@@ -14,13 +14,8 @@ const SeeMoreLink = ({
   href?: any;
 }) => {
   return (
-    <Link href={href}>
-      <a
-        id="see-more-link"
-        className="!text-canBlue hover:!text-canHoverBlue text-xs font-inter font-medium"
-      >
+    <Link href={href} id="see-more-link" className="!text-canBlue hover:!text-canHoverBlue text-xs font-inter font-medium">
         {title}
-      </a>
     </Link>
   );
 };

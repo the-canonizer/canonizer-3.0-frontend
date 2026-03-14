@@ -38,9 +38,8 @@ const SinglePost = ({
               href={`/user/supports/${post["user_id"] || ""}?canon=${
                 post["namespace_id"] || 1
               }`}
-              passHref
             >
-              <a className="">{nick_name}</a>
+              {nick_name}
             </Link>
             {postedTime || postedUpdatedTime ? (<Text>
               {new Date(postedTime).getTime() ===

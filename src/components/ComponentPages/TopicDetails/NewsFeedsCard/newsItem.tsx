@@ -37,10 +37,9 @@ function NewsItemListTab({
             href={{
               pathname: router?.asPath.replace("topic", "addnews"),
             }}
+            className="flex items-center justify-center !bg-canBlue hover:!bg-canHoverBlue !text-white hover:shadow-md rounded-lg px-3 py-2 w-[200px] inline-block gap-2 mx-auto text-sm"
           >
-            <a className="flex items-center justify-center !bg-canBlue hover:!bg-canHoverBlue !text-white hover:shadow-md rounded-lg px-3 py-2 w-[200px] inline-block gap-2 mx-auto text-sm">
               Add News <PlusOutlined />
-            </a>
           </Link>
         ) : null
       }
@@ -104,10 +103,9 @@ function NewsItemListTab({
                       <Link
                         href={{ pathname: news?.parent_camp_url || "" }}
                         id="inherit-btn"
+                        className="font-medium !text-white hover:!text-canHoverBlue flex items-center justify-center"
                       >
-                        <a className="font-medium !text-white hover:!text-canHoverBlue flex items-center justify-center">
                           {news?.parent_camp_name}
-                        </a>
                       </Link>
                     </>
                   }
@@ -128,10 +126,9 @@ function NewsItemListTab({
                 }}
                 type="link"
                 id="news-edit-btn"
+                className="!text-canBlack hover:!text-canBlue flex items-center justify-center"
               >
-                <a className="!text-canBlack hover:!text-canBlue flex items-center justify-center">
                   <EditOutlined />
-                </a>
               </Link>
             </Paragraph>
           )}

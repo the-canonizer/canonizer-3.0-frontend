@@ -96,15 +96,8 @@ const LoginUi = ({
                 Remember Me
               </Checkbox>
             </Form.Item>
-            <Link href="/">
-              <a
-                id="forgot-password-link"
-                data-testid="forgot-password-link"
-                className="text-canBlue hover:text-canHoverBlue"
-                onClick={onForgotPasswordClick}
-              >
+            <Link href="/" id="forgot-password-link" data-testid="forgot-password-link" className="text-canBlue hover:text-canHoverBlue" onClick={onForgotPasswordClick}>
                 Forgot Password?
-              </a>
             </Link>
           </div>
         </div>

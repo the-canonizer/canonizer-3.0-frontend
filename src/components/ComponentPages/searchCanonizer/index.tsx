@@ -150,7 +150,7 @@ const Search = () => {
                                     className="flex justify-between items-center"
                                     id="auto_search_section_topic_type_value"
                                   >
-                                    <a id="auto_search_section_topic_type_value_link">
+                                    <span id="auto_search_section_topic_type_value_link">
                                       <label
                                         style={{ cursor: "pointer" }}
                                         className="text-base font-medium text-canBlack flex !mb-2"
@@ -161,20 +161,14 @@ const Search = () => {
                                           searchValue
                                         )}
                                       </label>
-                                    </a>
-                                    <a
-                                      href={replaceSpecialCharactersInLink(
-                                        x?.link
-                                      )}
-                                    >
-                                      <Image
-                                        id="auto_search_section_topic_arrow_img"
-                                        src="/images/search-page-arrow.svg"
-                                        width={16}
-                                        height={10}
-                                        alt={"check"}
-                                      />
-                                    </a>
+                                    </span>
+                                    <Image
+                                      id="auto_search_section_topic_arrow_img"
+                                      src="/images/search-page-arrow.svg"
+                                      width={16}
+                                      height={10}
+                                      alt={"check"}
+                                    />
                                   </div>
                                 </Link>
 
@@ -260,7 +254,7 @@ const Search = () => {
                                     className="flex justify-between items-center"
                                     id="auto_search_section_camp_li_list"
                                   >
-                                    <a
+                                    <span
                                       className="text-base font-medium text-canBlack flex !mb-2"
                                       id="auto_search_section_camp_value_link"
                                     >
@@ -269,19 +263,14 @@ const Search = () => {
                                         x.type_value,
                                         searchValue
                                       )}
-                                    </a>
-                                    <a
-                                      href={`/${jsonData[0][1]?.camp_link}`}
-                                      id="auto_search_section_camp_sub_camp_link"
-                                    >
-                                      <Image
-                                        id="auto_search_section_camp_img"
-                                        src="/images/search-page-arrow.svg"
-                                        width={16}
-                                        height={10}
-                                        alt={"check"}
-                                      />
-                                    </a>
+                                    </span>
+                                    <Image
+                                      id="auto_search_section_camp_img"
+                                      src="/images/search-page-arrow.svg"
+                                      width={16}
+                                      height={10}
+                                      alt={"check"}
+                                    />
                                   </div>
                                 </Link>
                                 <div
@@ -493,8 +482,7 @@ const Search = () => {
                                 className="text-sm font-medium bg-white w-full px-5 py-2 rounded-xl mb-2 flex justify-between"
                                 id="auto_search_section_nickname_li"
                               >
-                                <Link href={x.link}>
-                                  <a
+                                <Link href={x.link}
                                     className="flex gap-2.5"
                                     id="auto_search_section_nickname_link"
                                   >
@@ -514,7 +502,6 @@ const Search = () => {
                                         searchValue
                                       )}
                                     </label>
-                                  </a>
                                 </Link>
 
                                 <span

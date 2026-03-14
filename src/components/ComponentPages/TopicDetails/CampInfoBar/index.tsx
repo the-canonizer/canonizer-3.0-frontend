@@ -391,10 +391,9 @@ const TimelineInfoBar = ({
               pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
               query: { canon: topicRecord?.namespace_id || 1 },
             }}
+            className="!text-canBlue text-sm font-medium underline hover:!text-canHoverBlue"
           >
-            <a className="!text-canBlue text-sm font-medium underline hover:!text-canHoverBlue">
               {topicRecord?.submitter_nick_name}
-            </a>
           </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -414,10 +413,9 @@ const TimelineInfoBar = ({
               pathname: `/user/supports/${topicRecord?.submitter_nick_id}`,
               query: { canon: topicRecord?.namespace_id || 1 },
             }}
+            className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium"
           >
-            <a className="!text-canBlue hover:!text-canHoverBlue text-sm font-medium">
               {topicRecord?.submitter_nick_name}
-            </a>
           </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -525,10 +523,9 @@ const TimelineInfoBar = ({
               pathname: `/user/supports/${campRecord?.submitter_nick_id}`,
               query: { canon: topicRecord?.namespace_id || 1 },
             }}
+            className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline"
           >
-            <a className="author-name !text-canBlue hover:!text-canHoverBlue text-sm font-medium underline">
               {campRecord?.submitter_nick_name}
-            </a>
           </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -548,10 +545,9 @@ const TimelineInfoBar = ({
               pathname: `/user/supports/${campRecord?.camp_about_nick_id}`,
               query: { canon: topicRecord?.namespace_id || 1 },
             }}
+            className="text-sm !text-canBlue hover:!text-canHoverBlue"
           >
-            <a className="text-sm !text-canBlue hover:!text-canHoverBlue">
               {campRecord && campRecord.camp_about_nick_name}
-            </a>
           </Link>
         </Col>
         <Col md={12} sm={12} xs={12} className="mb-3 flex flex-col">
@@ -625,10 +621,9 @@ const TimelineInfoBar = ({
                   canon: topicRecord?.namespace_id,
                 },
               }}
+              className="flex flex-wrap !text-canBlue hover:!text-canHoverBlue"
             >
-              <a className="flex flex-wrap !text-canBlue hover:!text-canHoverBlue">
                 {campRecord?.camp_leader_nick_name}
-              </a>
             </Link>
           ) : (
             "No"
@@ -637,13 +632,11 @@ const TimelineInfoBar = ({
       </Row>
       <hr className="horizontal_line my-5" />
       <PrimaryButton className="flex items-center justify-center h-auto mx-auto gap-1">
-        <Link href={campHref}>
-          <a className="flex items-center justify-center h-auto mx-auto gap-1">
+        <Link href={campHref} className="flex items-center justify-center h-auto mx-auto gap-1">
             <span className="flex items-center justify-center h-auto mx-auto gap-1">
               {K?.exceptionalMessages?.manageCampButton}
               <EditOutlined />
             </span>
-          </a>
         </Link>
       </PrimaryButton>
     </div>
@@ -782,10 +775,9 @@ const TimelineInfoBar = ({
                             breadCrumbRes?.topic_name,
                             "-"
                           )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          className="whitespace-nowrap !text-canBlack !text-sm"
                         >
-                          <a className="whitespace-nowrap !text-canBlack !text-sm">
                             {topicRecord?.topic_name}
-                          </a>
                         </Link>
                       ) : breadCrumbRes ? (
                         <span className="!text-sm gap-x-1 flex">
@@ -1087,10 +1079,9 @@ const TimelineInfoBar = ({
                             breadCrumbRes?.topic_name,
                             "-"
                           )}/1-Agreement?${getQueryParams()?.returnQuery}`}
+                          className="normal lg:text-canBlack !text-canLight lg:text-sm text-sm leading-5 lg:font-normal text-ellipsis w-[50px] truncate"
                         >
-                          <a className="normal lg:text-canBlack !text-canLight lg:text-sm text-sm leading-5 lg:font-normal text-ellipsis w-[50px] truncate">
                             {breadCrumbRes?.topic_name}
-                          </a>
                         </Link>
                       ) : breadCrumbRes ? (
                         <span className="lg:text-sm text-sm font-normal text-ellipsis w-[80px] lg:w-auto truncate lg:text-canBlack text-canLight ">
@@ -1158,8 +1149,8 @@ const TimelineInfoBar = ({
                                   "-"
                                 )}?${getQueryParams()?.returnQuery}`}
                                 key={index}
+                                className="text-sm !text-canGreen flex flex-wrap shrink-0 gap-2 items-center"
                               >
-                                <a className="text-sm !text-canGreen flex flex-wrap shrink-0 gap-2 items-center">
                                   {index !== 0 && (
                                     <span
                                       className={
@@ -1177,7 +1168,6 @@ const TimelineInfoBar = ({
                                   )}
 
                                   {`${camp?.camp_name}`}
-                                </a>
                               </Link>
                             );
                           })

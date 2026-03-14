@@ -35,9 +35,7 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
         <span>
           {campStatement?.camp_about_url &&
             validUrl(campStatement?.camp_about_url) && (
-              <Link href={campStatement?.camp_about_url}>
-                <a target="_blank">{campStatement?.camp_about_url}</a>
-              </Link>
+              <Link href={campStatement?.camp_about_url} target="_blank">{campStatement?.camp_about_url}</Link>
             )}
         </span>
       </p>
@@ -48,9 +46,8 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
             href={`/user/supports/${
               campStatement?.camp_about_nick_id || ""
             }?canon=${topicNamespaceId || ""}`}
-            passHref
           >
-            <a>{campStatement?.camp_about_nick_name}</a>
+            {campStatement?.camp_about_nick_name}
           </Link>
         </span>
       </p>
@@ -66,9 +63,8 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
                 canon: topicNamespaceId || "",
               },
             }}
-            passHref
           >
-            <a>{campStatement?.submitter_nick_name}</a>
+            {campStatement?.submitter_nick_name}
           </Link>
         </span>
       </p>
@@ -119,9 +115,8 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
               href={`/user/supports/${
                 campStatement?.objector_nick_id || ""
               }?canon=${topicNamespaceId || ""}`}
-              passHref
             >
-              <a>{campStatement?.objector_nick_name}</a>
+              {campStatement?.objector_nick_name}
             </Link>
           </span>
         </p>
@@ -140,9 +135,8 @@ const CampHistory = ({ campStatement, topicNamespaceId }: any) => {
                     canon: topicNamespaceId || "",
                   },
                 }}
-                passHref
               >
-                <a>{campStatement?.camp_leader_nick_name}</a>
+                {campStatement?.camp_leader_nick_name}
               </Link>
             </>
           ) : (

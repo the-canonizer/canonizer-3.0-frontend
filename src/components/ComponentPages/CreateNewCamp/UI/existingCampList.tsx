@@ -36,26 +36,21 @@ export const getTopicNameLink = (
         className="w-full whitespace-break-spaces break-all text-wrap line-clamp-1"
         id={`text-wrap-${item.id}`}
       >
-        <Link href={{ pathname: "/" + bd[0][1]?.camp_link }}>
-          <a
+        <Link href={{ pathname: "/" + bd[0][1]?.camp_link }}
             className="flex justify-start items-start"
             id={`camp-link-${item.id}`}
           >
             {getHighlightedText(item?.type_value, campName)}
-          </a>
         </Link>
         {isTopicNameReq && (
           <Link
             href={{
               pathname: "/" + geturl(bd),
             }}
-          >
-            <a
               className="flex justify-start items-start text-xs mt-2 text-canLight whitespace-break-spaces break-all text-wrap line-clamp-1"
               id={`topic-name-${item.id}`}
             >
               Topic: {bd[0][1]?.topic_name}
-            </a>
           </Link>
         )}
       </div>
@@ -157,16 +152,14 @@ const ExistingCampList = ({
             />
           </div>
           {isShowMore && (
-            <Link href={{ pathname: "/search/camp", query: { q: campName } }}>
-              <a
+            <Link href={{ pathname: "/search/camp", query: { q: campName } }}
                 className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
-                role="button" // Adds button role
-                tabIndex={0} // Makes it focusable via keyboard
+                role="button"
+                tabIndex={0}
                 onClick={() => {
                   dispatch(setSearchValue(""));
                   dispatch(
                     setFilterCanonizedTopics({
-                      // asofdate: Date.now() / 1000,
                       asof: "default",
                     })
                   );
@@ -179,7 +172,6 @@ const ExistingCampList = ({
                 id="see-more-results"
               >
                 See more results
-              </a>
             </Link>
           )}
         </div>

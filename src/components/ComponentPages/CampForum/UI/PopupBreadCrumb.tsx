@@ -49,13 +49,10 @@ const GetBreadCrumbs = ({ topicRecord, campRecord }) => {
               campRecord?.camp_num
             }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`,
           }}
-        >
-          <a
             id="breadcrumb-topic-link"
             className="!text-canLight hocus:!text-canBlue"
           >
             {truncateText(topicRecord?.topic_name)}
-          </a>
         </Link>
       </Breadcrumb.Item>
 
@@ -74,13 +71,10 @@ const GetBreadCrumbs = ({ topicRecord, campRecord }) => {
               campRecord?.camp_num
             }-${replaceSpecialCharacters(campRecord?.camp_name, "-")}`,
           }}
-        >
-          <a
             id="breadcrumb-camp-link"
             className="!text-canLight hocus:!text-canBlue"
           >
             {truncateText(campRecord?.camp_name)}
-          </a>
         </Link>
       </Breadcrumb.Item>
     </Breadcrumb>

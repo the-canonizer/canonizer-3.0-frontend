@@ -43,9 +43,7 @@ const infoContent = (
       Canons are a set of topics created for specific organizations and cities
       to separate topics exclusively for them from the topics of general
       interest. To get a canon created for your organization, contact{" "}
-      <Link href="mailto:support@canonizer.com">
-        <a>support@canonizer.com</a>
-      </Link>
+      <Link href="mailto:support@canonizer.com">support@canonizer.com</Link>
     </p>
   </div>
 );
@@ -352,11 +350,9 @@ const TopicsList = () => {
   const ViewAllTopics = (
     <div className="text-right">
       {topicsData?.topics?.length ? (
-        <Link href="/browse">
-          <a className={styles.viewAll}>
+        <Link href="/browse" className={styles.viewAll}>
             <Text>View All Topics</Text>
             <i className="icon-angle-right"></i>
-          </a>
         </Link>
       ) : null}
     </div>
@@ -538,14 +534,13 @@ const TopicsList = () => {
                         : item?.topic_name,
                       "-"
                     )}/1-Agreement`}
+                    onClick={() => {
+                      handleTopicClick();
+                    }}
                   >
                     {!item.is_archive ||
                     (item.is_archive && is_camp_archive_checked) ? (
-                      <a
-                        onClick={() => {
-                          handleTopicClick();
-                        }}
-                      >
+                      <>
                         <Text
                           className={
                             item.is_archive
@@ -573,7 +568,7 @@ const TopicsList = () => {
                             ? item?.topic_full_score?.toFixed(2)
                             : item?.topic_score?.toFixed(2)}
                         </Tag>
-                      </a>
+                      </>
                     ) : (
                       <></>
                     )}

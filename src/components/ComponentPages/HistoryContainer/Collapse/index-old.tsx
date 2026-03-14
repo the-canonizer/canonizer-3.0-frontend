@@ -184,8 +184,8 @@ function HistoryCollapse({
       title: "Nick Name",
       dataIndex: "nickNameData",
       render: (text) => (
-        <Link href={text?.path} passHref>
-          <a>{text?.name}</a>
+        <Link href={text?.path}>
+          {text?.name}
         </Link>
       ),
     },
@@ -401,10 +401,8 @@ function HistoryCollapse({
                         <p>
                           {K?.exceptionalMessages?.objectedModalMsgForMoreInfo}
                         </p>
-                        <Link href="/topic/132-Help/4-Disagreement">
-                          <a style={{ fontSize: "16px" }}>
+                        <Link href="/topic/132-Help/4-Disagreement" style={{ fontSize: "16px" }}>
                             https://canonizer.com/topic/132-Help/4-Disagreement
-                          </a>
                         </Link>
                       </Modal>
                     </>

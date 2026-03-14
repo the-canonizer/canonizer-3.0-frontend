@@ -107,9 +107,8 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 href={`/user/supports/${
                   topicRecord?.submitter_nick_id || ""
                 }?canon=${topicRecord?.namespace_id || ""}`}
-                passHref
               >
-                <a>{topicRecord?.submitter_nick_name}</a>
+                {topicRecord?.submitter_nick_name}
               </Link>
             )}
           </Descriptions.Item>
@@ -125,7 +124,7 @@ const CurrentTopicCard = ({ loadingIndicator, backGroundColorClass }: any) => {
                 "-"
               )}`}
             >
-              <a>{K?.exceptionalMessages?.manageTopicButton} </a>
+              {K?.exceptionalMessages?.manageTopicButton}{" "}
             </Link>
           </CustomButton>
         </div>

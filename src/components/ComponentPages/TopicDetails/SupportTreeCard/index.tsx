@@ -539,7 +539,7 @@ const SupportTreeCard = ({
                           },
                         }}
                       >
-                        <a
+                        <span
                           className="flex  gap-2 items-center flex-wrap text-canBlack hover:!text-canBlack line-clamp-1"
                           id="topic_detail_user_support_tree_card_link"
                         >
@@ -583,7 +583,7 @@ const SupportTreeCard = ({
                           >
                             {data[item].nick_name}
                           </span>
-                        </a>
+                        </span>
                       </Link>
                       <ScoreTag
                         topic_score={

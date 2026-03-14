@@ -349,10 +349,9 @@ const UpdateTopic = () => {
             href={`/topic/history/${
               currentTopic?.topic_num
             }-${replaceSpecialCharacters(currentTopic?.topic_name, "-")}`}
+            className="!break-all hover:!text-canHoverBlue"
           >
-            <a className="!break-all hover:!text-canHoverBlue">
               {currentTopic?.topic_name}
-            </a>
           </Link>
           {isMobile && (
             <Popover

@@ -121,7 +121,7 @@ function CompareStatementUIOld({
                             s1["submitter_nick_id"] || ""
                           }?canon=${s1["namespace_id"] || 1}`}
                         >
-                          <a>{s1?.submitter_nick_name}</a>
+                          {s1?.submitter_nick_name}
                         </Link>
                       </Text>
                     </Paragraph>
@@ -156,9 +156,7 @@ function CompareStatementUIOld({
                           <Text strong>Camp About URL : </Text>
                           <Text>
                             {validUrl(s1?.camp_about_url) ? (
-                              <Link href={s1?.camp_about_url || ""}>
-                                <a>{s1?.camp_about_url}</a>
-                              </Link>
+                              <Link href={s1?.camp_about_url || ""}>{s1?.camp_about_url}</Link>
                             ) : null}
                           </Text>
                         </Paragraph>
@@ -170,7 +168,7 @@ function CompareStatementUIOld({
                                 s1["camp_about_nick_id"] || ""
                               }?canon=${s1["namespace_id"] || 1}`}
                             >
-                              <a>{s1?.camp_about_nick_name}</a>
+                              {s1?.camp_about_nick_name}
                             </Link>
                           </Text>
                         </Paragraph>
@@ -245,7 +243,7 @@ function CompareStatementUIOld({
                             s2["submitter_nick_id"] || ""
                           }?canon=${s2["namespace_id"] || 1}`}
                         >
-                          <a>{s2?.submitter_nick_name}</a>
+                          {s2?.submitter_nick_name}
                         </Link>
                       </Text>
                     </Paragraph>
@@ -279,9 +277,7 @@ function CompareStatementUIOld({
                           <Text strong>Camp About URL : </Text>
                           <Text>
                             {validUrl(s2?.camp_about_url) ? (
-                              <Link href={s2?.camp_about_url || ""}>
-                                <a>{s2?.camp_about_url}</a>
-                              </Link>
+                              <Link href={s2?.camp_about_url || ""}>{s2?.camp_about_url}</Link>
                             ) : null}
                           </Text>
                         </Paragraph>
@@ -293,7 +289,7 @@ function CompareStatementUIOld({
                                 s2["camp_about_nick_id"] || ""
                               }?canon=${s2["namespace_id"] || 1}`}
                             >
-                              <a>{s2?.camp_about_nick_name}</a>
+                              {s2?.camp_about_nick_name}
                             </Link>
                           </Text>
                         </Paragraph>
@@ -394,7 +390,7 @@ function CompareStatementUIOld({
                             liveStatement["submitter_nick_id"] || ""
                           }?canon=${liveStatement["namespace_id"] || 1}`}
                         >
-                          <a>{liveStatement?.submitter_nick_name}</a>
+                          {liveStatement?.submitter_nick_name}
                         </Link>
                       </Text>
                     </Paragraph>
@@ -432,9 +428,7 @@ function CompareStatementUIOld({
                           <Text strong>Camp About URL : </Text>
                           <Text>
                             {validUrl(liveStatement?.camp_about_url) ? (
-                              <Link href={liveStatement?.camp_about_url || ""}>
-                                <a>{liveStatement?.camp_about_url}</a>
-                              </Link>
+                              <Link href={liveStatement?.camp_about_url || ""}>{liveStatement?.camp_about_url}</Link>
                             ) : null}
                           </Text>
                         </Paragraph>
@@ -446,7 +440,7 @@ function CompareStatementUIOld({
                                 liveStatement["camp_about_nick_id"] || ""
                               }?canon=${liveStatement["namespace_id"] || 1}`}
                             >
-                              <a>{liveStatement?.camp_about_nick_name}</a>
+                              {liveStatement?.camp_about_nick_name}
                             </Link>
                           </Text>
                         </Paragraph>

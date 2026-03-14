@@ -55,8 +55,8 @@ const SingleTopicWithImage = ({
               )}`,
             }}
             id={`link-image-${topic?.id}`}
+            onClick={onTopicClick}
           >
-            <a onClick={onTopicClick} id={`a-image-${topic?.id}`}>
               <Image
                 alt={topic?.topic_name}
                 className="w-full rounded-lg object-cover h-full max-h-[200px] 2xl:max-h-[250px]"
@@ -68,7 +68,6 @@ const SingleTopicWithImage = ({
                 style={{ aspectRatio: 2 / 2 }}
                 id={`image-${topic?.id}`}
               />
-            </a>
           </Link>
         </Col>
         <Col
@@ -92,15 +91,15 @@ const SingleTopicWithImage = ({
                 }-${replaceSpecialCharacters(topic?.camp_name, "-")}`,
               }}
               id={`link-title-${topic?.id}`}
+              onClick={onTopicClick}
             >
-              <a onClick={onTopicClick} id={`a-title-${topic?.id}`}>
+
                 <Typography.Paragraph
                   className="m-0 text-base lg:text-xl font-medium lg:font-semibold font-inter absolute -top-14 left-1 right-0 text-white px-3 py-0 !mb-0 flex w-full lg:static lg:px-0 lg:py-0 lg:text-canBlack hover:!text-canHoverBlue"
                   id={`paragraph-title-${topic?.id}`}
                 >
                   {topic?.title}
                 </Typography.Paragraph>
-              </a>
             </Link>
             <div
               className="hidden lg:flex items-start justify-center [&_.ant-dropdown-trigger>svg]:fill-canLight [&_.ant-dropdown-trigger>svg]:!text-canLight [&_.ant-dropdown-trigger>svg]:w-[14px] [&_.ant-dropdown-trigger>svg]:h-[14px]"

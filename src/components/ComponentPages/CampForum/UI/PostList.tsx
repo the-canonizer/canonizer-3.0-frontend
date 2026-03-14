@@ -98,11 +98,9 @@ const PostUI = ({
                   href={`/user/supports/${
                     currentThread?.creation_nick_name_id || ""
                   }?canon=${currentThread?.namespace_id || 1}`}
-                  passHref
+                  id="creator-link"
                 >
-                  <a className="" id="creator-link">
                     {currentThread?.creation_nick_name}
-                  </a>
                 </Link>
               </Paragraph>
               <span
