@@ -39,13 +39,7 @@ const ProfileInfoTab = ({
           size={isMobile ? "small" : "default"}
         />
       ) : isGravatarImage && !loadingImage ? (
-        loggedInUser?.email && (
-          <Avatar
-            src={`https://www.gravatar.com/avatar/${md5(
-              loggedInUser?.email
-            )}.png`}
-          />
-        )
+        loggedInUser?.email && <Avatar src={isGravatarImage} />
       ) : (
         <Avatar
           style={{
@@ -60,7 +54,8 @@ const ProfileInfoTab = ({
           }}
           size={isMobile ? "small" : "default"}
         >
-          {loggedUser["first_name"].charAt(0).toUpperCase() +
+          {loggedUser &&
+            loggedUser["first_name"].charAt(0).toUpperCase() + loggedUser &&
             loggedUser["last_name"].charAt(0).toUpperCase()}
         </Avatar>
       )}
@@ -116,17 +111,13 @@ const ProfileInfoTab = ({
       </div>
       {isMobile ? (
         <div className={`mobile_tag ${styles.mobMenuWithIcons}`}>
-          <Link href="/settings">
-            <a onClick={toggleMobNav}>
+          <Link href="/settings" onClick={toggleMobNav}>
               <SettingOutlined />
               Account Settings
-            </a>
           </Link>
-          <Link href="/settings?tab=supported_camps" passHref>
-            <a onClick={toggleMobNav}>
+          <Link href="/settings?tab=supported_camps" onClick={toggleMobNav}>
               <CheckCircleOutlined />
               Supported Camps
-            </a>
           </Link>
           <a onClick={logOut}>
             <LogoutOutlined />

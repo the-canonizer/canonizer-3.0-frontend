@@ -1,24 +1,18 @@
-import { Fragment, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import {
-  getCurrentTopicRecordApi,
-  getCurrentCampRecordApi,
-} from "src/network/api/campDetailApi";
-import {
-  setCurrentTopicRecord,
-  setCurrentCampRecord,
-} from "../../../../..//store/slices/campDetailSlice";
-import { getThreadsList } from "../../../../../network/api/campForumApi";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-import Layout from "../../../../../hoc/layout";
-import CampForumComponent from "../../../../../components/ComponentPages/CampForum";
-import { createToken } from "src/network/api/userApi";
 
-function CampForumListPage({ topicRecord, campRecord, threadList }: any) {
+import { getThreadsList } from "src/network/api/campForumApi";
+import CampThreadComponent from "components/ComponentPages/CampForum";
+import { createToken } from "src/network/api/userApi";
+import { store } from "src/store";
+import {
+  setCurrentCampRecord,
+  setCurrentTopicRecord,
+} from "src/store/slices/campDetailSlice";
+
+function CampForumListPage({ threadList }) {
   const router = useRouter();
-  const dispatch = useDispatch();
-  dispatch(setCurrentTopicRecord(topicRecord));
-  dispatch(setCurrentCampRecord(campRecord));
+
   useEffect(() => {
     if (threadList?.status_code == 404) {
       router?.push(
@@ -28,53 +22,29 @@ function CampForumListPage({ topicRecord, campRecord, threadList }: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    return () => {
+      store.dispatch(setCurrentTopicRecord(null));
+      store.dispatch(setCurrentCampRecord(null));
+    };
+  }, []);
+
   return (
-    <Fragment>
-      <Layout routeName={"forum"}>
-        <div className="" style={{ width: "100%" }}>
-          {threadList?.status_code != "404" && (
-            <CampForumComponent
-              threadlist={
-                threadList?.status_code == 200 ? threadList?.data?.items : []
-              }
-            />
-          )}
-        </div>
-      </Layout>
-    </Fragment>
+    <div className="w-full">
+      {threadList?.status_code != "404" && <CampThreadComponent />}
+    </div>
   );
 }
-export async function getServerSideProps({ req, resolvedUrl }) {
-  let topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
-  let campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
-  let q = `?camp_num=${campNum}&topic_num=${topicNum}&type=all&page=${1}&per_page=${10}&like=`;
-  const reqBody = {
-    topic_num: topicNum,
-    camp_num: campNum,
-    as_of: req.cookies["asof"] ?? "default",
-    as_of_date:
-      req.cookies["asofDate"] && req.cookies["asof"] == "bydate"
-        ? parseFloat(req.cookies["asofDate"])
-        : Date.now() / 1000,
-  };
-  let token = null;
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
-  }
 
-  const [topicRecord, campRecord, threadList] = await Promise.all([
-    getCurrentTopicRecordApi(reqBody, token),
-    getCurrentCampRecordApi(reqBody, token),
-    getThreadsList(q),
-  ]);
+export async function getServerSideProps({ req, resolvedUrl }) {
+  const topicNum = +resolvedUrl?.split("/")[2].split("-")[0];
+  const campNum = +(resolvedUrl?.split("/")[3].split("-")[0] ?? 1);
+  const q = `?camp_num=${campNum}&topic_num=${topicNum}&type=all&page=${1}&per_page=${10}&like=`;
+
+  const [threadList] = await Promise.all([getThreadsList(q)]);
 
   return {
     props: {
-      topicRecord: topicRecord || {},
-      campRecord: campRecord?.campData || {},
       threadList: threadList || {},
     },
   };

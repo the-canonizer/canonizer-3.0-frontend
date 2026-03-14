@@ -1,6 +1,12 @@
 import { message } from "antd";
 
-import { getCookies, handleError, isServer } from "../../utils/generalUtility";
+import {
+  getCookies,
+  getCookiesExpirationTime,
+  handleError,
+  isServer,
+  isTokenValid,
+} from "../../utils/generalUtility";
 import {
   setAuthToken,
   removeAuthToken,
@@ -21,25 +27,84 @@ import {
 import { setHeaderData } from "src/store/slices/notificationSlice";
 import { setIsChecked } from "src/store/slices/recentActivitiesSlice";
 
-export const createToken = async () => {
+export const createTokenForSSG = async () => {
   try {
     const token = await NetworkCall.fetch(UserRequest.createToken());
-
-    if (!isServer()) {
-      document.cookie =
-        "loginToken=" +
-        token?.data?.access_token +
-        "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
-      localStorage.setItem("auth_token", token?.data?.access_token);
-    }
-
-    store.dispatch(setAuthToken(token?.data?.access_token));
-
-    return token.data;
+    return token.data?.access_token;
   } catch (error) {
     handleError(error);
   }
 };
+
+export const createNewToken = async (req, res) => {
+  try {
+    const token = await NetworkCall.fetch(UserRequest.createToken());
+
+    if (!token) {
+      console.log("Failed to retrieve access token: ", token);
+    } else {
+      console.log("SUCCESSFULLY RETRIEVED TOKEN:", token?.data?.access_token);
+    }
+
+    if (isServer()) {
+      res.setHeader(
+        "Set-Cookie",
+        "loginToken" +
+        "=" +
+        token?.data?.access_token +
+        getCookiesExpirationTime()
+      );
+    }
+    if (!isServer()) {
+      document.cookie =
+        "loginToken=" + token?.data?.access_token + getCookiesExpirationTime();
+    }
+    store.dispatch(setAuthToken(token?.data?.access_token));
+    store.dispatch(logoutUser());
+
+    return token.data?.access_token;
+  } catch (error) {
+    console.error("createNewToken Error:", error);
+    handleError(error);
+  }
+};
+
+export const createToken = async (req, res) => {
+  const getTokenFromCookies = () =>
+    isServer() ? req?.cookies?.loginToken : (getCookies() as any)?.loginToken;
+  let existingToken = getTokenFromCookies();
+  if (existingToken && isTokenValid(existingToken)) {
+    return existingToken;
+  }
+  return await createNewToken(req, res);
+};
+
+// TODO: remove after testing
+// export const createToken = async (req, res, ssg) => {
+//   if (isServer()) {
+//     if (!ssg && req?.cookies["loginToken"]) {
+//       const isValidToken = isTokenValid(req?.cookies["loginToken"]);
+//       if (isValidToken) {
+//         return req.cookies["loginToken"];
+//       } else {
+//         return await createNewToken(req, res);
+//       }
+//     } else {
+//       return await createNewToken(req, res);
+//     }
+//   } else {
+//     if ((getCookies() as any)?.loginToken) {
+//       const isValidToken = isTokenValid((getCookies() as any)?.loginToken);
+//       if (isValidToken) {
+//         return (getCookies() as any)?.loginToken;
+//       } else {
+//         return await createNewToken(null, null);
+//       }
+//     } else {
+//       return await createNewToken(null, null);
+//     }
+//   }
+// };
 
 export const login = async (email: string, password: string) => {
   try {
@@ -50,9 +115,7 @@ export const login = async (email: string, password: string) => {
     store.dispatch(setAuthToken(res.data.auth?.access_token));
 
     document.cookie =
-      "loginToken=" +
-      res.data.auth?.access_token +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      "loginToken=" + res.data.auth?.access_token + getCookiesExpirationTime();
 
     let payload = {
       ...res.data.user,
@@ -80,6 +143,8 @@ export const logout = async (error = "", status = null, count: number = 1) => {
 
   try {
     if (error) {
+      document.cookie =
+        "isUserAuthenticated=" + false + getCookiesExpirationTime();
       store.dispatch(logoutUser());
       store.dispatch(removeAuthToken());
       store.dispatch(updateStatus(status));
@@ -100,7 +165,7 @@ export const logout = async (error = "", status = null, count: number = 1) => {
           is_archive: 0,
         })
       );
-      store.dispatch(setUserNickNames(null))
+      store.dispatch(setUserNickNames(null));
 
       if (+state.ui.apiStatus === +status) {
         return;
@@ -115,11 +180,10 @@ export const logout = async (error = "", status = null, count: number = 1) => {
     let res = await NetworkCall.fetch(UserRequest.logoutCall(auth.token));
 
     if (res?.status_code === 200) {
-      document.cookie =
-        "loginToken=; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      document.cookie = `loginToken=${getCookiesExpirationTime()}`;
 
       if (!(getCookies() as any)?.loginToken) {
-        const tRes = await createToken();
+        const tRes = await createToken(null, null);
         if (tRes?.access_token) {
           store.dispatch(setLogout());
           store.dispatch(setIsChecked(false));
@@ -170,14 +234,14 @@ export const verifyOtp = async (values: object) => {
     };
 
     document.cookie =
-      "loginToken=" +
-      res.data.auth?.access_token +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      "loginToken=" + res.data.auth?.access_token + getCookiesExpirationTime();
+
     store.dispatch(setLoggedInUser(payload));
 
     return res;
   } catch (err) {
     handleError(err);
+    return err.error.data;
   }
 };
 
@@ -437,6 +501,7 @@ export const forgotPasswordVerifyOTP = async (values: object) => {
     return res;
   } catch (err) {
     handleError(err);
+    return err?.error?.data;
   }
 };
 
@@ -508,6 +573,22 @@ export const updateNickName = async (values: object, id: string) => {
   return res;
 };
 
+export const setDefaultNickname = async (values: object) => {
+  let state = store.getState();
+  const { auth } = state;
+
+  const res = await NetworkCall.fetch(
+    UserRequest.setDefaultNickname(values, auth?.token)
+  )
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
+
 export const resendOTPForRegistration = async (values: object) => {
   try {
     const res = await NetworkCall.fetch(
@@ -520,12 +601,16 @@ export const resendOTPForRegistration = async (values: object) => {
   }
 };
 
-export const getDirectSupportedCampsList = async () => {
+export const getDirectSupportedCampsList = async (
+  page = 1,
+  perPage = 10,
+  search = ""
+) => {
   let state = store.getState();
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getDirectSupportedCampsList(auth?.token)
+    UserRequest.getDirectSupportedCampsList(page, perPage, search, auth?.token)
   )
     .then((value) => {
       return value;
@@ -601,12 +686,36 @@ export const addDelegateSupportCamps = async (body) => {
   return res;
 };
 
-export const getDelegatedSupportCampsList = async () => {
+// export const getDirectSupportedCampsList = async (
+//   page = 1,
+//   perPage = 10,
+//   search = ""
+// ) => {
+//   let state = store.getState();
+//   const { auth } = state;
+
+//   const res = await NetworkCall.fetch(
+//     UserRequest.getDirectSupportedCampsList(page, perPage, search, auth?.token)
+//   )
+//     .then((value) => {
+//       return value;
+//     })
+//     .catch((errors) => {
+//       handleError(errors);
+//     });
+//   return res;
+// };
+
+export const getDelegatedSupportCampsList = async (
+  page = 1,
+  perPage = 10,
+  search = ""
+) => {
   let state = store.getState();
   const { auth } = state;
 
   const res = await NetworkCall.fetch(
-    UserRequest.getDelegatedSupportCampsList(auth?.token)
+    UserRequest.getDelegatedSupportCampsList(page, perPage, search, auth?.token)
   )
     .then((value) => {
       return value;
@@ -864,9 +973,7 @@ export const verifyEmailOnSocial = async (body) => {
       ...res.data.user,
     };
     document.cookie =
-      "loginToken=" +
-      res.data.auth?.access_token +
-      "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+      "loginToken=" + res.data.auth?.access_token + getCookiesExpirationTime();
     store.dispatch(setLoggedInUser(payload));
 
     return res;
@@ -999,7 +1106,9 @@ export const getChangeEmailRequest = async () => {
 
 export const EmailChangeVerificationOTP = async (body) => {
   try {
-    const res = await NetworkCall.fetch(UserRequest.emailChangeVerificationOTP(body));
+    const res = await NetworkCall.fetch(
+      UserRequest.emailChangeVerificationOTP(body)
+    );
     return res;
   } catch (err) {
     handleError(err);
@@ -1033,7 +1142,9 @@ export const UpdateNewEmailVerification = async (body) => {
 
 export const ReplaceAndUpdateNewEmail = async (body) => {
   try {
-    const res = await NetworkCall.fetch(UserRequest.replaceAndUpdateEmail(body));
+    const res = await NetworkCall.fetch(
+      UserRequest.replaceAndUpdateEmail(body)
+    );
     return res;
   } catch (err) {
     handleError(err);
@@ -1046,4 +1157,59 @@ export const ReplaceAndUpdateNewEmail = async (body) => {
       return err.error.data;
     }
   }
+};
+
+export const facebookAccountDeletionStatus = async (confirmation_code) => {
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.checkFacebookAccountDeleteStatus(confirmation_code)
+    );
+    return res;
+  } catch (err) {
+    handleError(err);
+    return err.error.data;
+  }
+};
+
+export const GetUserPreferences = async (token = "") => {
+  let state = store.getState();
+  const { auth } = state;
+  let tcn = "";
+  if (token) {
+    tcn = token;
+  } else {
+    tcn = auth?.token;
+  }
+  const res = await NetworkCall.fetch(UserRequest.GetUserPreferences(tcn))
+    .then((value) => {
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
+};
+
+export const UpdateUserPreferences = async (values: object) => {
+  let state = store.getState();
+  const { auth } = state;
+  const res = await NetworkCall.fetch(
+    UserRequest.UpdateUserPreferences(values, auth?.token)
+  )
+    .then((value) => {
+      let payload = {
+        ...state.auth.loggedInUser,
+        first_name: value.data.first_name,
+        last_name: value.data.last_name,
+        phone_number: value.data.phone_number,
+        birthday: value.data.birthday,
+        email: value.data.email,
+      };
+      store.dispatch(setLoggedInUser(payload));
+      return value;
+    })
+    .catch((errors) => {
+      handleError(errors);
+    });
+  return res;
 };

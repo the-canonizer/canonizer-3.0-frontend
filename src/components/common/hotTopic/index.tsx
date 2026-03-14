@@ -36,7 +36,7 @@ function HotTopic() {
 
   return (
     <Fragment>
-      {topicData?.length>0 && topicData? (
+      {topicData?.length > 0 && topicData ? (
         <Slider {...settings}>
           {topicData?.map((topic) => (
             <Card
@@ -115,10 +115,9 @@ function HotTopic() {
                             topic?.camp_name || "Agreement"
                           }`,
                         }}
+                        className={styles.links}
                       >
-                        <a className={styles.links}>
                           View Topic <DoubleRightOutlined />
-                        </a>
                       </Link>
                     )}
                   </div>

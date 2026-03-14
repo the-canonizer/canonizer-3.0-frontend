@@ -43,9 +43,43 @@ export default class TopicRequest extends Request {
     );
   }
   //GetHotTopic
-  static GetHotTopic(token: string = "") {
+  static GetHotTopic(page, parPage, token: string = "") {
     return new Request(
-      K.Network.URL.GetHotTopic,
+      K.Network.URL.GetHotTopic + `?page=${page}&per_page=${parPage}`,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+  //GetPreferedTopic
+  static GetPreferedTopic(page, parPage, is_random, token: string = "") {
+    return new Request(
+      K.Network.URL.GetPrefTopic +
+        `?page=${page}&per_page=${parPage}&is_random=${is_random}`,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+  // GetFeaturedTopic
+  static GetFeaturedTopic(token: string = "") {
+    return new Request(
+      K.Network.URL.GetFeaturedTopic,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+  // GetConsensusVideoPodcasts
+  static GetConsensusVideoPodcasts(page, parPage,token: string = "") {
+    return new Request(
+      K.Network.URL.GetconsensusVideoPodcasts+ `?page=${page}&per_page=${parPage}`,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,

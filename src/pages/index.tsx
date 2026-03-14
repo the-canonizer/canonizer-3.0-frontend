@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 
-import Layout from "src/hoc/layout";
 import HomePageContainer from "src/components/ComponentPages/Home";
 import { getCanonizedWhatsNewContentApi } from "src/network/api/homePageApi";
 import {
@@ -10,19 +10,45 @@ import {
   setCurrentDate,
 } from "src/store/slices/filtersSlice";
 import { GetUserProfileInfo, createToken } from "src/network/api/userApi";
-import { setAuthToken, setLoggedInUser } from "src/store/slices/authSlice";
-import { setHotTopic } from "src/store/slices/hotTopicSlice";
-import { GetHotTopicDetails } from "src/network/api/topicAPI";
+import {
+  setAuthToken,
+  setLoggedInUser,
+  setLogOutType,
+} from "src/store/slices/authSlice";
+import {
+  setFeaturedTopic,
+  setHotTopic,
+  setPrefTopic,
+  setConsensusVideoPodcasts,
+} from "src/store/slices/hotTopicSlice";
+import {
+  GetFeaturedTopicDetails,
+  GetHotTopicDetails,
+  GetPreferedTopicDetails,
+  GetConsensusVideoPodcastDetails
+} from "src/network/api/topicAPI";
+import { store } from "src/store";
+import { getCookiesExpirationTime, isShowAds } from "src/utils/generalUtility";
+import Head from "next/head";
+import GoogleAd from "components/googleAds";
 
-function Home({ current_date, hotTopicData }: any) {
+const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
+  ssr: false,
+});
+
+function Home({ current_date, hotTopicData, featuredData, prefData, consensusVideoPodcastData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
   dispatch(setFilterCanonizedTopics({ search: "" }));
   dispatch(setCurrentDate(current_date));
+
   /* eslint-disable */
   useEffect(() => {
     dispatch(setHotTopic(hotTopicData));
+    dispatch(setFeaturedTopic(featuredData));
+    dispatch(setPrefTopic(prefData));
+    dispatch(setConsensusVideoPodcasts(consensusVideoPodcastData));
     getCanonizedWhatsNewContentApi();
   }, []);
   /* eslint-enable */
@@ -54,9 +80,7 @@ function Home({ current_date, hotTopicData }: any) {
           })
         );
         document.cookie =
-          "loginToken=" +
-          accessToken +
-          "; expires=Thu, 15 Jul 2030 00:00:00 UTC; path=/";
+          "loginToken=" + accessToken + getCookiesExpirationTime();
         // eslint-disable-next-line no-unused-vars
         const { access_token, ...rest } = router?.query;
         router.query = rest;
@@ -65,38 +89,69 @@ function Home({ current_date, hotTopicData }: any) {
     };
 
     if (accessToken) {
-      localStorage.setItem("auth_token", accessToken);
       dispatch(setAuthToken(accessToken));
       getData(accessToken);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const logOutType = store?.getState()?.auth?.logOutType;
+    if (logOutType) store.dispatch(setLogOutType(null));
+  }, [store?.getState()?.auth?.logOutType]);
+
   return (
-    <Layout>
+    <Fragment>
+      <Head>
+        {isShowAds() && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT}`}
+            crossOrigin="anonymous"
+          ></script>
+        )}
+      </Head>
       <HomePageContainer />
-    </Layout>
+
+      <Tour />
+    </Fragment>
   );
 }
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req, res }) {
   const currentDate = new Date().valueOf();
   let token = null;
-  if (req.cookies["loginToken"]) {
-    token = req.cookies["loginToken"];
-  } else {
-    const response = await createToken();
-    token = response?.access_token;
+  token = await createToken(req, res);
+
+  try {
+    const [resData, featuredData, prefData, consensusVideoPodcastData] = await Promise.all([
+      GetHotTopicDetails(1, 6, token as string),
+      GetFeaturedTopicDetails(token as string),
+      GetPreferedTopicDetails(1, 6, true, token as string),
+      GetConsensusVideoPodcastDetails(1, 6, token as string)
+    ]);
+
+    return {
+      props: {
+        current_date: currentDate,
+        hotTopicData: resData?.data?.items ? resData?.data?.items : [],
+        featuredData: featuredData?.data?.items ? featuredData?.data?.items : [],
+        prefData: prefData?.data?.items ? prefData?.data?.items : null,
+        consensusVideoPodcastData: consensusVideoPodcastData?.data?.items ? consensusVideoPodcastData?.data?.items : null,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+    return {
+      props: {
+        current_date: currentDate,
+        hotTopicData: [],
+        featuredData: [],
+        prefData: null,
+        consensusVideoPodcastData: null,
+      },
+    };
   }
-
-  const resData = await GetHotTopicDetails(token as string);
-
-  return {
-    props: {
-      current_date: currentDate,
-      hotTopicData: resData?.data ? resData?.data : null,
-    },
-  };
 }
 
 Home.displayName = "Home";

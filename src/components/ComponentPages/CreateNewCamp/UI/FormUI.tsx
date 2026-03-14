@@ -1,25 +1,41 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
-  Card,
   Form,
   Input,
-  Button,
   Select,
   Row,
   Col,
   Typography,
   Tooltip,
+  Collapse,
 } from "antd";
-
-import styles from "../../CreateNewTopic/UI/createNewTopic.module.scss";
-import messages from "../../../../messages";
-import PreventSubCamps from "../../../common/preventSubCampCheckbox";
+import {
+  ApartmentOutlined,
+  CloseOutlined,
+  CrownOutlined,
+  LinkOutlined,
+  SaveOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { RootState } from "src/store";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
+import messages from "src/messages";
+import PreventSubCamps from "components/common/preventSubCampCheckbox";
+import { RootState } from "src/store";
+import CommonCards from "components/shared/Card";
+import CustomSkelton from "components/common/customSkelton";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import Inputs from "components/shared/FormInputs";
+import AlignIcon from "components/ComponentPages/CreateNewTopic/UI/alignIcon";
+import SelectInputs from "components/shared/FormInputs/select";
+import { defaultNicknameData } from "src/utils/generalUtility";
 
 const { Option } = Select;
 const { Text } = Typography;
+const { Panel } = Collapse;
 
 const {
   labels,
@@ -29,8 +45,49 @@ const {
   campNameRule,
   campAboutUrlRule,
   parentCampRule,
-  keywordsRule,
 } = messages;
+
+function shouldHideCamp(camps, campNum) {
+  // Create a map for faster lookups
+  const campMap = {};
+
+  camps.forEach((camp) => {
+    campMap[camp.camp_num] = camp;
+  });
+
+  // Start with the current camp
+  let currentCamp = campMap[campNum];
+
+  // Check if the current camp exists
+  if (!currentCamp) {
+    return false;
+  }
+
+  // First, check if the current camp is disabled or one-level
+  if (currentCamp.is_disabled === 1 || currentCamp.is_one_level === 1) {
+    return true;
+  }
+
+  // Then traverse up the ancestry chain
+  while (currentCamp && currentCamp.parent_camp_num !== null) {
+    // Get the parent camp
+    const parentCamp = campMap[currentCamp.parent_camp_num];
+
+    // If parent doesn't exist, break the loop
+    if (!parentCamp) break;
+
+    // Check if parent is disabled or one-level
+    if (parentCamp.is_disabled === 1 || parentCamp.is_one_level === 1) {
+      return true;
+    }
+
+    // Move up to the parent
+    currentCamp = parentCamp;
+  }
+
+  // Camp is not disabled
+  return false;
+}
 
 const CreateCampFormUI = ({
   onFinish,
@@ -43,325 +100,544 @@ const CreateCampFormUI = ({
   campNickName,
   options,
   onCheckboxChange,
-  onParentCampChange,
   isLoading,
+  isEdit,
+  isDisabled,
+  onCampChange,
+  onCampNameBlur,
+  values,
+  campLeaderData = null,
+  getCampLeaderData,
 }: any) => {
   const router = useRouter();
-  const { campRecord } = useSelector((state: RootState) => ({
-    campRecord: state?.topicDetails?.currentCampRecord,
-  }));
 
-  const CardTitle = (
-    <span className={styles.cardTitle} data-testid="head" id="card-title">
-      Create New Camp
-    </span>
+  const { campRecord, topicRecord, filterObject } = useSelector(
+    (state: RootState) => ({
+      campRecord: state?.topicDetails?.currentCampRecord,
+      topicRecord: state?.topicDetails?.currentTopicRecord,
+      filterObject: state?.filters?.filterObject,
+    })
   );
-  // const toolTipContent = "This camp is under review";
+
+  const [isAboutFocused, setIsAboutFocused] = useState(false);
+  const [isCampLeaderFocused, setIsCampLeaderFocused] = useState(false);
+
   const archiveToolTipContent = "This camp is archived";
+
   useEffect(() => {
     campRecord?.is_archive && router.pathname == "/camp/create/[...camp]"
       ? router?.back()
       : "";
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <Fragment>
-      <Card
-        title={CardTitle}
-        className={`can-card-style ${styles.form_card}`}
-        extra={
-          <PreventSubCamps
-            options={options}
-            onCheckboxChange={onCheckboxChange}
-          />
-        }
-      >
-        <Form
-          autoComplete="off"
-          form={form}
-          onFinish={onFinish}
-          name="create_new_camp"
-          className={`${styles.createNewTopicForm}`}
-          layout={"vertical"}
-          scrollToFirstError
-          validateTrigger={messages.formValidationTypes()}
-          initialValues={{
-            ...initialValue,
-          }}
+  const getNickNameInput = () => {
+    const defaultNickName =
+      defaultNicknameData(nickNameList)?.nick_name ||
+      values?.nick_name ||
+      defaultNicknameData(nickNameList)?.id ||
+      nickNameList[0]?.id;
+
+    const selectInputProps: any = {
+      label: (
+        <Fragment>
+          {labels.cr_nick_name}
+          <span className="required">*</span>
+        </Fragment>
+      ),
+      key: "nickNamesKeyName",
+      name: "nick_name",
+      options: nickNameList,
+      nameKey: "nick_name",
+      placeholder: placeholders.nickName,
+      allowClear: true,
+      size: "large",
+      dataid: "nick-name",
+      showSearch: true,
+      optionFilterProp: "children",
+      inputClassName:
+        "border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto",
+      rules: nickNmRule,
+      prefix: <UserOutlined className="px-3 text-canBlack" />,
+      onSelect: (val) => form.setFieldValue("nick_name", val),
+      id: "nickname-dropdown",
+      lastValue: form.getFieldValue("nick_name"),
+      value: form.getFieldValue("nick_name") || defaultNickName, // Use last set value or default
+    };
+
+    if (nickNameList?.length) {
+      selectInputProps.defaultValue = defaultNickName;
+      selectInputProps.initialValue = defaultNickName;
+      selectInputProps.key = "nickNamesWithKeyName";
+    }
+    return <SelectInputs {...selectInputProps} />;
+  };
+
+  const getParentCampInput = () => {
+    const selectInputProps: any = {
+      label: (
+        <>
+          {labels.cr_parent_camp}
+          <span className="required">*</span>
+        </>
+      ),
+      key: "parent_camp_numKeys_",
+      name: "parent_camp_num",
+      options: parentCamp,
+      nameKey: "camp_name",
+      placeholder: "Parent camp",
+      allowClear: true,
+      size: "large",
+      dataid: "parent-camp-name",
+      showSearch: true,
+      optionFilterProp: "children",
+      filterOption: (input, option) =>
+        ((option?.children as any)?.props?.children ?? "")
+          .toLowerCase()
+          .includes(input.toLowerCase()),
+      inputClassName:
+        "border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto",
+      rules: parentCampRule,
+      prefix: <ApartmentOutlined className="px-3 text-canBlack" />,
+      onSelect: (val) => form.setFieldValue("parent_camp_num", val),
+      id: "parent-camp-dropdown",
+      isDefaultOption: false,
+      optionsData: parentCamp.map((camp) => (
+        <Option
+          value={camp.camp_num}
+          key={camp.id}
+          id={`parent-camp-${camp.id}`}
+          camp={camp}
+          disabled={camp.is_archive ? true : false}
         >
-          <Row gutter={16}>
-            <Col xs={24} sm={12}>
-              {nickNameList?.length > 0 ? (
-                <Form.Item
-                  label={
-                    <>
-                      {labels.cr_nick_name}
-                      <span className="required">*</span>
-                    </>
-                  }
-                  name="nick_name"
-                  {...nickNmRule}
-                  initialValue={nickNameList[0]?.id}
-                >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                    data-id="nick-name"
-                    showSearch
-                    optionFilterProp="children"
-                    id="nickname-dropdown"
-                  >
-                    {nickNameList.map((nick, idx) => (
-                      <Option
-                        key={nick.id}
-                        value={nick.id}
-                        id={`nick-name-${idx}`}
-                      >
-                        {nick.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-              {nickNameList?.length <= 0 ? (
-                <Form.Item
-                  label={labels.cr_nick_name}
-                  name="nick_name"
-                  {...nickNmRule}
-                >
-                  <Select
-                    placeholder={placeholders.nickName}
-                    allowClear
-                    size={"large"}
-                    data-id="nick-name"
-                    showSearch
-                    optionFilterProp="children"
-                    id="nickname-dropdown"
-                  ></Select>
-                </Form.Item>
-              ) : null}
-            </Col>
-            <Col xs={24} sm={12}>
-              {parentCamp?.length > 0 ? (
-                <Form.Item
-                  label={
-                    <>
-                      {labels.cr_parent_camp}
-                      <span className="required">*</span>
-                    </>
-                  }
-                  name="parent_camp_num"
-                  {...parentCampRule}
-                  initialValue={topicData?.camp_num}
-                >
-                  <Select
-                    showSearch
-                    size={"large"}
-                    placeholder="Parent camp"
-                    data-id="parent-camp"
-                    onChange={onParentCampChange}
-                    optionFilterProp="children"
-                    id="parent-camp-dropdown"
-                    filterOption={(input, option) =>
-                      ((option?.children as any)?.props?.children ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                  >
-                    {parentCamp.map((camp) => (
-                      <Option
-                        value={camp.camp_num}
-                        key={camp.id}
-                        id={`parent-camp-${camp.id}`}
-                        camp={camp}
-                        disabled={camp.is_archive ? true : false}
-                      >
-                        <Tooltip
-                          title={camp.is_archive ? archiveToolTipContent : null}
-                        >
-                          {camp.camp_name}
-                        </Tooltip>
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              ) : null}
-              {parentCamp?.length <= 0 ? (
-                <Form.Item
-                  label={labels.cr_parent_camp}
-                  name="parent_camp_num"
-                  {...parentCampRule}
-                  initialValue={topicData?.camp_num}
-                >
-                  <Select
-                    allowClear
-                    size={"large"}
-                    placeholder="Parent camp"
-                    data-id="parent-camp"
-                    showSearch
-                    optionFilterProp="children"
-                    id="parent-camp-dropdown"
-                  >
-                    <Option
-                      value={topicData?.camp_num}
-                      id={`parent-camp-${topicData?.camp_num}`}
-                    >
-                      {topicData?.camp_name}
-                    </Option>
-                  </Select>
-                </Form.Item>
-              ) : null}
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col xs={24} sm={12}>
-              <Form.Item
+          <Tooltip title={camp.is_archive ? archiveToolTipContent : null}>
+            {camp.camp_name}
+          </Tooltip>
+        </Option>
+      )),
+      value: values?.parent_camp_num || topicData?.camp_num,
+      lastValue: form.getFieldValue("parent_camp_num"),
+    };
+
+    if (parentCamp?.length) {
+      selectInputProps.defaultValue =
+        values?.parent_camp_num || topicData?.camp_num;
+      selectInputProps.initialValue =
+        values?.parent_camp_num || topicData?.camp_num;
+      selectInputProps.key = "parent_camp_numKeys_Name";
+    }
+
+    return <SelectInputs {...selectInputProps} />;
+  };
+
+  const formInitValue = {
+    ...initialValue,
+    nick_name: defaultNicknameData(nickNameList)?.id || nickNameList[0]?.id,
+    // nick_name: values?.nick_name || parentCamp[0]?.id,
+    parent_camp_num: values?.parent_camp_num || topicData?.camp_num,
+  };
+
+  const selectedParentCamp = parentCamp.find(
+    (camp) => camp.camp_num === values?.parent_camp_num
+  );
+
+  const isHidden = shouldHideCamp(parentCamp, values?.parent_camp_num);
+
+  const shouldDisableOneLevelAndAdditionalCheckbox = () => {
+    return !!(
+      parentCamp.length < 1 ||
+      isHidden ||
+      selectedParentCamp?.is_one_level === 1 ||
+      selectedParentCamp?.is_disabled === 1 ||
+      selectedParentCamp?.parent_is_one_level ||
+      selectedParentCamp?.parent_is_disabled
+    );
+  };
+
+  return (
+    <CommonCards className="border-0 bg-white" id="common-cards">
+      <header className="mb-14" id="header">
+        <Typography.Paragraph
+          className="text-xl text-canBlack font-medium"
+          id="header-title"
+        >
+          {isEdit ? "Update Camp" : "Creating a New Camp"}
+        </Typography.Paragraph>
+        <Typography.Paragraph
+          className="text-canBlack opacity-80 mt-3"
+          id="header-subtitle"
+        >
+          Input information required to {isEdit ? "update" : "create"} a camp.
+        </Typography.Paragraph>
+      </header>
+      <Form
+        autoComplete="off"
+        form={form}
+        onFinish={onFinish}
+        name="create_new_camp"
+        className={`[&_label]:text-sm [&_label]:font-semibold [&_label]:text-canBlack [&_label_span]:ml-[4px] [&_label_span]:font-normal [&_label_span]:text-[#6e7880] [&_label_span]:text-[92%] [&_label]:before:absolute [&_label]:before:right-[-15px]`}
+        layout={"vertical"}
+        scrollToFirstError
+        validateTrigger={messages.formValidationTypes()}
+        initialValues={formInitValue}
+        id="create-new-camp-form"
+      >
+        <Row gutter={16} id="form-row-1">
+          <Col md={24} xs={24} id="form-col-camp-name">
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+                id="camp-name-skeleton"
+              />
+            ) : (
+              <Inputs
                 label={
                   <Fragment>
                     {labels.cr_camp_name}
                     <span className="required">*</span>
-                    <span>(Limit 30 Chars)</span>
+                    <span>(Limit 80 Chars)</span>
                   </Fragment>
                 }
                 name="camp_name"
-                {...campNameRule}
-              >
-                <Input size={"large"} placeholder="Camp name" maxLength={30} />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label={labels.cr_keywords}
-                name="key_words"
-                {...keywordsRule}
-              >
-                <Input size={"large"} placeholder="Keywords" />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item
-                className={styles.edit_summary_input}
-                label={
-                  <Fragment>
-                    {labels.cr_edit_summary}
-                    <span>{labels.brief}</span>
-                  </Fragment>
+                rules={campNameRule}
+                placeholder="Camp name"
+                size={"large"}
+                maxLength={80}
+                prefix={
+                  <div className="pr-3">
+                    <AlignIcon fill="#242B37" />
+                  </div>
                 }
-                name="note"
-                {...summaryRule}
-              >
-                <Input.TextArea
-                  rows={6}
-                  placeholder={placeholders.editSummary}
+                onKeyUp={onCampChange}
+                onBlur={onCampNameBlur}
+                disabled={!!(parentCamp.length < 1)}
+                id="camp-name-input"
+              />
+            )}
+          </Col>
+          <Col xs={24} sm={12} id="form-col-nick-name">
+            {isLoading ? (
+              <CustomSkelton
+                skeltonFor="list"
+                bodyCount={1}
+                stylingClass="listSkeleton"
+                isButton={false}
+                id="nick-name-skeleton"
+              />
+            ) : (
+              getNickNameInput()
+            )}
+          </Col>
+          {parentCamp.length >= 1 && (
+            <Col xs={24} sm={12} id="form-col-parent-camp">
+              {isLoading ? (
+                <CustomSkelton
+                  skeltonFor="list"
+                  bodyCount={1}
+                  stylingClass="listSkeleton"
+                  isButton={false}
+                  id="parent-camp-skeleton"
                 />
-              </Form.Item>
-              <Form.Item noStyle>
-                <Text className={styles.advanceuser}>
-                  {labels.cr_keywords_sp}
-                </Text>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item
-                label={
-                  <Fragment>
-                    {labels.cr_camp_url}
-                    <span>(Limit 1024 Chars)</span>
-                  </Fragment>
-                }
-                name="camp_about_url"
-                {...campAboutUrlRule}
-              >
-                <Input
-                  placeholder={placeholders.campURL}
-                  size={"large"}
-                  maxLength={1024}
-                />
-              </Form.Item>
-            </Col>
-
-            <Col xs={24} sm={12}>
-              {campNickName?.length > 0 ? (
-                <Form.Item
-                  label={labels.cr_nick_name_about}
-                  name="camp_about_nick_id"
-                >
-                  <Select
-                    placeholder={placeholders.campAboutNickName}
-                    allowClear
-                    size={"large"}
-                    data-id="camp-about-nick-id"
-                    showSearch
-                    optionFilterProp="children"
-                    id="camp-about-nick-dropdown"
-                  >
-                    <Option value="" id="camp-about-nick-custom">
-                      {placeholders.campAboutNickName}
-                    </Option>
-                    {campNickName.map((nc) => (
-                      <Option
-                        value={nc.id}
-                        key={nc.id}
-                        id={`camp-about-nick-${nc.id}`}
-                      >
-                        {nc.nick_name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
               ) : (
-                <Form.Item
-                  label={labels.cr_nick_name_about}
-                  name="camp_about_nick_id"
-                >
-                  <Select
-                    placeholder={placeholders.campAboutNickName}
-                    allowClear
-                    size={"large"}
-                    data-id="camp-about-nick-id"
-                    showSearch
-                    optionFilterProp="children"
-                    id="camp-about-nick-dropdown"
-                  >
-                    <Option value="" id="camp-about-nick-custom">
-                      {placeholders.campAboutNickName}
-                    </Option>
-                  </Select>
-                </Form.Item>
+                getParentCampInput()
               )}
             </Col>
-          </Row>
+          )}
+          {isEdit && (
+            <Fragment>
+              <Col
+                xs={24}
+                sm={parentCamp.length >= 1 ? 24 : 12}
+                xl={parentCamp.length >= 1 ? 24 : 12}
+                id="form-col-camp-leader"
+              >
+                <Form.Item
+                  label="Camp Leader"
+                  extra={
+                    initialValue && initialValue?.camp_leader_nick_id ? (
+                      <span className="text-[10px]">
+                        (
+                        <Link
+                          href={`/user/supports/${
+                            campLeaderData &&
+                            campLeaderData?.find(
+                              (CL) => CL?.camp_leader === true
+                            )?.nick_name_id
+                          }?canon=${
+                            topicRecord?.namespace_id
+                              ? topicRecord?.namespace_id
+                              : filterObject?.namespace_id
+                          }`}
+                          className="text-canBlue"
+                          id="camp-leader-link"
+                        >
+                            {getCampLeaderData() + " "}
+                        </Link>
+                        is currently the camp leader )
+                      </span>
+                    ) : (
+                      <span className="text-[10px]">
+                        (No one is currently camp leader)
+                      </span>
+                    )
+                  }
+                  name="camp_leader_nick_id"
+                  className={`text-14 text-canBlack font-medium`}
+                  id="camp-leader-item"
+                >
+                  {isLoading ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass="listSkeleton"
+                      isButton={false}
+                      id="camp-leader-skeleton"
+                    />
+                  ) : (
+                    <div
+                      className={`outerDiv flex border rounded ${
+                        isCampLeaderFocused
+                          ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
+                          : ""
+                      }`}
+                      id="camp-leader-select-wrapper"
+                    >
+                      <CrownOutlined
+                        className="px-3 text-canBlack"
+                        id="camp-leader-icon"
+                      />
+                      <Select
+                        showSearch
+                        size={"large"}
+                        placeholder="Camp Leader"
+                        defaultValue={getCampLeaderData()}
+                        optionFilterProp="children"
+                        allowClear={false}
+                        filterOption={(input, option) =>
+                          ((option?.children as any)?.props?.children ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
+                        className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
+                        onFocus={() => setIsCampLeaderFocused(true)}
+                        onBlur={() => setIsCampLeaderFocused(false)}
+                        onChange={(val) =>
+                          form.setFieldValue("camp_leader_nick_id", val)
+                        }
+                        id="camp-leader-select"
+                      >
+                        {campLeaderData?.length > 0 &&
+                          campLeaderData?.map((lead) => (
+                            <Select.Option
+                              value={lead.nick_name_id}
+                              key={lead?.nick_name_id}
+                              id={`camp-leader-option-${lead?.nick_name_id}`}
+                            >
+                              {lead?.nick_name}
+                            </Select.Option>
+                          ))}
+                      </Select>
+                    </div>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={24} id="form-col-note">
+                <Form.Item
+                  label={labels.cr_edit_summary}
+                  name="note"
+                  {...summaryRule}
+                  className={`text-14 text-canBlack font-medium`}
+                  id="note-item"
+                >
+                  <Input.TextArea
+                    rows={6}
+                    placeholder={placeholders.editSummary}
+                    className="rounded-lg"
+                    onChange={(e) =>
+                      form.setFieldValue("note", e?.target?.value)
+                    }
+                    maxLength={500}
+                    id="note-textarea"
+                  />
+                </Form.Item>
+              </Col>
+            </Fragment>
+          )}
+        </Row>
 
-          <div className={styles.btn_box}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size={"large"}
-              className={`${styles.submit_btn}`}
-              data-testid="btn"
-              id="crate-camp-btn"
-              disabled={isLoading}
+        <Collapse
+          className="camp-accordion"
+          ghost
+          expandIconPosition="right"
+          defaultActiveKey={["0"]}
+        >
+          <Panel
+            header={
+              <>
+                Advanced Settings<br></br>{" "}
+                <Text
+                  className="block mt-1 text-xs text-[#777F93]"
+                  id="keywords-text"
+                >
+                  {labels.cr_keywords_sp}
+                </Text>
+              </>
+            }
+            key="1"
+          >
+            <Row
+              gutter={16}
+              className="bg-canGray mb-3 py-3 rounded-lg"
+              id="form-row-2"
             >
-              Create Camp
-            </Button>
+              <Col xs={24} sm={12} id="form-col-camp-url">
+                {isLoading ? (
+                  <CustomSkelton
+                    skeltonFor="list"
+                    bodyCount={1}
+                    stylingClass="listSkeleton"
+                    isButton={false}
+                    id="camp-url-skeleton"
+                  />
+                ) : (
+                  <Inputs
+                    label={labels.cr_camp_url}
+                    name="camp_about_url"
+                    rules={campAboutUrlRule}
+                    placeholder="Enter Here"
+                    size={"large"}
+                    maxLength={1024}
+                    prefix={
+                      <div className="pr-3">
+                        <LinkOutlined />
+                      </div>
+                    }
+                    id="camp-url-input"
+                  />
+                )}
+              </Col>
 
-            <Button
-              type="primary"
-              htmlType="button"
-              size={"large"}
-              className={`${styles.cancel_btn}`}
+              <Col xs={24} sm={12} id="form-col-camp-about-nick">
+                <Form.Item
+                  label={labels.cr_nick_name_about}
+                  name="camp_about_nick_id"
+                  className={`text-14 text-canBlack font-medium`}
+                  initialValue={values?.camp_about_nick_id}
+                  id="camp-about-nick-item"
+                >
+                  {isLoading ? (
+                    <CustomSkelton
+                      skeltonFor="list"
+                      bodyCount={1}
+                      stylingClass="listSkeleton"
+                      isButton={false}
+                      id="camp-about-nick-skeleton"
+                    />
+                  ) : (
+                    <div
+                      className={`outerDiv flex border rounded ${
+                        isAboutFocused
+                          ? "border-[#40a9ff] shadow-[0 0 0 2px rgba(24, 144, 255, 0.2)"
+                          : ""
+                      }`}
+                      id="camp-about-nick-select-wrapper"
+                    >
+                      <UserOutlined
+                        className="px-3 text-canBlack bg-white"
+                        id="camp-about-nick-icon"
+                      />
+                      <Select
+                        placeholder={placeholders.campAboutNickName}
+                        allowClear
+                        size={"large"}
+                        data-id="camp-about-nick-id"
+                        showSearch
+                        optionFilterProp="children"
+                        id="camp-about-nick-dropdown"
+                        className={`text-canBlack font-normal h-[40px] [&_.ant-select-selector]:!border-0 [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none border-0 [&_.ant-select-selector]:![&_.ant-select-selection-search]:!w-auto commonSelectClass`}
+                        onFocus={() => setIsAboutFocused(true)}
+                        onBlur={() => setIsAboutFocused(false)}
+                        onChange={(val) =>
+                          form?.setFieldValue("camp_about_nick_id", val)
+                        }
+                        defaultValue={values?.camp_about_nick_id}
+                        value={values?.camp_about_nick_id}
+                      >
+                        <Option value="" id="camp-about-nick-custom">
+                          {placeholders.campAboutNickName}
+                        </Option>
+                        {campNickName.map((nc) => (
+                          <Option
+                            value={nc.id}
+                            key={nc.id}
+                            id={`camp-about-nick-${nc.id}`}
+                          >
+                            {nc.nick_name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+                  )}
+                </Form.Item>
+              </Col>
+            </Row>
+          </Panel>
+        </Collapse>
+
+        <Row
+          gutter={16}
+          className={`mt-6 pt-[1rem] rounded-md relative`}
+          id="form-row-3"
+        >
+          <Col
+            className={`flex flex-col [&_.ant-checkbox-wrapper]:ml-0 [&_.ant-checkbox-wrapper]:mb-4 [&_.ant-checkbox-wrapper>span]:text-canBlack [&_.ant-checkbox-wrapper>span]:text-sm [&_.ant-checkbox-wrapper>span]:font-medium`}
+            id="form-col-prevent-sub-camps"
+          >
+            <PreventSubCamps
+              options={options}
+              onCheckboxChange={onCheckboxChange}
+              id="prevent-sub-camps"
+              shouldDisableOneLevelAndAdditionalCheckbox={shouldDisableOneLevelAndAdditionalCheckbox()}
+            />
+          </Col>
+        </Row>
+
+        {isLoading ? (
+          <CustomSkelton
+            skeltonFor="list"
+            bodyCount={1}
+            stylingClass="listSkeleton"
+            isButton={false}
+            id="form-skeleton"
+          />
+        ) : (
+          <div
+            className="mt-4 flex justify-start items-center"
+            id="form-buttons"
+          >
+            <SecondaryButton
               onClick={onCancel}
               id="cancel-btn"
               data-testid="cancel-btn"
+              className="mr-4 flex justify-center items-center py-5 px-6"
             >
-              Cancel
-            </Button>
+              Discard <CloseOutlined />
+            </SecondaryButton>
+            <PrimaryButton
+              htmlType="submit"
+              id="create-camp-btn"
+              data-testid="btn"
+              disabled={!isDisabled}
+              className="flex justify-center items-center py-5 px-6"
+            >
+              {isEdit ? "Update Camp" : "Create Camp"} <SaveOutlined />
+            </PrimaryButton>
           </div>
-        </Form>
-      </Card>
-    </Fragment>
+        )}
+      </Form>
+    </CommonCards>
   );
 };
 

@@ -1,0 +1,533 @@
+import { Col, Form, Input, Row, Select, message } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import messages from "src/messages";
+import {
+  GetAlgorithmsList,
+  GetLanguageList,
+  GetUserProfileInfo,
+  UpdateUserProfileInfo,
+  GetUserPreferences,
+  UpdateUserPreferences
+} from "src/network/api/userApi";
+import { RootState } from "src/store";
+import isAuth from "../../../hooks/isUserAuthenticated";
+import CustomCheckbox from "src/components/shared/FormInputs/checkbox";
+import { setTags } from "src/store/slices/tagsSlice";
+import { getAllTags, savePrefTags } from "src/network/api/tagsApi";
+import Image from "next/image";
+import {
+  setDisableButtonForProfileInfo,
+  setPostalCodeDisableForProfileInfo,
+  setAddForProfileInfo,
+  setZipCodeForProfileInfo,
+  setGlobalUserProfileDataLanguage,
+  setGlobalUserProfileDataAlgo,
+} from "src/store/slices/campDetailSlice";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
+// import CustomSkelton from "components/common/customSkelton";
+import CustomSpinner from "components/shared/CustomSpinner";
+
+const ProfilePrefrences = () => {
+  const [languageList, setLanguageList] = useState([]);
+  const [algorithmList, setAlgorithmList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredTags, setFilteredTags] = useState([]);
+  const [selectedCount, setSelectedCount] = useState(0);
+  const [profileUserTags, setProfileUserTags] = useState([]);
+  const [userPrifleInfoFirstName, setUserPrifleInfoFirstName] = useState({});
+  const [userPrifleInfolastName, setUserPrifleInfolastName] = useState({});
+
+  const [formVerify] = Form.useForm();
+
+  const { Option } = Select;
+  const {
+    // globalUserProfileData,
+    privateList,
+    address,
+    updateAddress,
+    birthdayForProfileInfo,
+    // globalUserProfileDataLastName,
+    globalUserProfileDataLanguage,
+    globalUserProfileDataAlgo,
+  } = useSelector((state: RootState) => ({
+    globalUserProfileData: state.topicDetails.globalUserProfileData,
+    privateList: state.topicDetails.privateList,
+    address: state.topicDetails.address,
+    updateAddress: state.topicDetails.updateAddress,
+    birthdayForProfileInfo: state.topicDetails.birthdayForProfileInfo,
+    globalUserProfileDataLastName:
+      state.topicDetails.globalUserProfileDataLastName,
+    globalUserProfileDataLanguage:
+      state.topicDetails.globalUserProfileDataLanguage,
+    globalUserProfileDataAlgo: state.topicDetails.globalUserProfileDataAlgo,
+  }));
+
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    globalUserProfileDataLanguage || null
+  );
+  const [selectedAlgorithmKey, setSelectedAlgorithmKey] = useState(
+    globalUserProfileDataAlgo || null
+  );
+  const [isInitialRender, setIsInitialRender] = useState(true);
+
+  const { tags } = useSelector((state: RootState) => ({
+    tags: state?.tag?.tags,
+  }));
+  const { isUserAuthenticated } = isAuth();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function fetchLanguageList() {
+      try {
+        let res = await GetLanguageList();
+        if (res !== undefined) {
+          setLanguageList(res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching language list:", error);
+      }
+    }
+
+    async function fetchAlgorithmsList() {
+      try {
+        let res = await GetAlgorithmsList();
+        if (res !== undefined) {
+          setAlgorithmList(res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching algorithms list:", error);
+      }
+    }
+    async function fetchUserPreferences(){
+        try {
+        let res = await GetUserPreferences();
+        if (res !== undefined) {
+         setProfileUserTags(res?.tags);
+         setSelectedLanguage(res?.language);
+         setSelectedAlgorithmKey(res?.default_algo);
+        }
+      } catch (error) {
+        console.error("Error fetching algorithms list:", error);
+      }
+    }
+    async function fetchUserProfileInfo() {
+      setLoading(true); // Start loading
+      try {
+        let res = await GetUserProfileInfo();
+        if (res !== undefined) {
+          setUserPrifleInfoFirstName(res?.data?.first_name);
+          setUserPrifleInfolastName(res?.data?.last_name);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile info:", error);
+      } finally {
+        setLoading(false); // Stop loading
+      }
+    }
+    fetchLanguageList();
+    fetchAlgorithmsList();
+    fetchUserProfileInfo();
+    fetchUserPreferences();
+    getAllTags();
+  }, [isUserAuthenticated]);
+
+  useEffect(() => {
+    // Filter the tags based on the search term
+    const filtered = tags.filter((tag) =>
+      tag?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredTags(filtered);
+    const selectedTags = filtered.filter(
+      (tag) =>
+        tag.checked ||
+        profileUserTags.some((profileTag) => profileTag.tag_id === tag.id)
+    ).length;
+    setSelectedCount(selectedTags);
+  }, [searchTerm, tags, profileUserTags]);
+
+  const listOfOption = (optionList, algoOrLang): any => {
+    let option = [];
+    optionList?.length > 0 &&
+      optionList.map((item) => {
+        if (algoOrLang == "algorithms") {
+          option.push(
+            <Option
+              key={item.algorithm_key}
+              value={item.algorithm_key}
+              id="prefrence_option"
+            >
+              {item.algorithm_label}
+            </Option>
+          );
+        } else if (algoOrLang == "languages") {
+          option.push(
+            <Option key={item.id} value={item.name}>
+              {item.name}
+            </Option>
+          );
+        }
+      });
+    return option;
+  };
+
+  const onDiscard = () => {
+    const resetTags = tags.map((ch) => ({ ...ch, checked: false }));
+    dispatch(setTags(resetTags));
+
+    setProfileUserTags([]);
+  };
+
+  // const onChange = (data) => {
+  //   const newTags = tags.map((ch) =>
+  //     ch.id === data.id ? { ...ch, checked: !ch.checked } : ch
+  //   );
+  //   dispatch(setTags(newTags));
+  // };
+  const onChange = (data) => {
+    const isCurrentlyChecked = data.checked; // Determine if the current tag is checked
+
+    if (isCurrentlyChecked) {
+      // If currently checked, remove it from profileUserTags
+      const updatedProfileTags = profileUserTags.filter(
+        (tag) => tag.tag_id !== data.id
+      );
+      setProfileUserTags(updatedProfileTags); // Update local state for profileUserTags
+    } else {
+      // If currently unchecked, add it to profileUserTags
+      const newProfileTags = [
+        ...profileUserTags,
+        { tag_id: data.id, title: data.title },
+      ];
+      setProfileUserTags(newProfileTags); // Update local state for profileUserTags
+    }
+
+    // Update the tags state to toggle the checkbox
+    const newTags = tags.map((ch) =>
+      ch.id === data.id
+        ? { ...ch, checked: !isCurrentlyChecked } // Toggle the checked state
+        : ch
+    );
+
+    setTags(newTags); // Update the tags state to reflect the change
+    dispatch(setTags(newTags)); // Dispatch the updated tags
+  };
+
+  const publicPrivateArray = {
+    first_name: "first_name",
+    last_name: "last_name",
+    email: "email",
+    address_1: "address_1",
+    address_2: "address_2",
+    postal_code: "postal_code",
+    city: "city",
+    state: "state",
+    country: "country",
+    birthday: "birthday",
+    mobile_carrier: "mobile_carrier",
+    phone_number: "phone_number",
+  };
+
+  const isPublicOrPrivate = (field_value) => {
+    return Array.isArray(privateList) && privateList.includes(field_value)
+      ? 0
+      : 1;
+  };
+
+  //on update profile click
+  const onFinish2 = async (values: any) => {
+    let code = values.postal_code;
+    dispatch(setDisableButtonForProfileInfo(true));
+    dispatch(setPostalCodeDisableForProfileInfo(true));
+    //Set Private Public flags
+    // values.first_name_bit = isPublicOrPrivate(publicPrivateArray.first_name);
+    // values.last_name_bit = isPublicOrPrivate(publicPrivateArray.last_name);
+    // values.email_bit = isPublicOrPrivate(publicPrivateArray.email);
+    // values.address_1_bit = isPublicOrPrivate(publicPrivateArray.address_1);
+    // values.address_2_bit = isPublicOrPrivate(publicPrivateArray.address_2);
+    // values.postal_code_bit = isPublicOrPrivate(publicPrivateArray.postal_code);
+    // values.state_bit = isPublicOrPrivate(publicPrivateArray.state);
+    // values.country_bit = isPublicOrPrivate(publicPrivateArray.country);
+    // values.birthday_bit = isPublicOrPrivate(publicPrivateArray.birthday);
+    // values.city_bit = isPublicOrPrivate(publicPrivateArray.city);
+    values.language = selectedLanguage;
+    // values.first_name = userPrifleInfoFirstName;
+    // values.last_name = userPrifleInfolastName;
+    values.default_algo = selectedAlgorithmKey;
+    // values.birthday = birthdayForProfileInfo;
+    // values.mobile_carrier = formVerify.getFieldValue(
+    //   publicPrivateArray.mobile_carrier
+    // );
+    // values.phone_number = formVerify.getFieldValue(
+    //   publicPrivateArray.phone_number
+    // );
+    // values.address_1 = address;
+    // values.postal_code = code;
+    // values = { ...values, ...updateAddress };
+    // const userTags = tags.filter((ch) => ch.checked).map((ch) => ch.id);
+    const userTags = [
+      ...tags.filter((ch) => ch.checked).map((ch) => ch.id), // Include checked tags from tags state
+      ...profileUserTags.map((tag) => tag.tag_id), // Include saved tags from profileUserTags
+    ];
+
+    if (userTags.length === 0) {
+      values.user_tags = []; // No tags selected
+    } else {
+      values.user_tags = Array.from(new Set(userTags)); // Ensure unique tag IDs
+    }
+
+    // let res = await UpdateUserProfileInfo(values);
+    let res = await UpdateUserPreferences(values);
+    if (res && res.status_code === 200) {
+      // setshowSelectedLanguage(res?.data?.language)
+      message.success(res.message);
+      // if (!isInitialRender) {
+      // }
+      if (values?.default_algo) {
+        dispatch(
+          setFilterCanonizedTopics({
+            algorithm: values?.default_algo,
+          })
+        );
+      }
+      dispatch(setDisableButtonForProfileInfo(false));
+      dispatch(setAddForProfileInfo(false));
+      dispatch(setZipCodeForProfileInfo(false));
+      dispatch(setGlobalUserProfileDataLanguage(res?.data?.language));
+      dispatch(setGlobalUserProfileDataAlgo(res?.data?.default_algo));
+    } else {
+      dispatch(setDisableButtonForProfileInfo(false));
+      dispatch(setAddForProfileInfo(false));
+      dispatch(setZipCodeForProfileInfo(false));
+    }
+  };
+
+  const handleChangeLanguage = (value) => {
+    setSelectedLanguage(value); // Update state with the selected value
+  };
+
+  const handleAlgorithmChange = (value) => {
+    setSelectedAlgorithmKey(value); // Store the selected algorithm key in state
+  };
+
+  return (
+    <CustomSpinner key="create-thread-spinner" spinning={loading}>
+      <section id="prefrence_section_unique">
+        <SectionHeading
+          title="PREFERENCES"
+          icon={null}
+          className="lg:mt-0 mt-10 mb-5"
+        />
+        {/* {loading ? (
+          <div>
+            <CustomSkelton
+              skeltonFor="profileInfoForm"
+              bodyCount={1}
+              stylingClass=""
+              isButton={false}
+            />{" "}
+          </div>
+        ) : (
+        )} */}
+        <Row gutter={30} id="prefrence_row_unique">
+          <Col
+            md={12}
+            sm={24}
+            className="w-full lg:mb-0 mb-5"
+            id="prefrence_col_unique_1"
+          >
+            <p
+              className="mb-2 mt-3 text-sm font-normal text-canBlack"
+              id="prefrence_select_heading_language_unique"
+            >
+              Language
+            </p>
+            <Select
+              id="prefrence_select_unique"
+              size="large"
+              placeholder={"Select a language"}
+              showSearch
+              optionFilterProp="children"
+              value={selectedLanguage}
+              suffixIcon={
+                <Image
+                  src="/images/caret-icon.svg"
+                  width={16}
+                  height={9}
+                  alt=""
+                />
+              }
+              onChange={handleChangeLanguage}
+              className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 "
+            >
+              {listOfOption(languageList, "languages")}
+            </Select>
+          </Col>
+          <Col md={12} sm={24} className="w-full" id="prefrence_col_unique_2">
+            <p
+              className="mb-2 mt-3 text-sm font-normal text-canBlack"
+              id="prefrence_select_heading_algorithm_unique"
+            >
+              Default Algorithm Preferences
+            </p>
+            <Select
+              id="prefrence_select_algorithm_unique"
+              size="large"
+              placeholder={messages.placeholders.algorithm}
+              showSearch
+              optionFilterProp="children"
+              value={selectedAlgorithmKey}
+              suffixIcon={
+                <Image
+                  src="/images/caret-icon.svg"
+                  width={16}
+                  height={9}
+                  alt=""
+                />
+              }
+              onChange={handleAlgorithmChange}
+              className="text-canBlack font-normal  [&_.ant-select-selector]:!rounded-lg [&_.ant-select-selector]:!outline-none [&_.ant-select-selector]:!shadow-none commonSelectClass [&_.ant-select-arrow]:text-canBlack [&_.ant-select-arrow>svg]:fill-canBlack  [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-search>input]:!text-base placeholder:!text-base w-full [&_.ant-select-arrow]:!h-full [&_.ant-select-arrow]:!flex [&_.ant-select-arrow]:!items-center [&_.ant-select-arrow]:border-l [&_.ant-select-arrow]:border-canGrey2 [&_.ant-select-arrow]:!pl-2.5 [&_.ant-select-arrow]:!top-1/2 [&_.ant-select-arrow]:!-translate-y-1/2 [&_.ant-select-arrow]:!mt-0 [&_.ant-select-selection-placeholder]:!text-base  "
+            >
+              {listOfOption(algorithmList, "algorithms")}
+            </Select>
+          </Col>
+        </Row>
+
+        {/* {loading ? (
+          <div className="mt-20">
+            <CustomSkelton
+              skeltonFor="prefrences"
+              bodyCount={8}
+              stylingClass=""
+              isButton={false}
+            />
+          </div>
+        ) : (
+        )} */}
+        <div>
+          <hr className="my-10" id="prefrence_line_space_unique" />
+          <div className="lg:mt-0 mt-12" id="prefrence_section_for_tags_unique">
+            <SectionHeading
+              title="Topic Tags"
+              icon={null}
+              className="lg:mb-5 mb-7"
+            />
+            <div
+              className="flex lg:justify-between lg:items-center mb-5 lg:flex-row flex-col"
+              id="prefrence_tags_section_unique"
+            >
+              <div
+                className="flex-1 order-2 lg:order-1"
+                id="prefrence_tags_section_2_unique"
+              >
+                <p
+                  className="text-sm font-medium"
+                  id="prefrence_tags_section_note_unique"
+                >
+                  You have set{" "}
+                  <span
+                    className="text-canBlue"
+                    id="prefrence_tags_section_note_as_your_pref_unique"
+                  >
+                    {selectedCount} Topic Tags{" "}
+                  </span>
+                  as your preference
+                </p>
+              </div>
+              <Input
+                id="prefrence_tags_search_input_unique"
+                placeholder="Search via Topic Tags name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="lg:w-72 w-full h-11 rounded-lg border-canGrey2 lg:mb-0 mb-7 lg:order-0 order-1 placeholder:!text-base placeholder:!text-canBlue placeholder:!font-normal focus:!border-canGrey2 focus:!shadow-none hover:!border-canGrey2 [&_.ant-input-suffix]:border-l [&_.ant-input-suffix]:!border-canGrey2 [&_.ant-input-suffix]:px-2.5 !p-0 [&_.ant-input]:!px-2.5 [&_.ant-input]:rounded-lg  [&_.ant-input-suffix]:!ml-0  "
+                suffix={
+                  <Image
+                    src="/images/search-icon.svg"
+                    width={16}
+                    height={16}
+                    alt=""
+                    id="search_icon_unique"
+                  />
+                }
+              />
+            </div>
+          </div>
+
+          <div
+            className="w-full my-4 px-1 focus:overscroll-contain custom-checkbox-preference flex flex-wrap gap-3"
+            id="prefrence_tags_checkbox_section_unique"
+          >
+            {filteredTags.length > 0 ? (
+              filteredTags.map((ch) => {
+                const isChecked =
+                  ch.checked !== undefined
+                    ? ch.checked
+                    : profileUserTags.some((tag) => tag.tag_id === ch.id);
+                return (
+                  <CustomCheckbox
+                    id={`custom_checkbox_${ch.id}`}
+                    key={ch.id}
+                    onChange={() => onChange({ ...ch, checked: isChecked })}
+                    checked={isChecked}
+                    className="text-sm"
+                  >
+                    {ch.title}
+                  </CustomCheckbox>
+                );
+              })
+            ) : (
+              <p id="prefrence_no_tags_found_unique">No tags found</p>
+            )}
+          </div>
+
+          <div
+            className="flex justify-center gap-5 mt-10"
+            id="prefrence_tags_discard_btn_unique"
+          >
+            <SecondaryButton
+              onClick={onDiscard}
+              disabled={loading}
+              className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
+              id="secondary_button_unique"
+            >
+              Discard{" "}
+              <CloseOutlined id="prefrence_tags_discard_btn_closeoutline_unique" />
+            </SecondaryButton>
+
+            <Form
+              form={formVerify}
+              onFinish={onFinish2}
+              id="form_for_prefrence_unique"
+            >
+              <PrimaryButton
+                className="flex gap-2.5 items-center justify-center w-[12.5rem] h-auto"
+                loading={loading}
+                onClick={async (e) => {
+                  try {
+                    setLoading(true); // Start loader
+                    await formVerify.validateFields(); // Validate form fields
+                    await onFinish2(formVerify.getFieldsValue()); // Submit form values
+                    //await GetUserProfileInfo(); // Fetch updated profile info
+                  } finally {
+                    setLoading(false); // Stop loader regardless of success or failure
+                  }
+                }}
+                id="prefrence_tags_save_btn_unique"
+              >
+                Save{" "}
+                <SaveOutlined id="prefrence_tags_save_btn_saveoutline_unique" />
+              </PrimaryButton>
+            </Form>
+          </div>
+        </div>
+      </section>
+    </CustomSpinner>
+  );
+};
+
+export default ProfilePrefrences;

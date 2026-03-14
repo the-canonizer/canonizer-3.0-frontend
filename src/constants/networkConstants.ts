@@ -1,5 +1,6 @@
 const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
+const DummyUrl = process.env.NEXT_PUBLIC_BASE_DUMMY_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
 const BaseDevApiURL = process.env.NEXT_PUBLIC_BASE_API_DEV_URL;
@@ -35,6 +36,8 @@ const NetworkConstants = {
     VerifyOTP: `${BaseCanonizerApiUrl}/verify-otp`,
     GetLanguageList: `${BaseCanonizerApiUrl}/get-languages`,
     EditProfileImage: `${BaseCanonizerApiUrl}/update-profile-picture`,
+    GetUserPreferences: `${BaseCanonizerApiUrl}/get-user-tags`,
+    UpdateUserPreferences: `${BaseCanonizerApiUrl}/save-user-tags`,
     // Forgot Password
     SendForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgot-password/send-otp`,
     VerifyForgotPasswordOTP: `${BaseCanonizerApiUrl}/forgot-password/verify-otp`,
@@ -43,6 +46,7 @@ const NetworkConstants = {
     AddNickName: `${BaseCanonizerApiUrl}/add-nick-name`,
     GetNickNameList: `${BaseCanonizerApiUrl}/get-nick-name-list`,
     UpdateNickName: `${BaseCanonizerApiUrl}/update-nick-name`,
+    SetDefaultNickname: `${BaseCanonizerApiUrl}/set-default-nick-name`,
     //Direct Supported camps
     GetDirectSupportedCamps: `${BaseCanonizerApiUrl}/get-direct-supported-camps`,
     RemoveOrUpdateDirectSupportCamps: `${BaseCanonizerApiUrl}/support/update`,
@@ -56,6 +60,8 @@ const NetworkConstants = {
     GetDelegatedSupportCamps: `${BaseCanonizerApiUrl}/get-delegated-supported-camps`,
     // topic details page api's
     GetTree: `${BaseCanonizerServiceUrl}/api/v1/tree/get`,
+    RestrictSupporters: `${BaseCanonizerApiUrl}/camps`,
+    GetRestrictSupporters: `${BaseCanonizerApiUrl}/camps`,
     GetNewsFeed: `${BaseCanonizerApiUrl}/get-camp-newsfeed`,
     GetCampStatement: `${BaseCanonizerApiUrl}/get-camp-statement`,
     GetSupportingTree: `${BaseCanonizerApiUrl}/get/supporting-tree`,
@@ -130,6 +136,7 @@ const NetworkConstants = {
     PostList: `${BaseCanonizerApiUrl}/post/list`,
     PostDelete: `${BaseCanonizerApiUrl}/post/delete`,
     GetThreadData: `${BaseCanonizerApiUrl}/thread/`,
+    GetTopFiveThreadData: `${BaseCanonizerApiUrl}/thread/latest5`,
 
     //camp news feed add edit update
     GetEditCampNewsFeed: `${BaseCanonizerApiUrl}/edit-camp-newsfeed`,
@@ -165,6 +172,8 @@ const NetworkConstants = {
     // notification list
     GetList: `${BaseCanonizerApiUrl}/notification-list`,
     MarkRead: `${BaseCanonizerApiUrl}/notification-is-read/update/`,
+    MarkAllRead: `${BaseCanonizerApiUrl}/notification/read/all`,
+    DeleteAll: `${BaseCanonizerApiUrl}/notification/delete/all`,
 
     //Get Active support topic
     GetActiveSupportTopic: `${BaseCanonizerApiUrl}/topic-support-list`,
@@ -189,8 +198,8 @@ const NetworkConstants = {
     // Meta Tags
     GetMetaContent: `${BaseCanonizerApiUrl}/meta-tags`,
 
-    VideosContent: `${BaseCanonizerApiUrl}/videos`,
     Videos: `${BaseCanonizerApiUrl}/videos/consiousness/1`,
+    VideosContent: `${BaseCanonizerApiUrl}/videos`,
 
     GetNickSupportUser: `${BaseCanonizerApiUrl}/get-nick-support-user/`,
 
@@ -200,12 +209,28 @@ const NetworkConstants = {
     GetXMLData: `${BaseCanonizerApiUrl}/sitemaps`,
     CheckTopicCampExist: `${BaseCanonizerApiUrl}/notify-if-url-not-exist`,
     GetHotTopic: `${BaseCanonizerApiUrl}/hot-topic`,
+    GetPrefTopic: `${BaseCanonizerApiUrl}/preferred-topic`,
+    GetFeaturedTopic: `${BaseCanonizerApiUrl}/featured-topic`,
+    GetconsensusVideoPodcasts: `${BaseCanonizerApiUrl}/consensus-video-podcasts`,
+
+    //Sibling camps
+    GetSiblingCamp: `${BaseCanonizerApiUrl}/get-sibling-camps`,
+
+    // categories
+    GetTagsList: `${BaseCanonizerApiUrl}/get-tags-list`,
+    SavePrefCats: `${BaseCanonizerApiUrl}/create/user/tags`,
 
     // Email Update
-    ChangeEmailRequest : `${BaseCanonizerApiUrl}/change-email-request`,
-    EmailChangeVerification:`${BaseCanonizerApiUrl}/emailchange-verify-otp`,
-    UpdateNewEmailRequest : `${BaseCanonizerApiUrl}/update-email-request`,
-    ReplaceExistOneUpdateNewEmail : `${BaseCanonizerApiUrl}/update-email`
+    ChangeEmailRequest: `${BaseCanonizerApiUrl}/change-email-request`,
+    EmailChangeVerification: `${BaseCanonizerApiUrl}/emailchange-verify-otp`,
+    UpdateNewEmailRequest: `${BaseCanonizerApiUrl}/update-email-request`,
+    ReplaceExistOneUpdateNewEmail: `${BaseCanonizerApiUrl}/update-email`,
+
+    // PostStatementCount
+    postStatementCount: `${BaseCanonizerApiUrl}/post-statement-count`,
+
+    // Facebook account deletion status
+    CheckFacebookDeleteDataStatus: `${BaseCanonizerApiUrl}/check-facebook-delete-data-status`,
   },
   Method: {
     GET: "GET",

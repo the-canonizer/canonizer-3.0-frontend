@@ -1,31 +1,35 @@
-import React, { useEffect } from "react";
-import useState from "react-usestateref";
 import App, { AppContext, AppInitialProps, AppProps } from "next/app";
-import { Provider } from "react-redux";
-import { CookiesProvider } from "react-cookie";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useClearCache } from "react-clear-cache";
+import { CookiesProvider } from "react-cookie";
+import { Provider } from "react-redux";
+import useState from "react-usestateref";
 
 import "antd/dist/antd.css";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 
 import "../../styles/globals.scss";
 import "../../styles/variables.less";
+import "../assets/editorcss/editor.css";
 import "../assets/fonticons/style.css";
 import "../assets/scss/global.scss";
-import "../assets/editorcss/editor.css";
 
-import ErrorBoundary from "../hoc/ErrorBoundary";
 import HeadContentAndPermissionComponent from "../components/common/headContentAndPermisisonCheck";
+import ErrorBoundary from "../hoc/ErrorBoundary";
 import { store, wrapper } from "../store";
 
-import { metaTagsApi } from "src/network/api/metaTagsAPI";
+import WithRouteChange from "src/hoc/withRouteChange";
 import { checkTopicCampExistAPICall } from "src/network/api/campDetailApi";
-import { getCookies } from "src/utils/generalUtility";
+import { metaTagsApi } from "src/network/api/metaTagsAPI";
 import { createToken } from "src/network/api/userApi";
-import CustomSkelton from "@/components/common/customSkelton";
-import { logOut } from "@/components/common/headers/loggedInHeaderNavigation";
-import moment from "moment";
+import {
+  getCookies,
+  parseCookies,
+  serverRoutes,
+} from "src/utils/generalUtility";
+import WithAuthCheck from "src/hoc/withAuth";
 
 type AppOwnProps = { meta: any; canonical_url: string; returnURL: string };
 
@@ -40,70 +44,24 @@ function WrappedApp({
     [_, setIsAuthenticated, isAuthenticatedRef] = useState(
       !!(getCookies() as any)?.loginToken
     );
-  
-    const buildDateGreaterThan = (latestDate, currentDate) => {
-      const momLatestDateTime = moment(latestDate);
-      const momCurrentDateTime = moment(currentDate);
-   
-      return !!(momLatestDateTime.isAfter(momCurrentDateTime));
-    };
- 
- 
-   const refreshCacheAndReload = () => {
-      for (const key in localStorage) {
-        if (key !== "auth_token") {
-          localStorage.removeItem(key);
-        }
-      }
-     
-      const cookies = document.cookie.split("; ");
-        for (let cookie of cookies) {
-          const eqPos = cookie.indexOf("=");
-          const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-          if (name !== "loginToken"){
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-          }
-        }
- 
- 
-        if (window?.caches) {
-          window.caches.keys().then((names) => {
-            for (const name of names) {
-              caches.delete(name);
-            }
-          });
-      }
-   
-  };
 
- 
- 
-  useEffect(()=>{
-    fetch("/meta.json")
-    .then((response) => response.json())
-    .then((meta) => {
-      console.log('meta ===>', meta);
-        const latestVersionDate = meta?.buildDate;
-        const currentVersionDate = localStorage.getItem("build_number");
-        
-        const shouldForceRefresh = buildDateGreaterThan(
-          meta?.buildDate,
-          +currentVersionDate ?? 0
-        );
-         if (shouldForceRefresh) {
-          refreshCacheAndReload();
-          localStorage.setItem("build_number", meta?.buildDate);
-        }
-         console.log('cache',{
-          shouldForceRefresh: shouldForceRefresh,
-          latestVersionDate: meta?.buildDate,
-          currentVersionDate: +currentVersionDate??0
-        })
-  
-    });
- 
-  },[])
- 
+  const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
+
+  if (
+    !isLatestVersion ||
+    (typeof window !== "undefined" &&
+      localStorage.getItem("APP_VERSION") === null)
+  ) {
+    emptyCacheStorage();
+  }
+
+  console.log("build details", {
+    isLatestVersion,
+    latestVersion,
+
+    APP_VERSION:
+      typeof window !== "undefined" && localStorage.getItem("APP_VERSION"),
+  });
   useEffect(() => {
     const fetchToken = async () => {
       if (router?.asPath) {
@@ -118,7 +76,7 @@ function WrappedApp({
       if (!(getCookies() as any)?.loginToken) {
         setIsAuthenticated(false);
         try {
-          await createToken();
+          await createToken(null, null);
         } catch (error) {
           // eslint-disable-next-line
           console.error("Error fetching data:", error);
@@ -128,7 +86,10 @@ function WrappedApp({
       }
     };
 
-    fetchToken();
+    if (!serverRoutes.includes(router?.pathname)) {
+      fetchToken();
+    }
+
     /* eslint-disable */
   }, [
     router.pathname,
@@ -147,7 +108,6 @@ function WrappedApp({
     const handleTabClose = (event) => {
       if (!isRouting) {
         // Your custom logic here
-        console.log("Tab is closing");
         // Prevent the tab from closing, if necessary
         event.preventDefault();
         event.returnValue = "";
@@ -169,16 +129,22 @@ function WrappedApp({
     <CookiesProvider>
       <Provider store={store}>
         <ErrorBoundary>
-          <HeadContentAndPermissionComponent
+          <WithAuthCheck
             componentName={Component.displayName || Component.name}
-            metaContent={meta}
-            canonical={canonical_url}
-            {...pageProps}
-          />
-          {isAuthenticatedRef?.current &&
-          !!(getCookies() as any)?.loginToken ? (
-            <Component {...pageProps} />
-          ) : null}
+          >
+            <HeadContentAndPermissionComponent
+              componentName={Component.displayName || Component.name}
+              metaContent={meta}
+              canonical={canonical_url}
+              {...pageProps}
+            />
+            <WithRouteChange>
+              {isAuthenticatedRef?.current &&
+              !!(getCookies() as any)?.loginToken ? (
+                <Component {...pageProps} />
+              ) : null}
+            </WithRouteChange>
+          </WithAuthCheck>
         </ErrorBoundary>
       </Provider>
     </CookiesProvider>
@@ -186,7 +152,7 @@ function WrappedApp({
 }
 
 let lastAppName: string = "";
-const getTagData = async (req) => {
+const getTagData = async (req, token) => {
   const defaultTags = {
     page_name: "Home",
     title: "Build consensus by canonizing what you believe is right",
@@ -203,13 +169,13 @@ const getTagData = async (req) => {
       lastAppName?.trim()?.toLowerCase()
     ) {
       lastAppName = req?.page_name?.trim()?.toLowerCase();
-      metaResults = await metaTagsApi(req);
+      metaResults = await metaTagsApi(req, token);
       metaData = metaResults?.data;
       return metaData;
     }
   } else {
     lastAppName = req?.page_name?.trim()?.toLowerCase();
-    metaResults = await metaTagsApi(req);
+    metaResults = await metaTagsApi(req, token);
     metaData = metaResults?.data;
     return metaData;
   }
@@ -229,9 +195,7 @@ WrappedApp.getInitialProps = async (
     0,
     appContext?.router?.asPath.lastIndexOf("/")
   );
-
   let path;
-
   if (prePath == "/manage/camp") {
     path =
       appContext?.router?.components &&
@@ -247,13 +211,24 @@ WrappedApp.getInitialProps = async (
   } else {
     path = appContext.router?.query;
   }
-
   let canonical_url =
     process.env.NEXT_PUBLIC_BASE_URL + appContext?.router?.asPath;
-
+  const querval2 = appContext.ctx?.query?.q;
+  // Ensure the value is a string before calling replace
+  const formattedQuery = Array.isArray(querval2)
+    ? querval2.join(" ").replace(/ /g, "+") // Join array elements and replace spaces
+    : querval2?.replace(/ /g, "+"); // Replace spaces if it's a string
   const req = {
     page_name:
-      componentName === "SocialLoginCallbackPage" ? "Home" : componentName,
+      componentName === "SocialLoginCallbackPage"
+        ? "Home"
+        : componentName === "Search" ||
+          componentName === "SearchTopic" ||
+          componentName === "SearchCamp" ||
+          componentName === "SearchCampStatement" ||
+          componentName === "SearchNickname"
+        ? "SearchResultsPage"
+        : componentName,
     keys: {
       topic_num: appContext.router?.asPath.includes("forum")
         ? path?.topic?.toLocaleString().split("-")[0]
@@ -271,14 +246,24 @@ WrappedApp.getInitialProps = async (
           : null,
       video_id:
         appContext?.ctx?.query && componentName === "VideosPage"
-          ? appContext?.ctx?.query?.video[1]?.split("-")?.[0]
+          ? appContext?.ctx?.query?.video?.at(1)?.split("-")?.at(0)
           : null,
+      keywords:
+        appContext.Component.name === "SearchAll" ||
+        componentName === "Search" ||
+        componentName === "SearchTopic" ||
+        componentName === "SearchCamp" ||
+        componentName === "SearchCampStatement" ||
+        componentName === "SearchNickname"
+          ? formattedQuery
+          : "",
     },
   };
 
-  const metaData = await getTagData(req);
+  const token =
+    parseCookies(appContext?.ctx?.req?.headers?.cookie)["loginToken"] || "";
 
-  // console.log(aspath'metaData----', metaData, 'componentName----', componentName)
+  const metaData = await getTagData(req, token);
 
   /**
    *
@@ -317,7 +302,7 @@ WrappedApp.getInitialProps = async (
       is_type,
       refererURL,
     };
-    const checkRes = await checkTopicCampExistAPICall(reqBody);
+    const checkRes = await checkTopicCampExistAPICall(reqBody, token);
 
     if (checkRes && checkRes?.status_code === 200 && checkRes?.data?.is_exist) {
       return url;
@@ -326,15 +311,17 @@ WrappedApp.getInitialProps = async (
   };
 
   const aspath = appContext.router?.asPath;
+
   let returnData: string;
 
   if (aspath?.includes(".asp")) {
     if (aspath?.includes("topic.asp") || aspath?.includes("topoc.asp")) {
       const replaced = aspath.replace(".asp", "");
       let spilitedPath = replaced?.split("/");
+
       if (spilitedPath?.length > 3) {
         const topic = +spilitedPath[spilitedPath?.length - 2]?.split("-")[0],
-          camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] ?? 1;
+          camp = +spilitedPath[spilitedPath?.length - 1]?.split("-")[0] || 1;
         returnData = await redirect(
           `/topic/${topic}/${camp}`,
           topic,
@@ -344,6 +331,7 @@ WrappedApp.getInitialProps = async (
       } else {
         const topic = +spilitedPath[spilitedPath?.length - 1],
           camp = 1;
+
         returnData = await redirect(
           `/topic/${topic}/${camp}`,
           topic,

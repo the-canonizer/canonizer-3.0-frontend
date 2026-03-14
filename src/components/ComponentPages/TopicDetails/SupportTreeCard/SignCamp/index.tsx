@@ -13,11 +13,17 @@ import {
   getCurrentCampRecordApi,
   getTreesApi,
 } from "src/network/api/campDetailApi";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const { placeholders } = messages;
 
-const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport, getCheckStatusAPI }: any) => {
+const SignCamp = ({
+  setSignModalOpen,
+  setLoadingIndicatorSupport,
+  getCheckStatusAPI,
+}: any) => {
   const router = useRouter();
+  const { isUserAuthenticated } = useAuthentication();
 
   const topic_num: any = router?.query?.camp[0]?.split("-")[0];
   const camp_num: any = router?.query?.camp[1]?.split("-")[0] ?? 1;
@@ -27,14 +33,20 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport, getCheckStatus
   const [loadingNickname, setLoadingNickname] = useState(false);
   const [signCampData, setSignCampData] = useState(null);
 
-  const { algorithm, asofdate, asof, currentDelegatedSupportedClick } =
-    useSelector((state: RootState) => ({
-      algorithm: state.filters?.filterObject?.algorithm,
-      asofdate: state.filters?.filterObject?.asofdate,
-      asof: state.filters?.filterObject?.asof,
-      currentDelegatedSupportedClick:
-        state.supportTreeCard.currentDelegatedSupportedClick,
-    }));
+  const {
+    algorithm,
+    asofdate,
+    asof,
+    currentDelegatedSupportedClick,
+    userEmail,
+  } = useSelector((state: RootState) => ({
+    algorithm: state.filters?.filterObject?.algorithm,
+    asofdate: state.filters?.filterObject?.asofdate,
+    asof: state.filters?.filterObject?.asof,
+    currentDelegatedSupportedClick:
+      state.supportTreeCard.currentDelegatedSupportedClick,
+    userEmail: state?.auth?.loggedInUser?.email,
+  }));
 
   const CheckDelegatedOrDirect =
     currentDelegatedSupportedClick.delegatedSupportClick;
@@ -78,18 +90,19 @@ const SignCamp = ({ setSignModalOpen, setLoadingIndicatorSupport, getCheckStatus
         algorithm: algorithm,
         update_all: 1,
         fetch_topic_history: +router?.query?.topic_history,
+        current_user: isUserAuthenticated ? userEmail : "",
       };
 
-      let reqBody = { 
-        as_of: asof, 
-        as_of_date: asofdate, 
-        topic_num: +router?.query?.camp[0]?.split("-")[0], 
-        camp_num: +router?.query?.camp[1]?.split("-")[0], 
-      }
+      let reqBody = {
+        as_of: asof,
+        as_of_date: asofdate,
+        topic_num: +router?.query?.camp[0]?.split("-")[0],
+        camp_num: +router?.query?.camp[1]?.split("-")[0],
+      };
       await getTreesApi(reqBodyForService);
-      await getCurrentCampRecordApi(reqBody)
-      
-      await getCheckStatusAPI()
+      await getCurrentCampRecordApi(reqBody);
+
+      await getCheckStatusAPI();
     }
     setSignModalOpen(false);
     setLoadingNickname(false);

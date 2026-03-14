@@ -45,8 +45,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   }));
 
   const { isUserAuthenticated } = useAuthentication();
-  const [isGravatarImage, setIsGravatarImage] = useState(false);
-  const [loadingImage, setLoadingImage] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -104,20 +102,16 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
   const menu = (
     <Menu onClick={onClick} className={styles.menuItems}>
       <Menu.Item key="0">
-        <Link href="/settings" passHref>
-          <a>
+        <Link href="/settings">
             <SettingOutlined />
             Account Settings
-          </a>
         </Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="1">
-        <Link href="/settings?tab=supported_camps" passHref>
-          <a>
+        <Link href="/settings?tab=supported_camps">
             <CheckCircleOutlined />
             Supported Camps
-          </a>
         </Link>
       </Menu.Item>
       <Menu.Divider />
@@ -127,23 +121,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
       </Menu.Item>
     </Menu>
   );
-
-  const getGravatarImage = async (email) => {
-    setLoadingImage(true);
-    let data = await getGravatarPicApi(email);
-    if (data?.status == 200) {
-      setIsGravatarImage(true);
-    }
-    setLoadingImage(false);
-  };
-
-  useEffect(() => {
-    setLoggedUser(loggedInUser);
-    if (isUserAuthenticated && loggedInUser && !loggedInUser?.profile_picture) {
-      getGravatarImage(loggedInUser?.email);
-    }
-    //eslint-disable-next-line
-  }, [loggedInUser]);
 
   return (
     <Header className={`${styles.wrap} printHIde`}>
@@ -160,16 +137,18 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
           <CloseOutlined />
         </Button>
 
-        {isMobile == true ? <HeaderMenu loggedUser={loggedUser} /> : <></>}
+        {isMobile == true ? (
+          <HeaderMenu isUserAuthenticated={undefined} />
+        ) : (
+          <></>
+        )}
 
         {!isLoginPage ? (
           <Fragment>
-            {!isMobile && <HeaderMenu loggedUser={loggedUser} />}
+            {!isMobile && <HeaderMenu isUserAuthenticated={undefined} />}
 
             {isSmallMobile && (
               <ProfileInfoTab
-                isGravatarImage={isGravatarImage}
-                loadingImage={loadingImage}
                 loggedUser={loggedUser}
                 toggleMobNav={toggleMobNav}
                 logOut={logOut}
@@ -186,8 +165,6 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
       >
         {!isLoginPage ? (
           <ProfileInfoTab
-            isGravatarImage={isGravatarImage}
-            loadingImage={loadingImage}
             loggedUser={loggedUser}
             toggleMobNav={toggleMobNav}
             logOut={logOut}

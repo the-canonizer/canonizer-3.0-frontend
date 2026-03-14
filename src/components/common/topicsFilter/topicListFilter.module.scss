@@ -10,6 +10,8 @@
     font-weight: 400;
     color: #343434;
     font-size: 14px;
+    display: flex;
+    margin-bottom: 20px;
     .algoInfoIcon {
       color: #d1d4db;
       font-size: 16px;
@@ -17,11 +19,14 @@
     }
   }
   .algoSelect {
-    width: 100%;
-    margin-bottom: 8px;
+    gap: 8px;
+
+    width: 80%;
+    margin-bottom: 8px !important;
     > div {
       padding-left: 15px !important;
-      border: solid 1px #d9d9d9;
+      border: 1px solid rgba(204, 212, 231, 1) !important;
+      // border-radius: 10px !important;
     }
     span {
       font-size: 0.875rem;
@@ -35,8 +40,11 @@
   }
   .filter {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 5px;
+    flex-direction: column;
+    margin: 0 !important;
+    width: 100%;
 
     .filterText {
       white-space: nowrap;
@@ -44,7 +52,9 @@
 
     input {
       width: 100%;
-      margin: 0 7px;
+      margin: 0;
+      border: 1px solid rgba(204, 212, 231, 1);
+      border-radius: 8px;
     }
     i {
       color: #d1d4db;
@@ -59,17 +69,22 @@
   .date {
     border: solid 1px #d9d9d9;
     padding: 0 12px !important;
-    height: 40px;
+    height: 34px;
     margin-top: 20px;
     font-size: 14px;
     input {
-      font-size: 14px;
+      font-size: 12px;
       &::placeholder {
         font-size: 12px;
       }
     }
     &.dates {
       margin: 0;
+      padding: 14px;
+      gap: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(204, 212, 231, 1);
+      background: transparent;
     }
   }
   &.cardWithDrawerAccordian {
@@ -80,14 +95,18 @@
       display: none;
     }
     .filterRow {
-      padding-left: 20px;
-      padding-right: 20px;
+      padding-left: 10px;
+      padding-right: 10px;
       padding-top: 20px;
     }
     .algoText {
       font-size: 14px;
       font-weight: 500;
       color: var(--primary);
+      display: flex;
+      gap: 5px;
+      color: #242b37;
+
       & + a {
         color: #d1d4db;
       }
@@ -100,7 +119,7 @@
         font-size: 13px;
       }
       [class="ant-select-selector"] {
-        height: 35px;
+        // height: 35px;
         padding: 0 10px;
         padding-left: 8px !important;
         [class="ant-select-selection-search"] {
@@ -125,6 +144,8 @@
       }
       .radioBtns {
         .radio {
+          white-space: nowrap;
+
           span {
             &:last-child {
               font-size: 14px;
@@ -199,7 +220,7 @@
     font-size: 14px;
     color: #1c1b24;
   }
-  @media screen and (max-width:767px){
+  @media screen and (max-width: 767px) {
     margin-right: 0;
   }
 }
@@ -265,5 +286,26 @@
         }
       }
     }
+  }
+}
+
+.btnCancel {
+  padding: 16px;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid #5482c8;
+}
+
+.btnApplyfilters {
+  padding: 16px;
+  gap: 10px;
+  border: 1px solid #5482c8;
+  background: #5482c8;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+
+  span {
+    color: #fff;
   }
 }

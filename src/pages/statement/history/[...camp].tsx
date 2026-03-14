@@ -1,16 +1,7 @@
-import HistoryContainer from "../../../components/ComponentPages/HistoryContainer";
+import HistoryContainer from "components/ComponentPages/HistoryContainer";
 
-import Layout from "../../../hoc/layout";
-
-const StatementHistoryPage = () => {
-  return (
-    <>
-      <Layout>
-        <HistoryContainer />
-      </Layout>
-    </>
-  );
-};
+const StatementHistoryPage = () => <HistoryContainer />;
 
 StatementHistoryPage.displayName = "StatementHistoryPage";
+
 export default StatementHistoryPage;

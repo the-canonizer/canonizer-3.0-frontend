@@ -72,7 +72,7 @@ describe("EmailPopup Component page", () => {
     render(
       <Provider store={store}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );

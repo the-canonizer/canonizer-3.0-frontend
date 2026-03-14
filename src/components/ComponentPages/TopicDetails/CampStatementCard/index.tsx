@@ -1,161 +1,366 @@
-import CustomButton from "../../../common/button";
-import { Typography, Collapse, Popover } from "antd";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { RootState } from "src/store";
-import styles from "../topicDetails.module.scss";
-import K from "../../../../constants";
-import moment from "moment";
-import { replaceSpecialCharacters } from "../../../../utils/generalUtility";
-import CustomSkelton from "../../../common/customSkelton";
 import Image from "next/image";
+import {
+  EditOutlined,
+  FullscreenExitOutlined,
+  FullscreenOutlined,
+} from "@ant-design/icons";
+import { useState } from "react";
+import { Button } from "antd";
 
-const { Paragraph } = Typography;
+import styles from "../topicDetails.module.scss";
 
-const { Panel } = Collapse;
-const covertToTime = (unixTime) => {
-  return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm A");
-};
-const CampStatementCard = ({ loadingIndicator, backGroundColorClass }: any) => {
+import { RootState } from "src/store";
+import K from "src/constants";
+import {
+  covertToTime,
+  isUserRestricted,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
+import CustomSkelton from "components/common/customSkelton";
+import ViewCounts from "components/shared/ViewsCount";
+import PrimaryButton from "components/shared/Buttons/PrimariButton";
+import CommonCard from "components/shared/Card";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import SectionHeading from "components/ComponentPages/Home/FeaturedTopic/sectionsHeading";
+
+const CampStatementCard = ({ loadingIndicator }) => {
   const router = useRouter();
-  const { campRecord, campStatement, history } = useSelector(
-    (state: RootState) => ({
-      campStatement: state?.topicDetails?.campStatement,
-      history: state?.topicDetails?.history,
-      campRecord: state?.topicDetails?.currentCampRecord,
-    })
-  );
 
-  return loadingIndicator || !campStatement ? (
-    <CustomSkelton
-      skeltonFor="card"
-      titleName={K?.exceptionalMessages?.campStatementHeading}
-      bodyCount={2}
-      stylingClass="test"
-      isButton={false}
-    />
-  ) : (
-    <div onClick={(e) => {
-      e.stopPropagation();
-      if (campStatement[0]?.in_review_changes > 0 &&
-        campRecord?.is_archive == 0 ){
-          router.push(
-            `/statement/history/${replaceSpecialCharacters(
-              router?.query?.camp[0],
-              "-"
-            )}/${replaceSpecialCharacters(
-              router?.query?.camp[1] ?? "1-Agreement",
-              "-"
-            )}`
-          );
-        }
-    }}>
-    <Collapse
-      defaultActiveKey={["1"]}
-      expandIconPosition="right"
-      className="topicDetailsCollapse"
-      style={{ cursor: campStatement[0]?.in_review_changes > 0 &&
-        campRecord?.is_archive == 0?"pointer": null}}
-    >
-      <Panel
-        className={`campStatementPanel header-bg-color-change ${backGroundColorClass}`}
-        disabled
-        header={
-          <>
-            <h3 className="cmp-title">
-              {K?.exceptionalMessages?.campStatementHeading}
-            </h3>
-            <div
-              className="cmp-change-icon"
-              style={{ display: "inline-block" }}
-            >
-              {campStatement[0]?.in_review_changes > 0 &&
-              campRecord?.is_archive == 0 ? (
-                <div
-                >
-                  <Popover
-                    content={
-                      "Some changes are currently under review in this camp statement."
-                    }
-                    placement="topLeft"
-                    className={styles.infoIcon}
-                  >
-                    <Image
-                      // className="change-icon"
-                      width={20}
-                      height={20}
-                      src="/images/change-icon.svg"
-                      alt=""
-                    />
-                  </Popover>
-                </div>
-              ) : null}
-            </div>
-          </>
-        }
-        key="1"
-        extra={
-          campStatement?.length && campStatement[0]?.go_live_time ? (
-            <div className={styles.cardActions}>
-              <span className="bold">Go live Time : </span>
-              {campStatement?.length &&
-                covertToTime(campStatement[0]?.go_live_time)}
-            </div>
-          ) : null
-        }
-      >
-        <Paragraph>
-          <div className={styles.campStatement}>
-            {campStatement?.length && campStatement[0]?.parsed_value ? (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: `<div class="ck-content">${campStatement[0]?.parsed_value}</div>`,
-                }}
-              />
-            ) : (
-              K?.exceptionalMessages?.campStatement
-            )}
-          </div>
-        </Paragraph>
+  const {
+    campRecord,
+    campStatement,
+    tree,
+    haveStatementPreview,
+    openConsensusTreePopup,
+    asof,
+    loggedInUser,
+    restrictUser
+  } = useSelector((state: RootState) => ({
+    campStatement: state?.topicDetails?.campStatement,
+    campRecord: state?.topicDetails?.currentCampRecord,
+    tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
+    haveStatementPreview: state?.topic?.haveStatementPreview,
+    openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
+    asof: state?.filters?.filterObject?.asof,
+    restrictUser: state?.topicDetails?.restrictSupporters,
+    loggedInUser: state.auth.loggedInUser,
+  }));
 
-        <div className="topicDetailsCollapseFooter printHIde">
-          <CustomButton
-            disabled={campRecord?.is_archive == 1 ? true : false}
-            className="btn-green printHIde"
-            id="add-camp-statement-btn"
-          >
-            <Link
-              href={
-                campStatement?.length > 0
+  const [fullScreen, setFullScreen] = useState(false);
+
+  if (loadingIndicator || !campStatement) {
+    return (
+      <CustomSkelton
+        skeltonFor="card"
+        titleName={K?.exceptionalMessages?.campStatementHeading}
+        bodyCount={2}
+        stylingClass="test"
+        isButton={false}
+      />
+    );
+  }
+
+  const onEditDraftClick = (e) => {
+    e?.preventDefault();
+    router?.push({
+      pathname: "/manage/statement/" + campStatement[0]?.draft_record_id,
+      query: { is_draft: "1" },
+    });
+  };
+
+  const isDraftShow = () => {
+    if (campStatement?.length) {
+      if (
+        !campStatement[0]?.parsed_value &&
+        campStatement[0]?.draft_record_id
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const getElementHeight = () => {
+    const cardHeader = document.querySelector(
+      "#statementCard .ant-card-head"
+    ) as HTMLDivElement;
+
+    return cardHeader?.offsetHeight || 0;
+  };
+
+  const getButton = () => {
+    if (isDraftShow()) {
+      return (
+        <PrimaryButton
+          className="printHIde flex items-center justify-center text-base h-auto py-2 px-9 gap-2 w-full mt-5 font-medium"
+          onClick={onEditDraftClick}
+        >
+          Edit Draft <EditOutlined />
+        </PrimaryButton>
+      );
+    } else if (
+      !isDraftShow() &&
+      (!campStatement?.length ||
+        (campStatement?.length && !campStatement[0]?.parsed_value))
+    ) {
+      return (
+        <PrimaryButton
+          disabled={campRecord?.is_archive == 1 ? true : false}
+          className="printHIde flex items-center justify-center text-base py-5 gap-2 w-full mt-5 font-medium mt-4"
+          id="add-camp-statement-btn"
+          onClick={() =>
+            router?.push({
+              pathname:
+                campStatement?.length < 0 ||
+                campStatement?.at(0)?.grace_period_record_count > 0 ||
+                (Array.isArray(campStatement) &&
+                  campStatement[0]?.in_review_changes > 0)
                   ? `/statement/history/${replaceSpecialCharacters(
-                      router?.query?.camp[0],
+                      router?.query?.camp.at(0),
                       "-"
                     )}/${replaceSpecialCharacters(
-                      router?.query?.camp[1] ?? "1-Agreement",
+                      router?.query?.camp.at(1) ?? "1-Agreement",
                       "-"
                     )}`
                   : `/create/statement/${replaceSpecialCharacters(
-                      router?.query?.camp[0],
+                      router?.query?.camp.at(0),
                       "-"
                     )}/${replaceSpecialCharacters(
-                      router?.query?.camp[1] ?? "1-Agreement",
+                      router?.query?.camp.at(1) ?? "1-Agreement",
                       "-"
-                    )}`
-              }
-              className="printHIde"
+                    )}`,
+            })
+          }
+        >
+          {campStatement[0]?.parsed_value ||
+          (Array.isArray(campStatement) &&
+            campStatement[0]?.in_review_changes > 0) ||
+          (Array.isArray(campStatement) &&
+            campStatement[0]?.grace_period_record_count > 0)
+            ? K?.exceptionalMessages?.manageCampStatementButton
+            : K?.exceptionalMessages?.addCampStatementButton}
+          <Image
+            src="/images/manage-btn-icon.svg"
+            alt="svg"
+            className="icon-topic"
+            height={24}
+            width={24}
+          />
+        </PrimaryButton>
+      );
+    }
+
+    return (
+      <PrimaryButton
+        disabled={campRecord?.is_archive == 1 ? true : false}
+        className="btn-green printHIde hidden lg:hidden sm:flex md:flex items-center justify-center text-base font-medium"
+        id="add-camp-statement-btn"
+        onClick={() =>
+          router?.push({
+            pathname:
+              campStatement?.length > 0
+                ? `/statement/history/${replaceSpecialCharacters(
+                    router?.query?.camp.at(0),
+                    "-"
+                  )}/${replaceSpecialCharacters(
+                    router?.query?.camp.at(1) ?? "1-Agreement",
+                    "-"
+                  )}`
+                : `/create/statement/${replaceSpecialCharacters(
+                    router?.query?.camp.at(0),
+                    "-"
+                  )}/${replaceSpecialCharacters(
+                    router?.query?.camp.at(1) ?? "1-Agreement",
+                    "-"
+                  )}`,
+          })
+        }
+      >
+        {K?.exceptionalMessages?.manageCampStatementButton}
+        <Image
+          src="/images/manage-btn-icon.svg"
+          alt="svg"
+          className="icon-topic"
+          height={24}
+          width={24}
+        />
+      </PrimaryButton>
+    );
+  };
+
+  const disabled = isUserRestricted(restrictUser, loggedInUser);
+ 
+  return (
+    <CommonCard
+      style={{
+        "--card-body-height": `calc(100% - ${getElementHeight()}px)`,
+        "--element-height": `${getElementHeight()}px`,
+      }}
+      className={
+        fullScreen
+          ? "[&_.ant-card-body]:h-full [&_.ant-card-body]:w-full [&_.ant-card-body]:items-center fixed top-0  left-0 w-full h-full z-[9999] bg-white border-none flex justify-start items-start shadow-md flex-col overflow-hidden !overflow-y-auto [&_.ant-card-head]:w-full"
+          : `border-0 h-100  bg-white [&_.ant-card-body]:p-0  [&_.ant-card-body]:lg:p-[24px] [&_.ant-card-body]:h-full [&_.ant-card-body]:flex overflow-hidden lg:bg-canGray mb-8 lg:mb-14 border-t-8  
+          ${
+            router?.query?.status == "in_review"
+              ? "!border-canOrange"
+              : router?.query?.status == "old"
+              ? "!border-canBlue"
+              : router?.query?.status == "live"
+              ? "!border-canGreen"
+              : router?.query?.status == "objected"
+              ? "!border-canRed"
+              : router?.query?.asof == "review"
+              ? "!border-canOrange"
+              : router?.query?.asof == "bydate"
+              ? "border-[#4786CB]"
+              : "!border-canGreen"
+          } 
+            ${
+              openConsensusTreePopup
+                ? "[&_.ant-card-body]:!h-[700px]"
+                : "h-[400px] xl:h-[600px]"
+            } statementCardBody`
+      }
+      data-testid="algoSelect"
+      id="statementCard"
+      title={
+        <div className="flex justify-between items-start flex-wrap bg-green">
+          <div className="w-full">
+            <div className="camp-agreement-header flex items-center mb-2.5 lg:mb-1 gap-2 justify-between">
+              <div className="flex gap-2.5 items-center">
+                <SectionHeading
+                  title={
+                    haveStatementPreview?.review_title || campRecord?.camp_name
+                  }
+                  infoContent=""
+                  icon={null}
+                  className="text-sm lg:text-base normal-case text-canBlack text-left font-semibold !mb-0"
+                />
+                <ViewCounts
+                  views={tree?.[1] && tree[1]?.camp_views}
+                  className="!gap-1"
+                />
+              </div>
+              <div>
+                {fullScreen &&
+                campStatement?.length &&
+                campStatement[0]?.parsed_value &&
+                campStatement[0]?.draft_record_id ? (
+                  <SecondaryButton
+                    className="px-8 h-auto py-2 ml-auto"
+                    onClick={onEditDraftClick}
+                  >
+                    Edit Draft <EditOutlined />
+                  </SecondaryButton>
+                ) : null}
+                <Button
+                  className="border-none bg-transparent hover:bg-transparent shadow-none focus:!bg-transparent"
+                  onClick={() => setFullScreen(!fullScreen)}
+                >
+                  {fullScreen ? (
+                    <FullscreenExitOutlined style={{ fontSize: "20px" }} />
+                  ) : (
+                    <FullscreenOutlined style={{ fontSize: "20px" }} />
+                  )}
+                </Button>
+              </div>
+            </div>
+
+            {campStatement?.[0]?.go_live_time && (
+              <div className="flex items-center justify-start gap-6 camp-header-content lg:border-none border-t border-b border-canGrey2 lg:py-0 py-1.5 lg:mb-0 mb-2">
+                {campStatement?.[0]?.go_live_time && (
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src="/images/calendar-camp.svg"
+                      alt="svg"
+                      className="icon-topic"
+                      height={16}
+                      width={16}
+                    />
+                    <p className="text-[10px] font-normal text-canBlack text-opacity-50">
+                      Last update:{" "}
+                      {covertToTime(campStatement?.[0]?.go_live_time)}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          {!fullScreen &&
+          campStatement?.length &&
+          campStatement[0]?.parsed_value &&
+          campStatement[0]?.draft_record_id ? (
+            <SecondaryButton
+              className="px-8 h-auto py-2 ml-auto"
+              onClick={onEditDraftClick}
+              disabled={disabled}
             >
-              <a className="printHIde">
-                {campStatement?.length > 0
-                  ? K?.exceptionalMessages?.manageCampStatementButton
-                  : K?.exceptionalMessages?.addCampStatementButton}
-              </a>
-            </Link>
-          </CustomButton>
+              Edit Draft <EditOutlined />
+            </SecondaryButton>
+          ) : null}
         </div>
-      </Panel>
-    </Collapse>
-    </div>
+      }
+    >
+      <div
+        className={`camp-agrrement-new overflow-hidden  !overflow-y-auto w-full pr-4 ${
+          !campStatement?.[0]?.value?.length
+            ? "h-full flex justify-center my-auto"
+            : ""
+        } ${
+          campStatement?.length > 0 && campStatement[0]?.parsed_value
+            ? ""
+            : "my-auto"
+        }`}
+      >
+        <div
+          className={`flex flex-col ${
+            campStatement?.length && campStatement[0]?.parsed_value
+              ? "items-start justify-start"
+              : "items-center justify-center"
+          }`}
+        >
+          <div
+            className={`${styles.campStatement} text-canBlack opacity-80 text-sm font-normal leading-6 [&_a]:!text-canBlue [&_a]:hover:!text-canHoverBlue`}
+          >
+            {campStatement?.length &&
+            campStatement[0]?.parsed_value &&
+            asof == "review" &&
+            campStatement?.at(0)?.in_review_changes == 0 ? (
+              // "There is no statement in review."
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: `<div class="ck-content editorContent">${campStatement[0]?.parsed_value}</div>`,
+                }}
+              />
+            ) : campStatement?.length && campStatement[0]?.parsed_value ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: `<div class="ck-content editorContent">${campStatement[0]?.parsed_value}</div>`,
+                }}
+              />
+            ) : (
+              <span className="text-sm">
+                {isDraftShow()
+                  ? "Continue finishing up your statement"
+                  : K?.exceptionalMessages?.campStatement}
+              </span>
+            )}
+          </div>
+
+          <div
+            className={`topicDetailsCollapseFooter printHIde camp ${
+              campStatement?.length && campStatement[0]?.parsed_value
+                ? "mt-5 border-t-2 pt-5 w-full"
+                : ""
+            }`}
+          >
+            {getButton()}
+          </div>
+        </div>
+      </div>
+    </CommonCard>
   );
 };
 export default CampStatementCard;

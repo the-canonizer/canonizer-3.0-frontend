@@ -9,13 +9,14 @@ export default class TreeRequest extends Request {
 
   // Define request functions below.
 
-  static getTrees(reqBody) {
+  static getTrees(reqBody, token) {
     return new Request(
       K.Network.URL.GetTree,
       K.Network.Method.POST,
       reqBody,
       K.Network.Header.Type.Json,
-      {}
+      {},
+      token
     );
   }
 
@@ -81,6 +82,36 @@ export default class TreeRequest extends Request {
       K.Network.URL.CreateCamp,
       K.Network.Method.POST,
       body,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser?.token
+    );
+  }
+
+  static restrictSupportes(queryParam) {
+    const { campId, body} = queryParam
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.RestrictSupporters +  `/${campId}/restrict`,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      auth.loggedInUser?.token
+    );
+  }
+
+  static getRestrictSupportes(queryParam) {
+    const { campId } = queryParam
+    let state = store.getState();
+    const { auth } = state;
+
+    return new Request(
+      K.Network.URL.GetRestrictSupporters +  `/${campId}/restrictions`,
+      K.Network.Method.GET,
+      null,
       K.Network.Header.Type.Json,
       {},
       auth.loggedInUser?.token

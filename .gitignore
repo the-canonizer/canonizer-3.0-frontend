@@ -54,3 +54,7 @@ yarn-error.log*
 #package 
 package-lock.json
 yarn.lock
+
+
+/public/meta.json
+.qodo

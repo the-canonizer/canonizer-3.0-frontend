@@ -325,6 +325,21 @@ export default class UserRequest extends Request {
     );
   }
 
+  static setDefaultNickname(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.SetDefaultNickname,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
   // resend otp for registration
   static resendOTPForRegistration(body) {
     return new Request(
@@ -336,9 +351,15 @@ export default class UserRequest extends Request {
     );
   }
 
-  static getDirectSupportedCampsList(authToken) {
+  static getDirectSupportedCampsList(page, perPage, search, authToken) {
     return new Request(
-      K.Network.URL.GetDirectSupportedCamps,
+      K.Network.URL.GetDirectSupportedCamps +
+        "?page=" +
+        page +
+        "&per_page=" +
+        perPage +
+        "&search=" +
+        search,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,
@@ -388,9 +409,16 @@ export default class UserRequest extends Request {
       authToken
     );
   }
-  static getDelegatedSupportCampsList(authToken) {
+
+  static getDelegatedSupportCampsList(page, perPage, search, authToken) {
     return new Request(
-      K.Network.URL.GetDelegatedSupportCamps,
+      K.Network.URL.GetDelegatedSupportCamps +
+        "?page=" +
+        page +
+        "&per_page=" +
+        perPage +
+        "&search=" +
+        search,
       K.Network.Method.GET,
       {},
       K.Network.Header.Type.Json,
@@ -676,6 +704,46 @@ export default class UserRequest extends Request {
       body,
       K.Network.Header.Type.Json,
       {}
+    );
+  }
+
+  static checkFacebookAccountDeleteStatus(confirmation_code: string): Request {
+    return new Request(
+      K.Network.URL.CheckFacebookDeleteDataStatus +
+        "?confirmation_code=" +
+        confirmation_code,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {}
+    );
+  }
+
+  static GetUserPreferences(authToken) {
+    const body = {};
+
+    return new Request(
+      K.Network.URL.GetUserPreferences,
+      K.Network.Method.GET,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
+    );
+  }
+
+  static UpdateUserPreferences(values, authToken) {
+    const body = {
+      ...values,
+    };
+
+    return new Request(
+      K.Network.URL.UpdateUserPreferences,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      authToken
     );
   }
 }

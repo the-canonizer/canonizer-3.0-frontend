@@ -4,13 +4,14 @@ export const homePageSlice = createSlice({
   name: "homePage",
   initialState: {
     canonizedTopicsData: {
-      topics: [1],
+      topics: null,
       numOfPages: null,
     },
 
     nameSpaces: null,
     whatsNew: null,
     algorithms: null,
+    trandingAlgo: "blind_popularity",
   },
   reducers: {
     setCanonizedTopics: (state, action) => {
@@ -35,6 +36,9 @@ export const homePageSlice = createSlice({
     setWhatsNewContent: (state, action) => {
       state.whatsNew = action.payload[0]?.html_content;
     },
+    setTrandingAlgo: (state, action) => {
+      state.trandingAlgo = action.payload;
+    },
   },
 });
 
@@ -44,6 +48,7 @@ export const {
   setWhatsNewContent,
   pushToCanonizedTopics,
   setCanonizedAlgorithms,
+  setTrandingAlgo,
 } = homePageSlice.actions;
 
 export default homePageSlice.reducer;

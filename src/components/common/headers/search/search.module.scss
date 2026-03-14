@@ -1,0 +1,99 @@
+.searchCategories {
+  [class*="ant-select-item ant-select-item-group"] {
+    display: none;
+  }
+  [class*="ant-select-item-option"] {
+    [class*="ant-select-item-option-active"] {
+      background-color: white;
+      padding: 5px;
+    }
+  }
+  [class*="ant-tabs-nav"] {
+    [class*="ant-tabs-nav-wrap"] {
+      [class*="ant-tabs-nav-list"] {
+        justify-content: space-between;
+        [class*="ant-tabs-tab"] {
+          [class*="ant-tabs-tab-btn"] {
+            transition: all 0.3s;
+          }
+        }
+      }
+    }
+  }
+  [class*="rc-virtual-list-holder"] {
+    max-height: 100% !important;
+    overflow: hidden !important;
+    [class*="rc-virtual-list-holder-inner"] {
+      padding: 0;
+    }
+  }
+  [class*="ant-tabs-content-holder"] {
+    overflow: hidden auto;
+    max-height: 500px;
+    white-space: break-spaces;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: #888;
+      &:hover {
+        background: #555;
+      }
+    }
+  }
+  .ItemCard {
+    [class*="ant-card-head"] {
+      border: none;
+      [class*="ant-card-head-title"] {
+        margin: 0;
+      }
+    }
+    [class*="ant-card-body"] {
+      padding: 10px 10px;
+    }
+  }
+}
+.searchInput {
+  [class*="ant-input-wrapper"] {
+    display: flex;
+    input {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      border-color: #ccd4e7;
+      &::placeholder {
+        color: #777f93;
+        font-weight: 400;
+        font-size: 12px;
+      }
+    }
+    [class*="ant-input-group-addon"] {
+      border-radius: 0px 10px 10px 0px;
+      display: flex;
+      background: transparent !important;
+      border: none !important;
+      height: 44px !important;
+      width: 50px !important;
+      button {
+        padding: 0;
+        margin: 0;
+        width: 100% !important;
+        height: 100% !important;
+        position: static !important;
+        display: grid !important;
+        justify-content: center;
+        align-items: center;
+        svg {
+          fill: #242b37;
+        }
+      }
+    }
+  }
+}

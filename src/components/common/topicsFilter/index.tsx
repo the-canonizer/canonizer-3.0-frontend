@@ -433,9 +433,7 @@ const CreateTopic = () => {
               {router?.asPath.includes("/topic") ? (
                 <a href={K?.Network?.URL?.algoInfoUrl}>Algorithm Information</a>
               ) : (
-                <Link href={K?.Network?.URL?.algoInfoUrl}>
-                  <a>Algorithm Information</a>
-                </Link>
+                <Link href={K?.Network?.URL?.algoInfoUrl}>Algorithm Information</Link>
               )}
             </Popover>
           </div>

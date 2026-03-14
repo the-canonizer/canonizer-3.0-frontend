@@ -62,7 +62,7 @@ const LoggedOutHeader = () => {
             <CloseOutlined />
           </Button>
 
-          <HeaderMenu loggedUser={null} />
+          <HeaderMenu isUserAuthenticated={true} />
 
           <div className={styles.btnsLoginRegister}>
             <Button
@@ -115,7 +115,8 @@ const LoggedOutHeader = () => {
       {isMobile == false ? (
         <section className="Mob_View">
           <div className="search_header">
-            <HeaderMenu />
+            {/* TODO: This Header comp will be removed later */}
+            <HeaderMenu isUserAuthenticated={true} />
           </div>
         </section>
       ) : (

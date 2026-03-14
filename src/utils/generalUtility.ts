@@ -1,7 +1,10 @@
 import { message } from "antd";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import moment from "moment";
+import { jwtDecode } from "jwt-decode";
 
 export const handleError = (error, log = false) => {
+  // eslint-disable-next-line
   log ? window.console.log(error) : "";
 
   const nestedErrs = error
@@ -20,14 +23,20 @@ export const handleError = (error, log = false) => {
   ) {
     let keys = Object.keys(nestedErrs.error);
     keys.forEach((key) => {
-      message.error(nestedErrs.error[key][0]);
+      // message.error(nestedErrs.error[key][0]);
+      let type = "error";
+      openNotificationWithIcon(nestedErrs.error[key][0], type);
     });
   } else {
     if (nestedErrs.message) {
-      message.error(nestedErrs.message);
+      // message.error(nestedErrs.message);
+      let type = "error";
+      openNotificationWithIcon(nestedErrs.message, type);
     }
     if (error.message) {
-      message.error(error.message);
+      // message.error(error.message);
+      let type = "error";
+      openNotificationWithIcon(error.message, type);
     }
   }
   return null;
@@ -364,3 +373,211 @@ export const getProperties = (item) => {
 
   return null;
 };
+
+export const capitalizeFirstLetter = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1);
+
+export function parseCookies(cookiesString) {
+  const cookiesArray = cookiesString?.split("; ");
+  const cookiesObject = {};
+
+  cookiesArray?.forEach((cookie) => {
+    const [key, value] = cookie?.split("=");
+    cookiesObject[key] = value;
+  });
+
+  return cookiesObject;
+}
+
+export const historyTitle = (historyOf) => {
+  switch (historyOf) {
+    case "statement":
+      return "Statement";
+    case "topic":
+      return "Topic";
+    case "camp":
+      return "Camp";
+    default:
+      return "";
+  }
+};
+export const convertToTime = (unixTime) => {
+  return moment(unixTime * 1000).format("DD MMM YYYY, hh:mm:ss A");
+};
+
+export const transformData = (data) => {
+  // Extract the videos array from the first element in the data array
+  const videos = data;
+
+  // Map over the videos array to transform each video object
+  return videos?.map((video) => {
+    // Generate the value by converting the title to lowercase and replacing spaces with underscores
+    const value = video.title.toLowerCase().replace(/ /g, "_");
+
+    // Return the new object with the desired shape
+    return {
+      value: value,
+      label: video.title,
+    };
+  });
+};
+
+export const replaceUnderscoresWithSpaces = (str) => {
+  return str.replace(/_/g, " ");
+};
+
+export const replaceHyphensAndCapitalize = (str) => {
+  // Replace hyphens with spaces
+  let replacedStr = str?.replace(/-/g, " ");
+
+  // Capitalize the first letter
+  let capitalizedStr =
+    replacedStr?.charAt(0)?.toUpperCase() + replacedStr?.slice(1);
+
+  return capitalizedStr;
+};
+
+export const getVideoNameFromURL = (str) => {
+  // Split the string at the first hyphen to remove the leading ID
+  let splitStr = str?.split("-")?.slice(1)?.join("-");
+
+  // Replace hyphens with spaces
+  let formattedStr = splitStr?.replace(/-/g, " ");
+
+  // Capitalize the first letter of the resulting string
+  let capitalizedStr =
+    formattedStr?.charAt(0)?.toUpperCase() + formattedStr.slice(1);
+
+  return capitalizedStr;
+};
+
+export const covertToTime = (unixTime) => {
+  return moment(unixTime * 1000).format("DD MMMM YYYY, hh:mm:ss A");
+};
+
+export const defaultNicknameData = (nickNameList) => {
+  return nickNameList?.find((item) => item.default === 1);
+};
+
+export const commaSeparated = (item, isLastIndex) => {
+  return item + (isLastIndex ? "" : ", ");
+};
+
+export const findAlgorithmKey = (target, list) => {
+  const found = list?.find(
+    (item) => item?.algorithm_key === target || item?.algorithm_label === target
+  );
+  return found ? found?.algorithm_key : target; // Return the algorithm_key if found, otherwise null
+};
+
+export const serverRoutes = [
+  "/",
+  "/camp/create/[...camp]",
+  "/camp/history/[...camp]",
+  "/create/topic",
+  "/forum/[topic]/[camp]/threads/[id]",
+  "/manage/topic/[...statement]",
+  "/topic/[...camp]",
+];
+
+export const isTokenValid = (token): boolean => {
+  if (token) {
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.exp > Math.floor(Date.now() / 1000);
+  } else {
+    return false;
+  }
+};
+
+export const getCookiesExpirationTime = () => {
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+  oneYearFromNow.setUTCHours(0, 0, 0, 0);
+
+  const expirationDate = oneYearFromNow.toUTCString().replace("GMT", "UTC");
+
+  return `;expires=${expirationDate}; path=/`;
+};
+
+export const isShowAds = () => {
+  const urls = ["canonizer.com", "www.canonizer.com"];
+  if (typeof window !== "undefined") {
+    return urls.includes(window?.location?.hostname);
+  }
+};
+
+export const convertToSlug = (url) => {
+  return url
+    .toLowerCase() // Convert to lowercase
+    .replace(/\s+/g, "-") // Replace spaces with dashes (if any)
+    .replace(/[^\w-]+/g, "") // Remove special characters except dashes
+    .replace(/-+/g, "-") // Remove multiple dashes
+    .replace(/^\/+|\/+$/g, ""); // Trim leading/trailing slashes
+};
+
+// Types
+interface RestrictedEntry {
+  user?: { id: number };
+  nick_name?: { user?: { id: number } };
+  end_time?: string;
+  reason?: string;
+  nick_name_leader?: { user?: { first_name?: string; last_name?: string } };
+  leader?: { last_name?: string };
+}
+
+interface LoggedInUser {
+  id: number;
+}
+
+/**
+ * Checks if logged-in user exists in restricted users list.
+ * Handles all edge cases safely.
+ */
+export const isUserRestricted = (
+  restrictedList: RestrictedEntry[] | null | undefined,
+  loggedInUser: LoggedInUser | null | undefined
+): boolean => {
+  if (!restrictedList?.length || !loggedInUser?.id) return false;
+
+  return restrictedList.some(
+    item => item?.nick_name?.user?.id === loggedInUser.id
+  );
+};
+
+
+
+export const getRestrictedUser = (restrictedList, loggedInUser) => {
+  const restrictedUser = restrictedList?.find(
+    item => item?.nick_name?.user?.id === loggedInUser?.id
+  );
+
+  if (!restrictedUser) return null;
+
+  let remainingTime = null;
+  let isExpired = false;
+  
+  if (restrictedUser.end_time) {
+    const endTime = moment  (restrictedUser.end_time);
+    const now = moment();
+
+    if (endTime.isBefore(now)) {
+      isExpired = true;
+      remainingTime = 'Restriction expired';
+    } else {
+      // Humanized format: "in 5 hours", "in 2 days"
+      remainingTime = `Unrestrict ${endTime.fromNow()}`;
+      // OR for "5 hours left" format:
+      // remainingTime = `${endTime.toNow(true)} remaining`;
+    }
+  }
+
+  return {
+    reason: restrictedUser.reason || 'No reason provided',
+    restrictedBy: `${restrictedUser.nick_name_leader.user?.first_name || ''} ${restrictedUser.leader?.last_name || ''}`.trim() || 'Unknown',
+    remainingTime,
+    isExpired,
+    endTime: restrictedUser.end_time,
+    fullData: restrictedUser
+  };
+};
+

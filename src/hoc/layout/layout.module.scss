@@ -1,50 +1,94 @@
-.pageWrap {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+$sidebar_width: 30%;
+$sidebar_width_small: 30%;
 
-  .contentWrap {
-    flex: 1;
-    min-height: calc(100vh - 397px);
+.contentArea {
+  display: flex;
+  // overflow: hidden;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-height: calc(100vh - 347px);
+
+  .contentBox {
+    width: 100%;
+    flex-grow: 1;
+    transition: width 0.3s ease;
   }
 
-  .contentArea {
-    width: 100%;
-
-    &.eventListArea {
-      width: 100%;
-    }
+  .rightSidebar,
+  .leftSidebar {
+    width: $sidebar_width;
+    transition: width 0.3s ease;
   }
 
   .rightSidebar {
-    display: none;
+    margin-left: 30px;
   }
 
-  .leftSideBar {
-    display: none;
+  .leftSidebar {
+    margin-right: 20px;
+  }
 
-    &.miniSideBar {
-      display: none;
-    }
+  &.withRightsideBar .contentBox {
+    width: calc(100% - ($sidebar_width + 50px));
+  }
 
-    & + .pageContentWrap {
+  &.withLeftsideBar .contentBox {
+    width: calc(100% - ($sidebar_width + 50px));
+  }
+
+  &.withBothsideBar .contentBox {
+    width: calc(100% - ($sidebar_width + 50px) * 2);
+  }
+
+  @media screen and (max-width: 1024px) {
+    .contentBox {
       width: 100%;
     }
 
-    &_Card {
-      padding: 15px;
-      border: 1px solid var(--border);
-      background-color: var(--surface-card);
-      margin-bottom: 16px;
-      border-radius: var(--radius);
+    &.withRightsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small);
+    }
+
+    &.withLeftsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small);
+    }
+
+    &.withBothsideBar .contentBox {
+      width: calc(100% - $sidebar_width_small * 2);
+    }
+
+    .rightSidebar,
+    .leftSidebar {
+      width: $sidebar_width_small;
     }
   }
 
-  .timelineLayout {
-    width: 100%;
-  }
-}
+  @media screen and (max-width: 992px) {
+    flex-direction: column;
+    flex-wrap: wrap;
 
-.recentActivitySider {
-  margin-top: 36px;
+    .contentBox {
+      width: 100%;
+    }
+
+    &.withRightsideBar .contentBox {
+      width: 100%;
+    }
+
+    &.withLeftsideBar .contentBox {
+      width: 100%;
+    }
+
+    &.withBothsideBar .contentBox {
+      width: 100%;
+    }
+
+    .rightSidebar,
+    .leftSidebar {
+      width: 100%;
+    }
+    .rightSidebar {
+      margin-left: 0px;
+    }
+  }
 }

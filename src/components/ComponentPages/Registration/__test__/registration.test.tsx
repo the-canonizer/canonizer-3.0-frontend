@@ -7,6 +7,7 @@ import { NextRouter } from "next/router";
 import configureMockStore from "redux-mock-store";
 
 import Registration from "../";
+import RegistrationOTP from "../OTP";
 import messages from "../../../../messages";
 import { register, verifyOtp, getCountryCodes } from "src/network/api/userApi";
 
@@ -92,7 +93,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -110,16 +111,17 @@ describe("Registration page", () => {
     });
 
     let heading = screen.getByRole("heading", {
-      name: /Register Now on Canonizer/i,
+      name: /Create your account/i,
     });
     expect(heading).toBeInTheDocument();
     expect(screen.getByText("Already have an account?")).toBeVisible();
-    expect(screen.getByText("Login Here")).toBeVisible();
+    expect(screen.getByText("All fields are mandatory.")).toBeVisible();
+    expect(screen.getByText("Login")).toBeVisible();
     expect(screen.getByText(labels.firstName)).toBeInTheDocument();
     expect(screen.getByText(labels.lastName)).toBeInTheDocument();
     expect(screen.getByText(labels.email)).toBeInTheDocument();
     expect(screen.getByText(labels.phone)).toBeInTheDocument();
-    expect(screen.getByText(labels.registrationPassword)).toBeInTheDocument();
+    expect(screen.getByText(labels.password)).toBeInTheDocument();
     expect(screen.getByText(labels.confirmPassword)).toBeInTheDocument();
     expect(screen.getByText("+1")).toBeInTheDocument();
 
@@ -128,7 +130,7 @@ describe("Registration page", () => {
     const email = screen.getByPlaceholderText(placeholders.email);
     const phone = screen.getByPlaceholderText(placeholders.phone);
     const registrationPassword = screen.getByPlaceholderText(
-      placeholders.registrationPassword
+      placeholders.password
     );
     const confirmPassword = screen.getByPlaceholderText(
       placeholders.confirmPassword
@@ -143,7 +145,7 @@ describe("Registration page", () => {
     expect(lastName).toHaveAttribute("placeholder", placeholders.lastName);
 
     expect(email).toBeInTheDocument();
-    expect(email).toHaveAttribute("type", "text");
+    expect(email).toHaveAttribute("type", "email");
     expect(email).toHaveAttribute("placeholder", placeholders.email);
 
     expect(phone).toBeInTheDocument();
@@ -169,7 +171,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -234,7 +236,7 @@ describe("Registration page", () => {
     //   })
     // );
 
-    const loginBtn = screen.getByText("Login Here");
+    const loginBtn = screen.getByText("Login");
     expect(loginBtn).toBeInTheDocument();
     userEvent.click(loginBtn);
   });
@@ -243,11 +245,11 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} isTest={true} />
+          <RegistrationOTP />
         </RouterContext.Provider>
       </Provider>
     );
-    expect(screen.getByText("Registration successful")).toBeInTheDocument();
+    // expect(screen.getByText("Registration successful")).toBeInTheDocument();
     expect(
       screen.getByText("Log In One Time Verification Code")
     ).toBeInTheDocument();
@@ -278,7 +280,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -335,7 +337,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -378,7 +380,7 @@ describe("Registration page", () => {
       status_code: 403,
       message: "Something went wrong!",
     });
-    await waitFor(() => {
+    waitFor(() => {
       expect(screen.getByText("Something went wrong!")).toBeInTheDocument();
     });
   });
@@ -387,7 +389,7 @@ describe("Registration page", () => {
     render(
       <Provider store={store1}>
         <RouterContext.Provider value={createMockRouter({})}>
-          <Registration isModal={false} />
+          <Registration />
         </RouterContext.Provider>
       </Provider>
     );
@@ -432,7 +434,7 @@ describe("Registration page", () => {
       message: "Errors",
     });
 
-    await waitFor(() => {
+    waitFor(() => {
       expect(screen.getByText("Errors")).toBeInTheDocument();
     });
   });

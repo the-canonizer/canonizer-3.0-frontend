@@ -29,6 +29,9 @@ import utilsSlice from "./slices/utilsSlice";
 import loadingSlice from "./slices/loading";
 import hotTopicSlice from "./slices/hotTopicSlice";
 import searchSlice from "./slices/searchSlice";
+import tagsSlice from "./slices/tagsSlice";
+import algorithms from "./slices/algoSlice";
+
 // reducers
 
 let combinedReducer = combineReducers({
@@ -47,6 +50,8 @@ let combinedReducer = combineReducers({
   loading: loadingSlice,
   hotTopic: hotTopicSlice,
   searchSlice: searchSlice,
+  tag: tagsSlice,
+  algorithms: algorithms,
 });
 
 const rootReducer = (state, action) => {
@@ -70,6 +75,7 @@ const persistConfig = {
     "recentActivities",
     "homePage",
     "searchSlice",
+    "tag",
     // "hotTopic",
   ],
 };
@@ -92,9 +98,11 @@ const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
+
 export interface State {
   tree: string;
 }
+
 export { persistor, store };
 
 export const wrapper = createWrapper(makeStore, { debug: false });

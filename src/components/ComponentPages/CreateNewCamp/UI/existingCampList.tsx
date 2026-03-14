@@ -1,0 +1,183 @@
+import { List, Typography } from "antd";
+import Link from "next/link";
+import { WarningOutlined } from "@ant-design/icons";
+
+import CommonCards from "components/shared/Card";
+import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import UserEditIcon from "./userEditIcon";
+import { getHighlightedText } from "components/ComponentPages/CreateNewTopic/UI/existingTopicList";
+import CustomSkelton from "components/common/customSkelton";
+import { useDispatch } from "react-redux";
+import { setSearchValue } from "src/store/slices/searchSlice";
+import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
+
+const geturl = (bd) => {
+  if (bd[1] && bd[1][2]?.camp_link) {
+    return bd[1][2]?.camp_link;
+  } else {
+    return bd[0][1]?.camp_link;
+  }
+};
+
+export const getTopicNameLink = (
+  item,
+  campName,
+  isTopicNameReq = true,
+  className = ""
+) => {
+  const bd = JSON.parse(item?.breadcrumb_data);
+  return (
+    <div className={"flex " + className} id={`topic-link-${item.id}`}>
+      <div
+        className="w-[5px] h-[5px] rounded-full bg-canBlack mr-2 mt-2.5"
+        id={`dot-${item.id}`}
+      ></div>
+      <div
+        className="w-full whitespace-break-spaces break-all text-wrap line-clamp-1"
+        id={`text-wrap-${item.id}`}
+      >
+        <Link href={{ pathname: "/" + bd[0][1]?.camp_link }}
+            className="flex justify-start items-start"
+            id={`camp-link-${item.id}`}
+          >
+            {getHighlightedText(item?.type_value, campName)}
+        </Link>
+        {isTopicNameReq && (
+          <Link
+            href={{
+              pathname: "/" + geturl(bd),
+            }}
+              className="flex justify-start items-start text-xs mt-2 text-canLight whitespace-break-spaces break-all text-wrap line-clamp-1"
+              id={`topic-name-${item.id}`}
+            >
+              Topic: {bd[0][1]?.topic_name}
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ExistingCampList = ({
+  campName,
+  data,
+  isShowMore,
+  isError,
+  onContributeCLick,
+  isLoading,
+  isUpdate = false,
+}) => {
+  const dispatch = useDispatch();
+  return (
+    <CommonCards className="bg-topic-card-gr h-full">
+      {isError && (
+        <>
+          <header
+            className="mb-1 text-canRed flex items-start justify-start"
+            id="error-header"
+          >
+            <WarningOutlined
+              className="text-xl text-canRed"
+              id="warning-icon"
+            />
+            <div className="ml-3" id="error-message">
+              <Typography.Paragraph
+                className="text-canRed font-medium text-base !mb-2"
+                id="error-paragraph-1"
+              >
+                A Camp with this exact name already exists!
+              </Typography.Paragraph>
+              <Typography.Paragraph
+                className="text-canRed font-medium text-lg whitespace-break-spaces break-all text-wrap line-clamp-1"
+                id="error-paragraph-2"
+              >
+                {campName}
+              </Typography.Paragraph>
+            </div>
+          </header>
+          <hr id="error-divider" />
+        </>
+      )}
+      <Typography.Paragraph
+        className="text-canBlack font-medium mt-5 text-base"
+        id="contribute-message"
+      >
+        Camps with similar name where you can contribute -
+      </Typography.Paragraph>
+      {isLoading ? (
+        <CustomSkelton
+          skeltonFor="list"
+          bodyCount={5}
+          stylingClass="listSkeleton"
+          isButton={false}
+          id="loading-skeleton"
+        />
+      ) : (
+        <div className="w-full h-full">
+          <div
+            className={`${
+              isUpdate ? "max-h-[850px]" : "max-h-[500px]"
+            } overflow-y-auto overflow-x-hidden pr-3 mb-4`}
+          >
+            <List
+              dataSource={data.slice(0, 7)}
+              locale={{ emptyText: "There are no related camps available" }}
+              className="!list-disc"
+              renderItem={(item: {
+                id: string;
+                link: string;
+                type_value: string;
+              }) => (
+                <List.Item
+                  className="!border-b-0 mt-0 text-lg font-medium hover:shadow-lg !p-4 rounded-lg"
+                  key={item?.id}
+                  id={`list-item-${item?.id}`}
+                >
+                  {getTopicNameLink(item, campName)}
+                  <SecondaryButton
+                    className="flex p-0 !bg-transparent h-auto shadow-none border-0 uppercase text-xs font-semibold text-canBlue hocus:text-canBlue hocus:[&_>svg]:fill-canBlue"
+                    onClick={onContributeCLick.bind(this, item)}
+                    id={`contribute-button-${item?.id}`}
+                  >
+                    contribute{" "}
+                    <UserEditIcon
+                      className="[&_>svg]:text-sm ml-2"
+                      width="18"
+                      height="16"
+                    />
+                  </SecondaryButton>
+                </List.Item>
+              )}
+              id="camp-list"
+            />
+          </div>
+          {isShowMore && (
+            <Link href={{ pathname: "/search/camp", query: { q: campName } }}
+                className="text-canBlue uppercase text-xs font-semibold hocus:text-canHoverBlue"
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  dispatch(setSearchValue(""));
+                  dispatch(
+                    setFilterCanonizedTopics({
+                      asof: "default",
+                    })
+                  );
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    dispatch(setSearchValue(""));
+                  }
+                }}
+                id="see-more-results"
+              >
+                See more results
+            </Link>
+          )}
+        </div>
+      )}
+    </CommonCards>
+  );
+};
+
+export default ExistingCampList;

@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { message } from "antd";
 import dynamic from "next/dynamic";
+import { useDispatch } from "react-redux";
+import { debounce } from "lodash";
 
 import {
   getDirectSupportedCampsList,
   removeOrUpdateDirectSupportCamps,
 } from "../../../network/api/userApi";
+import {
+  setDisableSubmitButtonForDirectSupportedCamp,
+  setOpenDrawerForDirectSupportedCamp,
+} from "src/store/slices/campDetailSlice";
 
 const DirectSupportedCampsUI = dynamic(
   () => import("./DirectSupportedCampsUI"),
   { ssr: false }
 );
 
-const DirectSupportedCamps = ({ search }: any) => {
+const DirectSupportedCamps = () => {
   const [directSupportedCampsList, setDirectSupportedCampsList] = useState([]);
   const [directSopportedCampsListRevert, setdirectSopportedCampsListRevert] =
     useState([]);
@@ -33,9 +39,16 @@ const DirectSupportedCamps = ({ search }: any) => {
   const [modalPopupText, setModalPopupText] = useState(false);
   const [removeCampLink, setRemoveCamplink] = useState([]);
   const [isChangingOrder, setIsChangingOrder] = useState(false);
+  const [page, setPage] = useState(1);
+  const [perPage] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [searchText, setSearchText] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleSupportedCampsCancel = () => {
     setIsSupportedCampsModalVisible(false);
+    dispatch(setOpenDrawerForDirectSupportedCamp(false));
   };
 
   const handleSupportedCampsOpen = (data) => {
@@ -48,7 +61,8 @@ const DirectSupportedCamps = ({ search }: any) => {
     let data = directSopportedCampsListRevert.filter((val) => {
       return val.topic_num == topicId;
     });
-    if (data[0].camps.length > 0) {
+
+    if (data[0]?.camps?.length > 0) {
       let newData = [...directSupportedCampsList].map((val) => {
         if (val.topic_num == topicId) {
           return { ...val, camps: data[0].camps };
@@ -58,9 +72,16 @@ const DirectSupportedCamps = ({ search }: any) => {
       });
       setDirectSupportedCampsList(newData);
     }
-    camps.map((val) => {
-      val.dis = false;
-    });
+
+    // Check if `camps` is an array before calling `map`
+    if (Array.isArray(camps)) {
+      camps.map((val) => {
+        val.dis = false;
+      });
+    } else {
+      console.error("`camps` is not an array:", camps);
+    }
+
     setcampIds([]);
     setRemoveCamplink([]);
     setRevertBack(camps);
@@ -78,7 +99,7 @@ const DirectSupportedCamps = ({ search }: any) => {
     let data = directSupportedCampsList.filter(
       (value) => value.topic_num == cardCamp_ID
     );
-    handleRevertBack(cardCamp_ID, data[0].camps);
+    handleRevertBack(cardCamp_ID, data[0]?.camps);
     Object.keys(val).length === 0
       ? setcampIds([])
       : ((val.dis = true),
@@ -115,6 +136,7 @@ const DirectSupportedCamps = ({ search }: any) => {
     setRemoveTopicNumDataId(data.topic_num);
     setNickNameId(data.nick_name_id);
   };
+
   const saveChanges = async (reasonData) => {
     let resultCamp = CardData.filter(
       (values) => !campIds.includes(values.camp_num)
@@ -135,13 +157,18 @@ const DirectSupportedCamps = ({ search }: any) => {
       order_update: filterArrayResult,
       ...reasonData,
     };
+    dispatch(setDisableSubmitButtonForDirectSupportedCamp(true));
     let res = await removeOrUpdateDirectSupportCamps(tagsDeletedId);
     if (res && res.status_code == 200) {
-      message.success(res.message);
+      tagsDeletedId?.remove_camps.length > 0 &&
+        message.success(res?.message?.remove?.[0]);
+      tagsDeletedId?.remove_camps.length == 0 &&
+        message.success(res?.message?.update);
       setShowSaveChanges(false);
       setCardCamp_ID("");
       fetchDirectSupportedCampsList();
       setIsChangingOrder(false);
+      dispatch(setOpenDrawerForDirectSupportedCamp(false));
     }
     handleSupportedCampsCancel();
   };
@@ -169,37 +196,54 @@ const DirectSupportedCamps = ({ search }: any) => {
     if (res && res.status_code == 200) {
       message.success(res.message);
       setIsSupportedCampsModalVisible(false);
+      dispatch(setOpenDrawerForDirectSupportedCamp(false));
       fetchDirectSupportedCampsList();
     }
   };
+
   const fetchDirectSupportedCampsList = async () => {
     setDirectSkeletonIndicator(true);
-    let response = await getDirectSupportedCampsList();
-    if (response && response.status_code === 200) {
-      {
-        response.data.length > 0 ? "" : setStatusFlag(false);
+
+    const res = await getDirectSupportedCampsList(page, perPage, searchText);
+
+    if (res?.status_code === 200) {
+      const resData = res?.data;
+
+      if (resData?.items?.length === 0) {
+        setStatusFlag(false);
       }
-      setDirectSupportedCampsList(response.data);
-      setdirectSopportedCampsListRevert(response.data);
+
+      setDirectSupportedCampsList(resData?.items);
+      setdirectSopportedCampsListRevert(resData?.items);
+
+      setTotal(resData?.total);
     }
+
     setDirectSkeletonIndicator(false);
   };
 
-  useEffect(() => {}, [statusFlag]);
-
   //onLoad
   useEffect(() => {
-    fetchDirectSupportedCampsList();
-  }, []);
+    const throttledFetch = debounce(() => {
+      fetchDirectSupportedCampsList();
+    }, 900);
+
+    if (searchText) {
+      throttledFetch();
+    } else {
+      fetchDirectSupportedCampsList();
+    }
+
+    // Cleanup
+    return () => throttledFetch.cancel();
+  }, [page, searchText]);
 
   return (
     <DirectSupportedCampsUI
       removeCardSupportedCamps={removeCardSupportedCamps}
       handleSupportedCampsCancel={handleSupportedCampsCancel}
-      isSupportedCampsModalVisible={isSupportedCampsModalVisible}
       directSupportedCampsList={directSupportedCampsList}
       setDirectSupportedCampsList={setDirectSupportedCampsList}
-      search={search}
       setCardCamp_ID={setCardCamp_ID}
       removeSupport={removeSupport}
       handleClose={handleClose}
@@ -207,22 +251,25 @@ const DirectSupportedCamps = ({ search }: any) => {
       showSaveChanges={showSaveChanges}
       setShowSaveChanges={setShowSaveChanges}
       setRevertBack={setRevertBack}
-      revertBack={revertBack}
       handleRevertBack={handleRevertBack}
       visible={visible}
       idData={idData}
       handleOk={handleOk}
       handleCancel={handleCancel}
       removeSupportCampsData={removeSupportCampsData}
-      statusFlag={statusFlag}
       directSkeletonIndicator={directSkeletonIndicator}
       handleSupportedCampsOpen={handleSupportedCampsOpen}
       modalPopupText={modalPopupText}
       campIds={campIds}
-      CardData={CardData}
       removeCampLink={removeCampLink}
       isChangingOrder={isChangingOrder}
       setIsChangingOrder={setIsChangingOrder}
+      page={page}
+      perPage={perPage}
+      total={total}
+      setPage={setPage}
+      searchText={searchText}
+      setSearchText={setSearchText}
     />
   );
 };

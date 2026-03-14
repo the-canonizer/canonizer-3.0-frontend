@@ -37,9 +37,7 @@ const DataNotFound = ({ name, backURL, message = "", goBack = false }: any) => {
               <a className={styles.btnGoBack}>Go Back</a>
             </AntLink>
           ) : (
-            <Link href={{ pathname: backURL }}>
-              <a className={styles.btnGoBack}>Go Back</a>
-            </Link>
+            <Link href={{ pathname: backURL }} className={styles.btnGoBack}>Go Back</Link>
           )}
         </div>
       </div>

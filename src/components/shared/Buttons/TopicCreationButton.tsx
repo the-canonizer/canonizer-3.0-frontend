@@ -1,0 +1,15 @@
+import Link from "next/link";
+import { PlusOutlined } from "@ant-design/icons";
+
+const CreateTopic = ({ className = "", isWithIcon = false }) => {
+  return (
+    <Link href="/create/topic" key="create-topic-btn" id="create-topic-link" className={`${className} px-2 whitespace-nowrap flex items-center`}>
+        <span id="create-topic-text">Start a Topic </span>
+        {isWithIcon && (
+          <PlusOutlined id="create-topic-icon" className="lg:ml-2 sm:ml-0" />
+        )}
+    </Link>
+  );
+};
+
+export default CreateTopic;

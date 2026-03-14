@@ -1,17 +1,14 @@
-import AddOrManage from "../../../components/ComponentPages/Statement/AddOrManage";
-import Layout from "../../../hoc/layout";
+import Layout from "src/hoc/layout";
+import UpdateStatement from "components/ComponentPages/ManageStatement";
 
 const ManageStatementPage = () => {
   return (
-    <>
-      <Layout>
-        <div className="pageContentWrap">
-          <AddOrManage add={false} />
-        </div>
-      </Layout>
-    </>
+    <Layout>
+      <UpdateStatement isEdit={true} />
+    </Layout>
   );
 };
+
 ManageStatementPage.displayName = "ManageStatementPage";
 
 export default ManageStatementPage;

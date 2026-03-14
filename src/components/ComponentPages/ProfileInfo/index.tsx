@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, message } from "antd";
 import { geocodeByAddress, geocodeByPlaceId } from "react-places-autocomplete";
 import moment from "moment";
 
-import isAuth from "../../../hooks/isUserAuthenticated";
+import isAuth from "src/hooks/isUserAuthenticated";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import {
   GetUserProfileInfo,
@@ -12,9 +12,27 @@ import {
   GetMobileCarrier,
   GetAlgorithmsList,
   GetLanguageList,
-} from "../../../network/api/userApi";
-import ProfileInfoUI from "./ProfileInfoUI";
-import { formatDate } from "../../common/FormatDate";
+} from "src/network/api/userApi";
+import { formatDate } from "components/common/FormatDate";
+import {
+  setGlobalUserProfileData,
+  setGlobalUserProfileDataEmail,
+  setAddForProfileInfo,
+  setUserLanguageList,
+  setPrivateListForProfileInfo,
+  setUpdateAddressForProfileInfo,
+  setAddressForProfileInfo,
+  setPostalCodeDisableForProfileInfo,
+  setZipCodeForProfileInfo,
+  setBirthdayForProfileInfo,
+  setGlobalUserProfileDataLastName,
+  setGlobalUserProfileDataUpdatedLastName,
+  setGlobalUserProfileDataUpdatedFirstName,
+  setGlobalUserProfileDataUpdatedEmail,
+} from "src/store/slices/campDetailSlice";
+import { RootState } from "src/store";
+import ProfileInfoForm from "../Form/ProfileInfoForm";
+import CustomSpinner from "components/shared/CustomSpinner";
 
 type UpdateAddress = {
   city?: string;
@@ -48,7 +66,18 @@ const ProfileInfo = () => {
   const [userProfileSkeleton, setUserProfileSkeleton] = useState(false);
   const [userProfileSkeletonV, setUserProfileSkeletonV] = useState(true);
   const [viewEmail, setViewEmail] = useState("");
+  const [userProfileData, setUserProfileData] = useState("");
+  const [getAddress1, setgetAddress1] = useState("");
+  const [isLoadin, setIsLoading] = useState(false);
 
+  const { addForProfileInfo, zipCodeForProfileInfo } = useSelector(
+    (state: RootState) => ({
+      disableButtonForProfileInfo:
+        state.topicDetails.disableButtonForProfileInfo,
+      addForProfileInfo: state.topicDetails.addForProfileInfo,
+      zipCodeForProfileInfo: state.topicDetails.zipCodeForProfileInfo,
+    })
+  );
 
   const publicPrivateArray = {
     first_name: "first_name",
@@ -71,6 +100,7 @@ const ProfileInfo = () => {
 
   //on update profile click
   const onFinish = async (values: any) => {
+    setIsLoading(true);
     let birthday = values.birthday?._d;
     let code = values.postal_code;
     setDisableButton(true);
@@ -92,7 +122,7 @@ const ProfileInfo = () => {
     } else {
       values.birthday = formatDate(birthday);
     }
-
+    dispatch(setBirthdayForProfileInfo(formatDate(birthday)));
     //End Set Private Public flags
     values.mobile_carrier = formVerify.getFieldValue(
       publicPrivateArray.mobile_carrier
@@ -105,6 +135,7 @@ const ProfileInfo = () => {
     values = { ...values, ...updateAddress };
 
     let res = await UpdateUserProfileInfo(values);
+    setgetAddress1(res?.data?.address_1);
     if (res && res.status_code === 200) {
       message.success(res.message);
       if (values?.default_algo) {
@@ -116,12 +147,21 @@ const ProfileInfo = () => {
       }
       setDisableButton(false);
       setAdd(false);
+      dispatch(setAddForProfileInfo(false));
       setZipCode(false);
+      dispatch(setZipCodeForProfileInfo(false));
+      dispatch(setGlobalUserProfileDataUpdatedFirstName(res?.data?.first_name));
+      dispatch(setGlobalUserProfileDataUpdatedLastName(res?.data?.last_name));
+      dispatch(setGlobalUserProfileDataUpdatedEmail(res?.data?.email));
     } else {
       setDisableButton(false);
       setAdd(false);
+      dispatch(setAddForProfileInfo(false));
       setZipCode(false);
+      dispatch(setZipCodeForProfileInfo(false));
     }
+    await fetchUserProfileInfo();
+    setIsLoading(false);
   };
 
   const { isUserAuthenticated } = isAuth();
@@ -160,25 +200,36 @@ const ProfileInfo = () => {
 
   //private public selection of fields, create PrivateFlag list
   const handleselectAfter = (data) => (value) => {
-    if (value == "private") {
+    if (value === "private") {
       if (!privateList.includes(data)) {
-        setPrivateList((oldArray) => [...oldArray, data]);
-        publicList.splice(publicList.indexOf(data), 1);
+        const newPrivateList = [...privateList, data]; // Compute new state
+        setPrivateList(newPrivateList);
+        dispatch(setPrivateListForProfileInfo(newPrivateList)); //
+
+        // Remove from public list
+        setPublicList((oldArray) => oldArray.filter((item) => item !== data));
       }
-    } else if (value == "public") {
+    } else if (value === "public") {
       if (!publicList.includes(data)) {
-        setPublicList((oldArray) => [...oldArray, data]);
-        privateList.splice(privateList.indexOf(data), 1);
+        const newPublicList = [...publicList, data]; // Compute new state
+        setPublicList(newPublicList);
+
+        // Remove from private list
+        setPrivateList((oldArray) => oldArray.filter((item) => item !== data));
       }
     }
   };
   const handleAddressChange = (value) => {
-    if (zipCode && !add) {
+    if (zipCode && !add && !addForProfileInfo && zipCodeForProfileInfo) {
       setAddress(value);
+      dispatch(setAddressForProfileInfo(value));
       setPostalCodeDisable(false);
+      dispatch(setPostalCodeDisableForProfileInfo(false));
     } else {
       setAddress(value);
+      dispatch(setAddressForProfileInfo(value));
       setPostalCodeDisable(false);
+      dispatch(setPostalCodeDisableForProfileInfo(false));
       let postalCode = "";
       form.setFieldsValue({
         ["postal_code"]: postalCode,
@@ -188,11 +239,13 @@ const ProfileInfo = () => {
 
   const handleAddressSelect = async (address, placeId) => {
     setAddress(address);
+    dispatch(setAddressForProfileInfo(address));
     const results = await geocodeByAddress(address);
     const [place] = await geocodeByPlaceId(placeId);
     const { long_name: postalCode = "" } =
       place.address_components.find((c) => c.types.includes("postal_code")) ||
       {};
+
     let city = "",
       country = "",
       state = "",
@@ -218,6 +271,7 @@ const ProfileInfo = () => {
     }
     address2 = address2.replace(/^,|,$/g, "");
     setPostalCodeDisable(!!postalCode);
+    dispatch(setPostalCodeDisableForProfileInfo(!!postalCode));
     form.setFieldsValue({
       ["address_2"]: address2,
       ["postal_code"]: postalCode,
@@ -225,6 +279,7 @@ const ProfileInfo = () => {
       ["state"]: state,
       ["country"]: country,
     });
+
     const updateAdd: UpdateAddress = {
       city: city,
       state: state,
@@ -234,7 +289,9 @@ const ProfileInfo = () => {
     };
     if (postalCode) updateAdd.postal_code = postalCode;
     setUpdateAddress(updateAdd);
+    dispatch(setUpdateAddressForProfileInfo(updateAdd));
   };
+
   const getAddress = (type, address, component) => {
     if (
       type.match(
@@ -253,6 +310,79 @@ const ProfileInfo = () => {
       setToggleVerifyButton(0);
     }
   };
+
+  async function fetchUserProfileInfo() {
+    setIsLoading(true);
+    let res = await GetUserProfileInfo();
+    if (res != undefined) {
+      if (res.data != undefined) {
+        let profileData = res.data;
+        setViewEmail(profileData?.email);
+
+         //format date for datepicker
+         if (profileData.birthday != null && profileData.birthday != ""){
+          profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
+         }
+
+        setUserProfileData(profileData);
+        dispatch(setGlobalUserProfileData(profileData?.first_name));
+        dispatch(setGlobalUserProfileDataLastName(profileData?.last_name));
+        dispatch(setGlobalUserProfileDataEmail(profileData?.email));
+        dispatch(setBirthdayForProfileInfo(formatDate(profileData?.birthday)));
+        const verify = {
+          phone_number: profileData.phone_number,
+          mobile_carrier:
+            parseInt(profileData.mobile_carrier).toString() == "NaN"
+              ? ""
+              : parseInt(profileData.mobile_carrier),
+        };
+        formVerify.setFieldsValue(verify);
+        if (profileData.postal_code) {
+          setPostalCodeDisable(true);
+          dispatch(setPostalCodeDisableForProfileInfo(true));
+        }
+        form.setFieldsValue(profileData);
+        setPrivateFlags(profileData.private_flags);
+        setPrivateList(
+          profileData.private_flags ? profileData.private_flags.split(",") : ""
+        );
+        dispatch(
+          setPrivateListForProfileInfo(
+            profileData.private_flags
+              ? profileData.private_flags.split(",")
+              : ""
+          )
+        );
+
+        setAddress(profileData.address_1);
+        dispatch(setAddressForProfileInfo(profileData.address_1));
+        setMobileNumber(profileData.phone_number);
+        setToggleVerifyButton(profileData.mobile_verified);
+        setMobileVerified(profileData.mobile_verified);
+        const updateAddress: UpdateAddress = {
+          city: profileData.city,
+          state: profileData.state,
+          country: profileData.country,
+          email: profileData?.email,
+          // postal_code: profileData?.postal_code,
+        };
+        if (profileData.postalCode)
+          updateAddress.postal_code = profileData.postalCode;
+        if (profileData.postal_code !== "") {
+          setZipCode(true);
+          dispatch(setZipCodeForProfileInfo(true));
+        }
+        if (profileData.address_1 !== "") {
+          setAdd(true);
+          dispatch(setAddForProfileInfo(true));
+        }
+        setUpdateAddress(updateAddress);
+        dispatch(setUpdateAddressForProfileInfo(updateAddress));
+      }
+    }
+    setIsLoading(false);
+  }
+
   useEffect(() => {
     async function fetchMobileCarrier() {
       let res = await GetMobileCarrier();
@@ -260,7 +390,6 @@ const ProfileInfo = () => {
         setMobileCarrier(res.data);
       }
     }
-
     async function fetchAlgorithmsList() {
       let res = await GetAlgorithmsList();
       if (res != undefined) {
@@ -271,55 +400,7 @@ const ProfileInfo = () => {
       let res = await GetLanguageList();
       if (res != undefined) {
         setLanguageList(res.data);
-      }
-    }
-
-    async function fetchUserProfileInfo() {
-      let res = await GetUserProfileInfo();
-      if (res != undefined) {
-        if (res.data != undefined) {
-          let profileData = res.data;
-          setViewEmail(profileData?.email)
-          const verify = {
-            phone_number: profileData.phone_number,
-            mobile_carrier:
-              parseInt(profileData.mobile_carrier).toString() == "NaN"
-                ? ""
-                : parseInt(profileData.mobile_carrier),
-          };
-          formVerify.setFieldsValue(verify);
-          //format date for datepicker
-          if (profileData.birthday != null && profileData.birthday != "")
-            profileData.birthday = moment(profileData.birthday, "YYYY-MM-DD");
-          if (profileData.postal_code) setPostalCodeDisable(true);
-          form.setFieldsValue(profileData);
-          setPrivateFlags(profileData.private_flags);
-          setPrivateList(
-            profileData.private_flags
-              ? profileData.private_flags.split(",")
-              : ""
-          );
-          setAddress(profileData.address_1);
-          setMobileNumber(profileData.phone_number);
-          setToggleVerifyButton(profileData.mobile_verified);
-          setMobileVerified(profileData.mobile_verified);
-          const updateAddress: UpdateAddress = {
-            city: profileData.city,
-            state: profileData.state,
-            country: profileData.country,
-            email: profileData?.email,
-            // postal_code: profileData?.postal_code,
-          };
-          if (profileData.postalCode)
-            updateAddress.postal_code = profileData.postalCode;
-          if (profileData.postal_code !== "") {
-            setZipCode(true);
-          }
-          if (profileData.address_1 !== "") {
-            setAdd(true);
-          }
-          setUpdateAddress(updateAddress);
-        }
+        dispatch(setUserLanguageList(res.data));
       }
     }
     if (isUserAuthenticated) {
@@ -338,35 +419,36 @@ const ProfileInfo = () => {
   }, [isUserAuthenticated]);
 
   return (
-    <ProfileInfoUI
-      form={form}
-      formVerify={formVerify}
-      mobileCarrier={mobileCarrier}
-      algorithmList={algorithmList}
-      languageList={languageList}
-      onFinish={onFinish}
-      // onVerifyClick={onVerifyClick}
-      // onOTPBtnClick={onOTPBtnClick}
-      isOTPModalVisible={isOTPModalVisible}
-      setIsOTPModalVisible={setIsOTPModalVisible}
-      handleOTPCancel={handleOTPCancel}
-      otp={otp}
-      handleChangeOTP={handleChangeOTP}
-      handleselectAfter={handleselectAfter}
-      privateFlags={privateFlags}
-      handleAddressChange={handleAddressChange}
-      handleAddressSelect={handleAddressSelect}
-      address={address}
-      toggleVerifyButton={toggleVerifyButton}
-      handleMobileNumberChange={handleMobileNumberChange}
-      disableButton={disableButton}
-      postalCodeDisable={postalCodeDisable}
-      userProfileSkeleton={userProfileSkeleton}
-      userProfileSkeletonV={userProfileSkeletonV}
-      setOTP={setOTP}
-      setToggleVerifyButton={setToggleVerifyButton}
-      viewEmail={viewEmail}
-    />
+    <CustomSpinner key="create-thread-spinner" spinning={isLoadin}>
+      <ProfileInfoForm
+        form={form}
+        onFinish={onFinish}
+        handleselectAfter={handleselectAfter}
+        privateFlags={privateFlags}
+        disableButton={disableButton}
+        postalCodeDisable={postalCodeDisable}
+        viewEmail={viewEmail}
+        userProfileData={userProfileData}
+        handleAddressChange={handleAddressChange}
+        handleAddressSelect={handleAddressSelect}
+        address={address}
+        mobileCarrier={mobileCarrier}
+        formVerify={formVerify}
+        isOTPModalVisible={isOTPModalVisible}
+        setIsOTPModalVisible={setIsOTPModalVisible}
+        handleOTPCancel={handleOTPCancel}
+        otp={otp}
+        handleChangeOTP={handleChangeOTP}
+        toggleVerifyButton={toggleVerifyButton}
+        handleMobileNumberChange={handleMobileNumberChange}
+        userProfileSkeletonV={userProfileSkeleton}
+        setOTP={setOTP}
+        setToggleVerifyButton={setToggleVerifyButton}
+        setAddress={setAddress}
+        getAddress1={getAddress1}
+        setDisableButton={setDisableButton}
+      />
+    </CustomSpinner>
   );
 };
 

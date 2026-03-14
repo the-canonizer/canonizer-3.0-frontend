@@ -1,20 +1,28 @@
-import { Fragment } from "react";
 import Link from "next/link";
-
-import styles from "../siteHeader.module.scss";
+import { Image } from "antd";
 
 const LogoHeader = () => {
   return (
-    <Fragment>
-      <div className={styles.logoWrap}>
-        <Link href="/">
-          <a className={styles.logoText}>
-            canonizer<span className={styles.logoDot}>.</span>
-          </a>
-        </Link>
-        <span className={styles.tagline}>Where people find common ground</span>
+    <Link
+      href="/"
+      className="flex-shrink-0 inline-flex"
+      role="Picture of the author"
+      id="logo-link"
+      rel="noopener noreferrer"
+    >
+      <div
+        className="w-auto h-auto flex items-center cursor-pointer"
+        id="logo-container"
+      >
+        <Image
+          src={`/images/logo.svg`}
+          alt="Picture of the author"
+          preview={false}
+          width={150}
+          id="logo-image"
+        />
       </div>
-    </Fragment>
+    </Link>
   );
 };
 

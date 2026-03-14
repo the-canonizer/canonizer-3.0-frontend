@@ -1,5 +1,6 @@
 .topicDetailContentWrap {
   display: flex;
+  gap: 2rem;
   flex-wrap: wrap;
   width: 100%;
 }
@@ -261,4 +262,7 @@
   svg {
     font-size: 18px;
   }
+}
+.pageContentWrap {
+  width: 100%;
 }

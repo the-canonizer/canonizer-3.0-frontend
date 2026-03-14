@@ -7,20 +7,25 @@ import {
   setCurrentTopicRecordSubscriptionId,
   setCurrentCampRecordSubscriptionId,
   setRemovedReasons,
+  setRestrictSupporters,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
 import { message } from "antd";
 import { store } from "../../store";
 import { handleError } from "../../utils/generalUtility";
+import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
-export const getTreesApi = async (reqBody) => {
+export const getTreesApi = async (reqBody, loginToken = null) => {
   try {
-    const trees = await NetworkCall.fetch(TreeRequest.getTrees(reqBody), false);
+    const trees = await NetworkCall.fetch(
+      TreeRequest.getTrees(reqBody, loginToken),
+      false
+    );
     store.dispatch(setTree(trees?.data || []));
     return {
       treeData: trees?.data?.at(0),
-      status_code: trees?.status_code ?? null,
+      status_code: trees?.code,
       message: trees?.message || "",
     };
   } catch (error) {
@@ -28,7 +33,7 @@ export const getTreesApi = async (reqBody) => {
     let data = error?.error?.data;
     return {
       treeData: data?.data?.at(0) || {},
-      status_code: data?.status_code ?? null,
+      status_code: data?.code,
       message: data?.message || "",
       error: data?.error || {},
     };
@@ -62,7 +67,9 @@ export const getCanonizedCampStatementApi = async (
       TreeRequest.getCampStatement(reqBody, loginToken),
       false
     );
+
     store.dispatch(setCampStatement(campStatement?.data));
+
     return campStatement?.data;
   } catch (error) {
     if (error?.error?.data?.status_code == 404) {
@@ -153,6 +160,53 @@ export const createCamp = async (body) => {
   }
 };
 
+export const restrictSupporters = async (campId, body) => {
+  const queryParam = {
+    campId, body
+  }
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.restrictSupportes(queryParam));
+    return res;
+  } catch (err) {
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400 &&
+      !err.error.data.error?.camp_name &&
+      !err.error.data.error?.camp_about_url
+    ) {
+      handleError(err);
+    } else {
+      return err?.error?.data;
+    }
+  }
+};
+
+export const getRestrictSupporters = async (campId) => {
+  const queryParam = {
+    campId
+  }
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getRestrictSupportes(queryParam));
+    store.dispatch(setRestrictSupporters(res?.data));
+    return res;
+  } catch (err) {
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400 &&
+      !err.error.data.error?.camp_name &&
+      !err.error.data.error?.camp_about_url
+    ) {
+      handleError(err);
+    } else {
+      return err?.error?.data;
+    }
+  }
+};
+
 export const getAllParentsCamp = async (body) => {
   try {
     const res = await NetworkCall.fetch(TreeRequest.getAllParentsCamp(body));
@@ -180,7 +234,7 @@ export const getAllUsedNickNames = async (body) => {
     return res;
   } catch (error) {
     handleError(error);
-    return error.error;
+    // return error.error;
   }
 };
 export const getCampBreadCrumbApi = async (reqBody, loginToken = null) => {
@@ -258,6 +312,7 @@ export const checkTopicCampExistAPICall = async (
     const res = await NetworkCall.fetch(
       TreeRequest.checkTopicCampExistRequest(body, loginToken)
     );
+
     return res;
   } catch (err) {
     handleError(err);
@@ -286,6 +341,21 @@ export const campSignApi = async (reqBody, loginToken = null) => {
 
     return campSign;
   } catch (error) {
-    message.error(error?.error?.data?.message);
+    openNotificationWithIcon(error?.error?.data?.message, "error");
+  }
+};
+
+export const getPopupStatement = async (reqBody) => {
+  try {
+    const res = await NetworkCall.fetch(
+      TreeRequest.getCampStatement(reqBody, null),
+      false
+    );
+
+    return res;
+  } catch (error) {
+    if (error?.error?.data?.status_code == 404) {
+      store.dispatch(setCampStatement([]));
+    }
   }
 };

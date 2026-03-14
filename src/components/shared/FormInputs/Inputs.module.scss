@@ -1,0 +1,23 @@
+.search {
+  input {
+    border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    height: 44px;
+    &:hover {
+      border-color: var(--canHoverBlue);
+    }
+  }
+  [class*="ant-input-wrapper ant-input-group"] {
+    [class*="ant-input-group-addon"] {
+      width: 40px;
+      height: 100%;
+      &:last-child {
+        [class*="ant-input-search-button"] {
+          border-radius: 0 5px 5px 0;
+          height: 44px;
+        }
+      }
+    }
+  }
+}

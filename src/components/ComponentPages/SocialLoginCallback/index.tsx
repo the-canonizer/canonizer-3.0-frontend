@@ -19,9 +19,10 @@ import CallbackUI from "./UI";
 import { setUserNickNames } from "src/store/slices/authSlice";
 
 function SocialLoginCallback() {
-  const { rdType } = useSelector((state: RootState) => ({
+  const { rdType, currentReturnUrl } = useSelector((state: RootState) => ({
     rdType: state.utils.redirect_type,
     rdSlTab: state.utils.redirect_tab_setting,
+    currentReturnUrl: state?.auth?.currentReturnUrl,
   }));
 
   const [redirectType, setRedirectType] = useState(rdType);
@@ -36,8 +37,8 @@ function SocialLoginCallback() {
 
   const fetchNickNameList = async () => {
     let response = await getNickNameList();
-      dispatch(setUserNickNames(response?.data));
-  }
+    dispatch(setUserNickNames(response?.data));
+  };
 
   const sendData = async (data: object) => {
     const redirectTab = localStorage.getItem("redirectTab");
@@ -49,13 +50,14 @@ function SocialLoginCallback() {
         (response && response.status_code === 200) ||
         (response && response.status_code === 400)
       ) {
-        
-        fetchNickNameList()
+        fetchNickNameList();
 
         if (redirectType) {
           dispatch(setValue({ label: "redirect_type", value: false }));
 
           router?.push("/settings?tab=profile");
+        } else if (currentReturnUrl) {
+          router?.push(currentReturnUrl);
         } else {
           router?.push("/");
         }
@@ -83,13 +85,17 @@ function SocialLoginCallback() {
         message.success(response.message);
 
         localStorage.removeItem("redirectTab");
-        router?.push("/settings?tab=social");
+        router?.push(
+          "/settings?tab=social&provider=" + router?.query?.provider
+        );
       }
 
       if (response && response.status_code === 403) {
         localStorage.removeItem("redirectTab");
         message.error(response.message);
-        router?.push("/settings?tab=social&status=403");
+        router?.push(
+          "/settings?tab=social&status=403&provider=" + router?.query?.provider
+        );
       }
     }
   };
@@ -111,9 +117,15 @@ function SocialLoginCallback() {
         dispatch(setValue({ label: "redirect_type", value: false }));
 
         if (!redirectTab) {
-          router?.push("/");
+          if (currentReturnUrl) {
+            router?.push(currentReturnUrl);
+          } else {
+            router?.push("/");
+          }
         } else {
-          router?.push("/settings?tab=social");
+          router?.push(
+            "/settings?tab=social&provider=" + router?.query?.provider
+          );
         }
       }
     } catch (error) {

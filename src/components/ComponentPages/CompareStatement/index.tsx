@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import HtmlDiff from "htmldiff-js";
 
-import CompareStatementUI from "./UI";
-
 import { getCompareStatement } from "../../../network/api/history";
 import useAuthentication from "src/hooks/isUserAuthenticated";
+import CompareStatementUI from "./UI";
 
 function CompareStatement() {
   const router = useRouter();
@@ -20,12 +19,12 @@ function CompareStatement() {
   useEffect(() => setIsLoggedIn(isUserAuthenticated), [isUserAuthenticated]);
 
   const getStatement = async (ids) => {
-    // setIsLoading(true);
+    setIsLoading(true);
     const reqBody = {
       ids,
       topic_num: +router?.query.routes?.at(0)?.split("-")[0],
       camp_num: +router?.query.routes?.at(1).split("-")[0],
-      compare: router?.query?.from,
+      compare: router?.asPath?.split("/")?.at(1),
     };
     const res = await getCompareStatement(reqBody);
 
@@ -43,16 +42,15 @@ function CompareStatement() {
     s1.parsed_v = HtmlDiff.execute(s2?.parsed_value, s1?.parsed_value);
     s2.parsed_v = HtmlDiff.execute(s1?.parsed_value, s2?.parsed_value);
 
-    setIsLoading(false);
-
     if (res && res.status_code === 200) {
       setStatements(statements);
       setLiveStatement(statementLive);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    const ids = (router?.query?.statements as String)?.split("_");
+    const ids = (router?.query?.comparison_ids as String)?.split("_");
     const status = (router?.query?.status as String)?.split("-");
     if (isLoggedIn) {
       if (ids?.length) getStatement(ids);

@@ -16,10 +16,16 @@ import { useRouter } from "next/router";
 import styles from "./latestFilter.module.scss";
 import { getTreesApi } from "src/network/api/campDetailApi";
 import { useEffect } from "react";
+import Image from "next/image";
+import calendarIcon from "../../../../public/images/calendar-icon.svg";
+import { setAsOfValues } from "src/store/slices/campDetailSlice";
+import useAuthentication from "src/hooks/isUserAuthenticated";
 
 const LatestFilter = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isUserAuthenticated } = useAuthentication();
+
   const {
     algorithms,
     selectedAlgorithm,
@@ -37,6 +43,7 @@ const LatestFilter = () => {
     viewThisVersionCheck,
     asofdate,
     selectAlgoBrowsePage,
+    userEmail,
   } = useSelector((state: RootState) => ({
     is_camp_archive_checked: state?.utils?.archived_checkbox,
     loading: state?.loading?.loading,
@@ -56,6 +63,7 @@ const LatestFilter = () => {
     asofdate: state.filters?.filterObject?.asofdate,
     viewThisVersionCheck: state?.filters?.viewThisVersionCheck,
     selectAlgoBrowsePage: state?.filters?.selectAlgoBrowsePage,
+    userEmail: state?.auth?.loggedInUser?.email,
   }));
   const lable = algorithms?.find((obj) => {
     return obj.algorithm_key == selectedAlgorithm;
@@ -132,12 +140,15 @@ const LatestFilter = () => {
   };
 
   const filterForAsofDate = () => {
+    delete router?.query?.viewversion;
     dispatch(setViewThisVersion(false));
     dispatch(
       setFilterCanonizedTopics({
+        asofdate: Date.now() / 1000,
         asof: "default",
       })
     );
+    dispatch(setAsOfValues(2));
     onChangeRoute(
       filterObject?.filterByScore,
       filterObject?.algorithm,
@@ -147,6 +158,7 @@ const LatestFilter = () => {
       viewThisVersion
     );
   };
+
   const filterscore = () => {
     dispatch(setViewThisVersion(false));
     dispatch(
@@ -162,6 +174,7 @@ const LatestFilter = () => {
       filterObject?.namespace_id,
       viewThisVersion
     );
+    revertScore();
   };
   const algoRevert = () => {
     onChangeRoute(
@@ -183,27 +196,28 @@ const LatestFilter = () => {
     algorithm: "blind_popularity",
     update_all: 1,
     fetch_topic_history: viewThisVersionCheck ? 1 : null,
+    current_user: isUserAuthenticated ? userEmail : "",
   };
   const revertScore = () => {
     getTreesApi(reqBodyForService);
   };
-  const reqBody = {
-    topic_num: router?.query?.camp[0]?.split("-")[0],
-    camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
-    asOf: asof,
-    asofdate:
-      asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
-    algorithm: algorithm,
-    update_all: 1,
-    fetch_topic_history: viewThisVersionCheck ? 1 : null,
-  };
-  const revertScoreAndAlgo = () => {
-    getTreesApi(reqBody);
-  };
+  // const reqBody = {
+  //   topic_num: router?.query?.camp[0]?.split("-")[0],
+  //   camp_num: router?.query?.camp[1]?.split("-")[0] ?? 1,
+  //   asOf: asof,
+  //   asofdate:
+  //     asof == "default" || asof == "review" ? Date.now() / 1000 : asofdate,
+  //   algorithm: algorithm,
+  //   update_all: 1,
+  //   fetch_topic_history: viewThisVersionCheck ? 1 : null,
+  // };
+  // const revertScoreAndAlgo = () => {
+  //   getTreesApi(reqBody);
+  // };
 
-  useEffect(() => {
-    revertScoreAndAlgo();
-  }, [selectAlgoBrowsePage]);
+  // useEffect(() => {
+  //   revertScoreAndAlgo();
+  // }, [selectAlgoBrowsePage]);
   const clearAllFilter = async () => {
     dispatch(setSelectAlgoBrowsePage(false));
     dispatch(setArchivedCheckBox(false));
@@ -220,12 +234,14 @@ const LatestFilter = () => {
     if (router?.query?.algo && selectedAlgorithm) {
       algoRevert();
     }
-    revertScore();
+    // revertScore();
   };
   let filteredDate = moment(filteredAsOfDate * 1000).format("YYYY-MM-DD");
+
   return (
-    <div className={styles.selected_filter_area}>
-      {(router?.query?.algo &&
+    // <div className={styles.selected_filter_area}>
+    <div className="flex" id="refine_filter_section">
+      {/* {(router?.query?.algo &&
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined) ||
       is_camp_archive_checked ||
@@ -234,7 +250,7 @@ const LatestFilter = () => {
       includeReview ||
       router?.query?.asof == "review" ||
       filteredScore != 0 ? (
-        <span>
+        <span className="flex">
           <label
             className={styles.selected_filter_heading}
             data-testid="Selected filter"
@@ -251,97 +267,259 @@ const LatestFilter = () => {
         </span>
       ) : (
         ""
-      )}
+      )} */}
 
-      <Space size={[0, 18]} wrap>
+      <Space
+        size={[0, 18]}
+        wrap
+        className="flex !gap-2.5"
+        id="refine_filter_section_space_tag"
+      >
         {router?.query?.algo &&
         selectedAlgorithm &&
         lable?.algorithm_label !== undefined ? (
           <Tag
-            icon={
-              <CloseOutlined
-                onClick={() => {
+            className="bg-canLightGrey rounded-full h-8 px-3.5 !m-0 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-2.5"
+            id="refine_filter_section_tag"
+          >
+            {/* <CloseOutlined /> */}
+            {lable?.algorithm_label}
+            <div
+              id="refine_filter_section_algo_label"
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                algoRevert();
+                revertScore();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
                   algoRevert();
                   revertScore();
-                }}
+                  e.preventDefault(); // Prevents page scroll for "Space" key
+                }
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <Image
+                id="refine_filter_section_algo_filter_img"
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
               />
-            }
-          >
-            {lable?.algorithm_label}
+            </div>
           </Tag>
         ) : (
           ""
         )}
         {is_camp_archive_checked ? (
           <Tag
-            icon={
-              <CloseOutlined
-                onClick={() => {
-                  dispatch(setArchivedCheckBox(false));
-                }}
-                data-testid="close_icon_archived_camps"
-              />
-            }
+            id="refine_filter_section_is_camp_archive_checked"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="archived_camps"
           >
             Show archived camps
+            {/* <CloseOutlined
+              onClick={() => {
+                dispatch(setArchivedCheckBox(false));
+              }}
+              data-testid="close_icon_archived_camps"
+            /> */}
+            <div
+              id="refine_filter_section_is_camp_archive_checked_div"
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                dispatch(setArchivedCheckBox(false));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  dispatch(setArchivedCheckBox(false));
+                  e.preventDefault(); // Prevent scrolling on "Space"
+                }
+              }}
+              data-testid="close_icon_archived_camps"
+              style={{ cursor: "pointer" }}
+            >
+              <Image
+                id="refine_filter_section_is_camp_archive_checked_div_img"
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
           </Tag>
         ) : (
           ""
         )}
         {is_checked ? (
           <Tag
-            icon={
-              <CloseOutlined
-                onClick={() => {
-                  dispatch(setScoreCheckBox(false));
-                }}
-                data-testid="close_icon_100%_of_canonized_score"
-              />
-            }
-            data-testid="100%_of_canonized_score"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
+            id="refine_filter_section_canonized_score"
           >
             100% of canonized score
+            {/* <CloseOutlined
+              onClick={() => {
+                dispatch(setScoreCheckBox(false));
+              }}
+              data-testid="close_icon_100%_of_canonized_score"
+            /> */}
+            <div
+              id="refine_filter_section_canonized_score_div"
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                dispatch(setScoreCheckBox(false));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  dispatch(setScoreCheckBox(false));
+                  e.preventDefault(); // Prevent scrolling when "Space" is pressed
+                }
+              }}
+              data-testid="close_icon_100%_of_canonized_score"
+              style={{ cursor: "pointer" }}
+            >
+              <Image
+                id="refine_filter_section_canonized_score_img"
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
           </Tag>
         ) : (
           ""
         )}
-        {selectedAsOf == "bydate" ? (
+        {selectedAsOf == "bydate" || router?.query?.asof == "bydate" ? (
           <Tag
-            icon={
-              <CloseOutlined
-                onClick={filterForAsofDate}
-                data-testid="close_icon_as_of_date"
-              />
-            }
+            id="refine_filter_section_filter_date"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="asOfDate"
-          >{`As of date: ${filteredDate}`}</Tag>
+          >
+            <Image
+              src={calendarIcon}
+              alt="svg"
+              height={20}
+              width={20}
+              id="refine_filter_section_filter_date"
+            />
+
+            {`${filteredDate}`}
+            {/* <CloseOutlined
+              onClick={filterForAsofDate}
+              data-testid="close_icon_as_of_date"
+            /> */}
+            <div
+              id="refine_filter_section_filter_date_img_div"
+              role="button"
+              tabIndex={0}
+              onClick={filterForAsofDate}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  filterForAsofDate();
+                  e.preventDefault(); // Prevent scrolling for "Space"
+                }
+              }}
+              data-testid="close_icon_as_of_date"
+              style={{ cursor: "pointer" }}
+            >
+              <Image
+                id="refine_filter_section_filter_date_filter_img"
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
+          </Tag>
         ) : (
           ""
         )}
         {includeReview || router?.query?.asof == "review" ? (
           <Tag
-            icon={
-              <CloseOutlined
-                onClick={filterForAsofDate}
-                data-testid="close_icon_include_review"
-              />
-            }
+            id="refine_filter_section_include_review"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="include_review"
-          >{`Include review`}</Tag>
+          >
+            {`Include review`}
+            {/* <CloseOutlined
+              onClick={filterForAsofDate}
+              data-testid="close_icon_include_review"
+            /> */}
+            <div
+              id="refine_filter_section_include_review_div"
+              role="button"
+              tabIndex={0}
+              onClick={filterForAsofDate}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  filterForAsofDate();
+                  e.preventDefault(); // Prevent scrolling on "Space"
+                }
+              }}
+              data-testid="close_icon_include_review"
+              style={{ cursor: "pointer" }}
+            >
+              <Image
+                id="refine_filter_section_include_review_div_img"
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
+          </Tag>
         ) : (
           ""
         )}
         {filteredScore != 0 ? (
           <Tag
-            icon={
-              <CloseOutlined
-                onClick={filterscore}
-                data-testid="close_icon_Score"
-              />
-            }
+            id="refine_filter_section_score"
+            className="bg-canLightGrey rounded-full h-8 px-3.5 text-xs text-canBlue leading-4 font-medium border-none flex items-center gap-3"
             data-testid="Score"
-          >{`Score < ${filteredScore}`}</Tag>
+          >
+            {`Score > ${
+              filteredScore.toString().length > 15
+                ? filteredScore.toString().slice(0, 15) + "..."
+                : filteredScore
+            }`}
+            {/* <CloseOutlined
+              onClick={filterscore}
+              data-testid="close_icon_Score"
+            /> */}
+            <div
+              onClick={filterscore}
+              data-testid="close_icon_Score"
+              id="refine_filter_section_score_div"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  filterscore();
+                  e.preventDefault(); // Prevent page scroll when pressing "Space"
+                }
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              <Image
+                id="refine_filter_section_score_img"
+                className="cursor-pointer"
+                src="/images/filter-cross.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
+          </Tag>
         ) : (
           ""
         )}

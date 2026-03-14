@@ -2,35 +2,18 @@ import { Modal } from "antd";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 
-import { RootState } from "../../../store";
-import Registration from "./index";
+import { RootState } from "src/store";
 import EmailPopup from "./emailPopup";
 import NameConfirmationPopup from "./nameConfirmationPopup";
 
 const RegistrationModal = () => {
-  const { isOTPModal, isEmailModal, isNameModal } = useSelector(
-    (state: RootState) => ({
-      isOTPModal: state.ui.registrationModalVisible,
-      isEmailModal: state.ui.showSocialLoginEmailPopup,
-      isNameModal: state.ui.showSocialLoginNamePopup,
-    })
-  );
+  const { isEmailModal, isNameModal } = useSelector((state: RootState) => ({
+    isEmailModal: state.ui.showSocialLoginEmailPopup,
+    isNameModal: state.ui.showSocialLoginNamePopup,
+  }));
 
   return (
     <Fragment>
-      {/* registration popup */}
-      <Modal
-        style={{ top: "20px" }}
-        visible={isOTPModal}
-        footer={null}
-        closable={false}
-        width={800}
-        className="loginModal"
-        data-testid="regiPop"
-      >
-        <Registration isModal={true} />
-      </Modal>
-
       {/* email confirmation popup */}
       <Modal
         style={{ top: "20px" }}
