@@ -3,6 +3,8 @@ import { notification } from "antd";
 import React from "react";
 
 export const openNotificationWithIcon = (messageData, type = "error") => {
+  if (typeof window === "undefined") return;
+
   const {
     add: addMessage,
     remove: removeMessages,

@@ -99,7 +99,7 @@ const ProfileInfoTab = ({
                 <Notifications />
               </div>
               <Dropdown
-                overlay={menu}
+                dropdownRender={() => menu}
                 trigger={["click"]}
                 placement="bottomLeft"
               >

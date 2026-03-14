@@ -605,6 +605,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                       src="/images/refine-caret-icon.svg"
                       width={15}
                       height={7}
+                      alt=""
                     />
                   }
                   size="large"
@@ -787,6 +788,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                                 src="/images/date-picker-icon.svg"
                                 width={14}
                                 height={14}
+                                alt=""
                               />
                             }
                             size={"large"}

@@ -42,8 +42,7 @@ const Notifications = () => {
 
   return (
     <Dropdown
-      menu={{}}
-      overlay={notificationDropdown}
+      dropdownRender={() => notificationDropdown}
       trigger={["click"]}
       placement="bottomRight"
       className="z-50"
