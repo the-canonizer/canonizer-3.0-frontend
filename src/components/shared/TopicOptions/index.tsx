@@ -54,9 +54,7 @@ const TopicOptions = ({ eventLineHref = "" }) => {
     {
       key: "event_line",
       label: (
-        <Link href={eventLineHref} passHref>
-          <a className="text-canBlack font-medium text-sm">Event Line</a>
-        </Link>
+        <Link href={eventLineHref} className="text-canBlack font-medium text-sm">Event Line</Link>
       ),
       icon: <LineChartOutlined className="!text-canBlack font-medium" />,
       className: "",
@@ -91,10 +89,8 @@ const TopicOptions = ({ eventLineHref = "" }) => {
     {
       key: "camp_edit_manage",
       label: (
-        <Link href={eventLineHref} passHref>
-          <a className="text-canBlack font-medium text-sm">
+        <Link href={eventLineHref} className="text-canBlack font-medium text-sm">
             Manage/edit this Camp
-          </a>
         </Link>
       ),
       icon: <EditOutlined className="!text-canBlack" />,
@@ -102,10 +98,8 @@ const TopicOptions = ({ eventLineHref = "" }) => {
     {
       key: "manage_topic",
       label: (
-        <Link href={eventLineHref} passHref>
-          <a className="text-canBlack font-medium text-sm">
+        <Link href={eventLineHref} className="text-canBlack font-medium text-sm">
             Manage/edit this Topic
-          </a>
         </Link>
       ),
       icon: <EditOutlined className="!text-canBlack" />,
@@ -113,10 +107,8 @@ const TopicOptions = ({ eventLineHref = "" }) => {
     {
       key: "manage_statement",
       label: (
-        <Link href={eventLineHref} passHref>
-          <a className="text-canBlack font-medium text-sm">
+        <Link href={eventLineHref} className="text-canBlack font-medium text-sm">
             Manage/edit Camp statement
-          </a>
         </Link>
       ),
       icon: <SupportIcon />,
