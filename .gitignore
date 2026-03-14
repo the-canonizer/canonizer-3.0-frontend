@@ -57,4 +57,5 @@ yarn.lock
 
 
 /public/meta.json
+/public/sitemap*.xml
 .qodo
