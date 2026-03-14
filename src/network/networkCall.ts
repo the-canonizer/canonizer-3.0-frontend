@@ -84,6 +84,7 @@ export default class NetworkCall {
       store.dispatch(setLoadingAction(false));
       return response.data;
     } catch (err) {
+      console.error("AXIOS ERROR DETAILS:", err.message, err.code, err.config?.url);
       let error = err.response;
       if (error === undefined) {
         return Promise.reject({ error: error });

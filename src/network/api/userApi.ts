@@ -41,16 +41,18 @@ export const createNewToken = async (req, res) => {
     const token = await NetworkCall.fetch(UserRequest.createToken());
 
     if (!token) {
-      console.log("Failed to retrieve access token");
+      console.log("Failed to retrieve access token: ", token);
+    } else {
+      console.log("SUCCESSFULLY RETRIEVED TOKEN:", token?.data?.access_token);
     }
 
     if (isServer()) {
       res.setHeader(
         "Set-Cookie",
         "loginToken" +
-          "=" +
-          token?.data?.access_token +
-          getCookiesExpirationTime()
+        "=" +
+        token?.data?.access_token +
+        getCookiesExpirationTime()
       );
     }
     if (!isServer()) {
@@ -62,6 +64,7 @@ export const createNewToken = async (req, res) => {
 
     return token.data?.access_token;
   } catch (error) {
+    console.error("createNewToken Error:", error);
     handleError(error);
   }
 };
