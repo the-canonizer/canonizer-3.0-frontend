@@ -590,7 +590,7 @@ export default function AdvanceFilter() {
         expandIconPosition="end"
         expandIcon={({ isActive }) => (
           // <DownOutlined rotate={isActive ? 0 : 180} />
-          <Image src="/images/caret-icon.svg" width={12} height={12} />
+          <Image src="/images/caret-icon.svg" width={12} height={12} alt="" />
         )}
         bordered={false}
         activeKey={active}
@@ -710,6 +710,7 @@ export default function AdvanceFilter() {
                     src="/images/calendar-icon.svg"
                     width={22}
                     height={22}
+                    alt=""
                   />
                 }
                 size={"large"}

@@ -533,6 +533,7 @@ const HeaderSearch = ({ className = "" }: any) => {
             src="/images/mobile-header-icon.svg"
             width={24}
             height={24}
+            alt=""
             onClick={() => {
               dispatch(setOpenSearchForMobileView(!openSearchForMobileView));
             }}
@@ -649,6 +650,7 @@ const TopicItems = ({ searchTopics, searchValue }) => {
                           src="/images/serach-flag.svg"
                           width={18}
                           height={20}
+                          alt=""
                         />
                         <span className="text-canBlue text-base font-inter font-normal cursor-default lg:font-medium">
                           {item?.namespace}
@@ -846,6 +848,7 @@ const CampStatementsItems = ({ searchCampStatement, searchValue }) => {
                       src="/images/camp-search-icon.svg"
                       width={17}
                       height={19}
+                      alt=""
                     />
                     Topic:
                     <Link href={`/${jsonData?.[0]?.[1]?.camp_link}`} id={`camp-statement-topic-link-${item.id}`} className="text-canBlue text-base font-inter font-medium line-clamp-1">
@@ -920,6 +923,7 @@ const NickNamesItems = ({ searchNickname, searchValue }) => {
                       src="/images/nickname-user-icon.svg"
                       width={14}
                       height={16}
+                      alt=""
                     />
                     {getHighlightedText(item.type_value, searchValue)}
                   </span>
