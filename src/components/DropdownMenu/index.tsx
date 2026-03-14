@@ -376,7 +376,6 @@ const DropDownMenu = () => {
                 e?.preventDefault();
                 e?.stopPropagation();
               }}
-              passHref
             >
               <div
                 id="threedot_dropdown_manage_support_btn__menu_item_text"
@@ -438,9 +437,7 @@ const DropDownMenu = () => {
                 "-"
               )}`}
             >
-              <a id="threedot_dropdown_manage_camp_btn__menu_item_text">
                 {K?.exceptionalMessages?.manageCampButton}
-              </a>
             </Link>
           )}
         </Menu.Item>
@@ -458,9 +455,7 @@ const DropDownMenu = () => {
                 "-"
               )}`}
             >
-              <a id="threedot_dropdown_manage_topic_btn__menu_item_text">
                 {K?.exceptionalMessages?.manageTopicButton}{" "}
-              </a>
             </Link>
           )}
         </Menu.Item>
@@ -485,9 +480,7 @@ const DropDownMenu = () => {
               href={getCreateCampUr()}
               id="threedot_dropdown_btn_lable_menu_item_link"
             >
-              <a id="threedot_dropdown_btn_lable_menu_item_text">
                 {getButtonLabel()}
-              </a>
             </Link>
           )}
         </Menu.Item>

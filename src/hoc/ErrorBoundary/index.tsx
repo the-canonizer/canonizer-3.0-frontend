@@ -52,9 +52,7 @@ export default class ErrorBoundary extends Component<any> {
               <h2>Oops!</h2>
               <h3>Something went wrong</h3>
               <p>
-                <Link href="/">
-                  <a>Click here</a>
-                </Link>{" "}
+                <Link href="/">Click here</Link>{" "}
                 to go back to the home page or wait five seconds.
               </p>
             </div>
