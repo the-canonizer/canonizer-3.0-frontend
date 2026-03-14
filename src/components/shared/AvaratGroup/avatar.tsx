@@ -32,7 +32,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
       return (
         <Avatar
           className="uppercase flex justify-center items-center text-xs"
-          data-testId={`initial-avatar-${user?.id}`}
+          data-testid={`initial-avatar-${user?.id}`}
         >
           {user?.nick_name?.charAt(0)}
         </Avatar>
@@ -44,7 +44,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
         <Avatar
           className="dddd"
           src={imageBaseURL + user?.profile_picture_path}
-          data-testId={`browse-topic-avatar-item-${user?.id}`}
+          data-testid={`browse-topic-avatar-item-${user?.id}`}
         />
       );
     }
@@ -53,7 +53,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
       return (
         <Avatar
           src={isGravatarAvailable}
-          data-testId={`gravatar-avatar-${user?.id}`}
+          data-testid={`gravatar-avatar-${user?.id}`}
         />
       );
     }
@@ -62,7 +62,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
       return (
         <Avatar
           className="uppercase flex justify-center items-center text-xs"
-          data-testId={`initial-avatar-${user?.id}`}
+          data-testid={`initial-avatar-${user?.id}`}
         >
           {user?.nick_name?.charAt(0)}
         </Avatar>
@@ -72,7 +72,7 @@ const SingleAvatar = ({ user, imageBaseURL = "" }) => {
     return (
       <Avatar
         icon={<UserOutlined />}
-        data-testId={`default-avatar-${user?.id}`}
+        data-testid={`default-avatar-${user?.id}`}
       />
     );
   };
