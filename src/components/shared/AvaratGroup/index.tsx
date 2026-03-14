@@ -33,13 +33,13 @@ const AvatarGroup = ({
       id="browse-topic-avatars-container"
       className="[&_.ant-avatar]:!bg-canBlue2 [&_.ant-avatar]:border-2 [&_.ant-avatar-string]:!text-canBlack"
     >
-      {avatars?.map((av) => (
-        <SingleAvatar user={av} key={av?.id} imageBaseURL={imageBaseURL} />
+      {avatars?.map((av, idx) => (
+        <SingleAvatar user={av} key={av?.id ?? idx} imageBaseURL={imageBaseURL} />
       ))}
       {haveShowMore > 0 ? (
         <Avatar
           className="uppercase flex justify-center items-center text-[0.6rem]"
-          data-testId={`show-more-avatar-${haveShowMore}`}
+          data-testid={`show-more-avatar-${haveShowMore}`}
         >
           {haveShowMore > 0 ? "+" + haveShowMore : ""}
         </Avatar>
