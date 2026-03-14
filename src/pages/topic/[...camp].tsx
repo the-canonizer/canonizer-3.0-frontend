@@ -221,7 +221,7 @@ export async function getServerSideProps({ req, query, res }) {
         permanent: false,
         destination: `${resUrl}${queryStr ? "?" + queryStr : ""}`,
       },
-      props: {
+      props: JSON.parse(JSON.stringify({
         current_date: currentDate,
         newsFeed: newsFeed || [],
         topicRecord: topicRecord || {},
@@ -231,12 +231,12 @@ export async function getServerSideProps({ req, query, res }) {
         tree: tree || [],
         serverCall: true,
         reqBodyForService,
-      },
+      })),
     };
   }
 
   return {
-    props: {
+    props: JSON.parse(JSON.stringify({
       current_date: currentDate,
       newsFeed: newsFeed || [],
       topicRecord: topicRecord || {},
@@ -246,7 +246,7 @@ export async function getServerSideProps({ req, query, res }) {
       tree: tree || [],
       serverCall: true,
       reqBodyForService,
-    },
+    })),
   };
 }
 

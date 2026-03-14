@@ -4,9 +4,7 @@ const RequiredPermission = () => {
   return (
     <>
       <h1>Required permission to access this page</h1>
-      <Link href="/">
-        <a>Link to Home Page</a>
-      </Link>
+      <Link href="/">Link to Home Page</Link>
     </>
   );
 };

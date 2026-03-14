@@ -122,24 +122,36 @@ export async function getServerSideProps({ req, res }) {
   const currentDate = new Date().valueOf();
   let token = null;
   token = await createToken(req, res);
-  token = await createToken(req, res);
 
-  const [resData, featuredData, prefData, consensusVideoPodcastData] = await Promise.all([
-    GetHotTopicDetails(1, 6, token as string),
-    GetFeaturedTopicDetails(token as string),
-    GetPreferedTopicDetails(1, 6, true, token as string),
-    GetConsensusVideoPodcastDetails(1, 6, token as string)
-  ]);
+  try {
+    const [resData, featuredData, prefData, consensusVideoPodcastData] = await Promise.all([
+      GetHotTopicDetails(1, 6, token as string),
+      GetFeaturedTopicDetails(token as string),
+      GetPreferedTopicDetails(1, 6, true, token as string),
+      GetConsensusVideoPodcastDetails(1, 6, token as string)
+    ]);
 
-  return {
-    props: {
-      current_date: currentDate,
-      hotTopicData: resData?.data?.items ? resData?.data?.items : [],
-      featuredData: featuredData?.data?.items ? featuredData?.data?.items : [],
-      prefData: prefData?.data?.items ? prefData?.data?.items : null,
-      consensusVideoPodcastData: consensusVideoPodcastData?.data?.items ? consensusVideoPodcastData?.data?.items : null,
-    },
-  };
+    return {
+      props: {
+        current_date: currentDate,
+        hotTopicData: resData?.data?.items ? resData?.data?.items : [],
+        featuredData: featuredData?.data?.items ? featuredData?.data?.items : [],
+        prefData: prefData?.data?.items ? prefData?.data?.items : null,
+        consensusVideoPodcastData: consensusVideoPodcastData?.data?.items ? consensusVideoPodcastData?.data?.items : null,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+    return {
+      props: {
+        current_date: currentDate,
+        hotTopicData: [],
+        featuredData: [],
+        prefData: null,
+        consensusVideoPodcastData: null,
+      },
+    };
+  }
 }
 
 Home.displayName = "Home";
