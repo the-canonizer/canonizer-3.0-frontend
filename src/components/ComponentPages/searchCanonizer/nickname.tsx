@@ -258,6 +258,7 @@ const NicknameSearch = () => {
                                     width={14}
                                     height={16}
                                     id="elastic_nickname_search_nickname_list_img"
+                                    alt=""
                                   />
                                   <label
                                     style={{ cursor: "pointer" }}

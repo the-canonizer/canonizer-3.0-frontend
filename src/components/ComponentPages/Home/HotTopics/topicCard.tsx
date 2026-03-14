@@ -43,13 +43,6 @@ const SingleTopicCard = ({
   }
 
   return (
-    <a
-      href={`/topic/${topic?.topic_num}-${
-        replaceSpecialCharacters(topic?.topic_name, "-") || ""
-      }/${topic?.camp_num || 1}-${
-        replaceSpecialCharacters(topic?.camp_name, "-") || "Agreement"
-      }`}
-    >
       <Link
         href={`/topic/${topic?.topic_num}-${
           replaceSpecialCharacters(topic?.topic_name, "-") || ""
@@ -109,7 +102,7 @@ const SingleTopicCard = ({
                 id={`topic-cats-label-${topic?.id}`}
               />
               <ViewCounts
-                views={topic?.views}
+                views={Number(topic?.views) || 0}
                 className={`${
                   topic[tag_key]?.length ? "!mt-1" : ""
                 } cardCountCls`}
@@ -131,7 +124,6 @@ const SingleTopicCard = ({
           </div>
         </CommonCard>
       </Link>
-    </a>
   );
 };
 

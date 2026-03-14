@@ -76,6 +76,7 @@ const Search = () => {
               src="/images/recent-activiity-arrow.svg"
               width={16}
               height={24}
+              alt=""
             />
 
             <h3
@@ -181,6 +182,7 @@ const Search = () => {
                                     src="/images/flagicon.svg"
                                     width={18}
                                     height={20}
+                                    alt=""
                                   />
                                   <span
                                     className="text-base !text-canBlack font-medium"
@@ -286,6 +288,7 @@ const Search = () => {
                                       src="/images/note-sticky.svg"
                                       width={17}
                                       height={19}
+                                      alt=""
                                     />
                                     <span
                                       className="text-base font-medium text-canBlack mr-1"
@@ -421,6 +424,7 @@ const Search = () => {
                                     src="/images/note-sticky.svg"
                                     width={17}
                                     height={19}
+                                    alt=""
                                   />
                                   <span
                                     className="text-base font-medium text-canBlack mr-1"
@@ -491,6 +495,7 @@ const Search = () => {
                                       src="/images/nickname-user-icon.svg"
                                       width={14}
                                       height={16}
+                                      alt=""
                                     />
                                     <label
                                       id="auto_search_section_nickname_value"

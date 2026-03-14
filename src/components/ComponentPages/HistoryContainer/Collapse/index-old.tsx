@@ -384,7 +384,7 @@ function HistoryCollapse({
                         }}
                         centered
                         okText="Close"
-                        visible={modal1Open}
+                        open={modal1Open}
                         footer={[
                           <Button
                             key="submit"

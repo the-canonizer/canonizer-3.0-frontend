@@ -220,6 +220,7 @@ const SettingsUI = () => {
             src="/images/flagicon.svg"
             width={24}
             height={24}
+            alt=""
           />
         </span>
       ),

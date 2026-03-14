@@ -80,7 +80,7 @@ export default function HomeSideBar({
             title="Consensus Tree"
             placement="left"
             onClose={onClose}
-            visible={drawerIsVisible}
+            open={drawerIsVisible}
             className={`treeDrawer closeIconHide ${backGroundColorClass}`}
             closeIcon={<CloseCircleOutlined />}
             height={"auto"}

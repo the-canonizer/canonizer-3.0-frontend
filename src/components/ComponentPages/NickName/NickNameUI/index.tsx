@@ -197,7 +197,7 @@ function NickNameUI({
 
       <Modal
         title={addEditTitle}
-        visible={isNickNameModalVisible}
+        open={isNickNameModalVisible}
         footer=""
         onCancel={handleNickNameCancel}
         width={400}

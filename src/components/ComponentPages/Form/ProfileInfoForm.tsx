@@ -607,7 +607,7 @@ function ProfileInfoForm({
                   className="flex absolute left-4 top-1/3 -translate-y-1/2 z-50 pointer-events-none border-none"
                   id="calender_image_icon"
                 >
-                  <Image src="/images/calender.svg" width={16} height={16} />
+                  <Image src="/images/calender.svg" width={16} height={16} alt="" />
                 </span>
                 <Form.Item
                   id="form_for_date_picker"

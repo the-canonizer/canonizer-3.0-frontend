@@ -455,12 +455,14 @@ any) {
                     key="1"
                     style={{ verticalAlign: "baseline" }}
                     onClick={() => copyHandler()}
+                    alt=""
                   />,
                   <img
                     id="eventline-timeline-share-copied-icon"
                     src={CheckIcon.src}
                     key="2"
                     style={{ verticalAlign: "baseline" }}
+                    alt=""
                   />,
                 ],
               }}
