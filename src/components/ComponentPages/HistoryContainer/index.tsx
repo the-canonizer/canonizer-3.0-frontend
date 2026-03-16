@@ -100,6 +100,7 @@ function HistoryContainer() {
   }, [history]);
 
   useEffect(() => {
+    if (!router?.query?.camp?.[0]) return;
     const asynCall = async () => {
       setLoadMoreItems(true);
       count.current = 1;
@@ -109,6 +110,7 @@ function HistoryContainer() {
     asynCall();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    router?.query?.camp,
     activeTab,
     agreecheck,
     discardChange,
@@ -379,6 +381,7 @@ function HistoryContainer() {
 
   const renderButton = (type, label, count, active, classes = "", disabled) => (
     <Button
+      key={type}
       size="large"
       id="history-page-tab-button"
       className={`btn-${type} ${classes} text-sm ${active ? "active" : ""}`}
@@ -495,12 +498,12 @@ function HistoryContainer() {
                   ) : (
                     <InfiniteScroll
                       initialLoad={false}
-                      loadMore={!loadingIndicator && campStatementApiCall}
+                      loadMore={() => { if (!loadingIndicator) campStatementApiCall(); }}
                       hasMore={
                         count.current !== historyData?.last_page &&
                         loadMoreItems
                       }
-                      loader={<CustomSkelton skeltonFor="historyPage" />}
+                      loader={<CustomSkelton skeltonFor="historyPage" key="loader" />}
                     >
                       {renderCampHistories}
                     </InfiniteScroll>
