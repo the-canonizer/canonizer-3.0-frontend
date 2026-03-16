@@ -9,7 +9,6 @@ import CampRecentActivitiesHeader from "./pageHeader";
 import CampRecentActivities from "../CampRecentActivities";
 import NewsFeedsCard from "../NewsFeedsCard";
 
-const { TabPane } = Tabs;
 
 interface ActivityNewsCardProps {}
 
@@ -61,14 +60,19 @@ const ActivityNewsCard: React.FC<ActivityNewsCardProps> = () => {
               defaultActiveKey={`${defaultActiveKey}`}
               tabBarExtraContent={slot}
               onChange={handleTabChange}
-            >
-              <TabPane tab="Camp Activities" key="camps">
-                <CampRecentActivities onShowAllSet={onShowAllSet} />
-              </TabPane>
-              <TabPane tab="News Feed" key="news">
-                <NewsFeedsCard />
-              </TabPane>
-            </Tabs>
+              items={[
+                {
+                  label: "Camp Activities",
+                  key: "camps",
+                  children: <CampRecentActivities onShowAllSet={onShowAllSet} />,
+                },
+                {
+                  label: "News Feed",
+                  key: "news",
+                  children: <NewsFeedsCard />,
+                },
+              ]}
+            />
           </div>
         </CommonCard>
       </div>
