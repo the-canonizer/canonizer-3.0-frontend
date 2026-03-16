@@ -1,0 +1,77 @@
+.tabbedViewWrapper {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+
+  :global {
+    .ant-tabs-nav {
+      margin-bottom: 0;
+      padding: 0;
+      background: var(--surface-warm);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ant-tabs-tab {
+      flex: 1;
+      justify-content: center;
+      padding: 0.85rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      transition: color 0.15s, background-color 0.15s;
+      margin: 0;
+
+      &:hover {
+        color: var(--ink-light);
+        background: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .ant-tabs-tab-active {
+      background: var(--surface-card);
+
+      .ant-tabs-tab-btn {
+        color: var(--accent);
+      }
+    }
+
+    .ant-tabs-ink-bar {
+      background: var(--accent);
+      height: 2px;
+      transition: none !important;
+    }
+
+    .ant-tabs-content-holder {
+      background: var(--surface-card);
+    }
+
+    .ant-tabs-nav-list {
+      width: 100%;
+    }
+
+    .ant-tabs-nav-operations {
+      display: none !important;
+    }
+  }
+}
+
+.pulseWrap {
+  animation: pulseHighlight 0.75s ease 2;
+}
+
+@keyframes pulseHighlight {
+  0%, 100% { box-shadow: none; }
+  50% { box-shadow: inset 0 0 0 2px rgba(45, 106, 79, 0.2); }
+}
+
+.treeTabLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  svg {
+    flex-shrink: 0;
+  }
+}

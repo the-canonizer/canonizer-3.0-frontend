@@ -7,8 +7,8 @@
 .tree-nav {
   padding: 20px;
   background-color: #fff;
-  color: #4484ce;
-  font-family: "Asap", sans-serif;
+  color: #2d6a4f;
+  font-family: "DM Sans", sans-serif;
 }
 
 summary {
@@ -26,7 +26,7 @@ summary::-webkit-details-marker {
   white-space: nowrap;
   color: #ccc;
   position: relative;
-  font-family: "Asap", sans-serif;
+  font-family: "DM Sans", sans-serif;
   padding: 0 0 4px 0;
 }
 
@@ -53,7 +53,7 @@ summary::-webkit-details-marker {
 }
 .tree-nav__item .tree-nav__item {
   margin-left: 2.4rem;
-  font-family: "Asap", sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 .tree-nav__item.is-expandable[open] > .tree-nav__item-title::before {
   font-family: "ionicons";
@@ -84,26 +84,26 @@ summary::-webkit-details-marker {
   cursor: pointer;
   display: block;
   outline: 0;
-  color: #4484ce;
+  color: #2d6a4f;
   font-size: 15px;
   line-height: 24px;
-  font-family: "Asap", sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 .tree-nav__item-title a {
   text-decoration: none;
   cursor: pointer;
   display: block;
   outline: 0;
-  color: #4484ce;
+  color: #2d6a4f;
   font-size: 15px;
-  font-family: "Asap", sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-weight: 400;
 }
 .tree-nav__item-title a span {
   outline: 0;
   color: #fff;
   font-size: 14px;
-  font-family: "Asap", sans-serif;
+  font-family: "DM Sans", sans-serif;
   margin-left: 6px;
   background-color: #f89d15;
   padding: 1px 3px;
@@ -116,7 +116,7 @@ summary::-webkit-details-marker {
 
 .tree-nav__item.is-expandable[open] > summary > a {
   font-weight: 700;
-  color: #4484ce;
+  color: #2d6a4f;
   font-size: 16px;
   font-weight: 600;
 }

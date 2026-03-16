@@ -65,13 +65,13 @@
     }
     .btnCampForum {
       margin-right: 20px;
-      background-color: #4484ce;
+      background-color: #2d6a4f;
       box-shadow: none;
       border-color: transparent;
       font-size: 14px;
 
       &:hover {
-        background-color: darken(#4484ce, 7%);
+        background-color: darken(#2d6a4f, 7%);
       }
     }
 
@@ -149,7 +149,7 @@
       color: var(--primary);
       &:hover {
         font-weight: bold;
-        color: #4484ce;
+        color: #2d6a4f;
       }
       &.activeCamp {
         color: #08b608 !important;

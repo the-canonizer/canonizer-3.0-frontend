@@ -63,7 +63,7 @@ describe("MainHeSader", () => {
     );
     const logoLink = screen.getAllByAltText("Picture of the author");
     const browseLink = screen.getAllByRole("link", {
-      name: /Browse/i,
+      name: /Explore/i,
     })[0];
     const createTopicLink = screen.getAllByText("Create a Topic");
     // const uploadFilesLink = screen.getByRole("link", {

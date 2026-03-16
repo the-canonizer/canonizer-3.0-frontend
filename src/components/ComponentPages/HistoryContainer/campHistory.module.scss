@@ -220,7 +220,7 @@
           & > .campStatementOld {
             & > a {
               &:before {
-                background-color: #4484ce;
+                background-color: #2d6a4f;
               }
             }
           }
@@ -325,7 +325,7 @@
         padding: 0 18px 0 18px !important;
 
         & > span a {
-          color: #4484ce;
+          color: #2d6a4f;
         }
         @media screen and (max-width: 767px) {
           padding-right: 30px !important;
@@ -408,7 +408,7 @@
   }
 }
 
-$btn-bkg: #4484ce;
+$btn-bkg: #2d6a4f;
 
 .campCollapseSummaryWrap {
   .campStatementCollapseButtons {
@@ -431,7 +431,7 @@ $btn-bkg: #4484ce;
       height: auto;
       border: none;
       &:not([disabled]) {
-        background-color: #4484ce;
+        background-color: #2d6a4f;
         &:hover {
           background-color: darken($btn-bkg, 10%);
         }
@@ -546,8 +546,8 @@ $btn-bkg: #4484ce;
   & > div {
     & > div {
       background-color: #f6f9ff;
-      border: 1px solid #4484ce;
-      border-left: 18px solid #4484ce;
+      border: 1px solid #2d6a4f;
+      border-left: 18px solid #2d6a4f;
 
       & > div {
         border-bottom: none !important;

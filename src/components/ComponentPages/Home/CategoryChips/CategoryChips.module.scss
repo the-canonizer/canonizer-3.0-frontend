@@ -1,0 +1,59 @@
+.wrapper {
+  display: none;
+  /* Visible when parent has browseChipsVisible class — see browse.module.scss */
+  margin-bottom: 2.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.chipRow {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-card);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-light);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  user-select: none;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--accent-bg-subtle);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+}
+
+.chipActive {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+
+  &:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+    color: white;
+  }
+}
+
+.emoji {
+  font-size: 16px;
+  line-height: 1;
+}

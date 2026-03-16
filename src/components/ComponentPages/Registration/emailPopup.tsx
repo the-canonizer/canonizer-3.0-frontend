@@ -6,6 +6,7 @@ import { Form } from "antd";
 import EmailConfirmation from "./UI/email";
 import { hideSocialEmailPopup } from "src/store/slices/uiSlice";
 import {
+  createToken,
   resendOTPForRegistration,
   SendOTPForVerify,
   verifyEmailOnSocial,
@@ -119,6 +120,7 @@ const EmailPopup = ({ isModal = false }: any) => {
       email: formData.email,
     };
 
+    await createToken();
     await resendOTPForRegistration(formBody);
   };
 

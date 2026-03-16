@@ -45,7 +45,7 @@ const ProfileInfoTab = ({
           style={{
             border: "1px solid #fff",
             color: "#fff",
-            backgroundColor: "#4484ce",
+            backgroundColor: "#2d6a4f",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
