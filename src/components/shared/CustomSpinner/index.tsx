@@ -2,16 +2,15 @@ import { Spin } from "antd";
 
 import { LoadingOutlined } from "@ant-design/icons";
 
-const CustomSpinner = (props) => {
+const CustomSpinner = ({ wrapperClassName = "", className = "", children, ...rest }) => {
   return (
     <Spin
       indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
-      wrapperClassName={`h-full overflow-hidden [&_.ant-spin-container]:h-full ${props.wrapperClassName}`}
-      className={`!h-full !max-h-full ${props.className}`}
-      fullscreen
-      {...props}
+      wrapperClassName={`h-full overflow-hidden [&_.ant-spin-container]:h-full ${wrapperClassName}`}
+      className={`!h-full !max-h-full ${className}`}
+      {...rest}
     >
-      {props.children}
+      {children}
     </Spin>
   );
 };
