@@ -300,12 +300,14 @@ const TopicDetails = ({ serverSideCall }: any) => {
       (history as any)?.details?.liveCamp?.live_record_id ??
       (history as any)?.live_record_id;
 
+    if (!liveId) return;
+
     const restrictSupporters = async () => {
       await getRestrictSupporters(liveId);
     };
 
     restrictSupporters();
-  }, []);
+  }, [history]);
 
   useEffect(() => {
     if (
@@ -622,10 +624,11 @@ const TopicDetails = ({ serverSideCall }: any) => {
       // setCampId(res?.data);
     };
     if (
-      haveStatementPreview ||
+      router?.query?.camp?.[0] &&
+      (haveStatementPreview ||
       (haveStatementPreview?.camp_id !==
         router?.query?.camp[0]?.split("-")[0] &&
-        !openConsensusTreePopup)
+        !openConsensusTreePopup))
     ) {
       campStatementApiCall();
     }
