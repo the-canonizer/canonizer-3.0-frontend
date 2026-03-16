@@ -45,23 +45,17 @@ function WrappedApp({
       !!(getCookies() as any)?.loginToken
     );
 
-  const { isLatestVersion, emptyCacheStorage, latestVersion } = useClearCache();
+  const { isLatestVersion, emptyCacheStorage } = useClearCache();
 
-  if (
-    !isLatestVersion ||
-    (typeof window !== "undefined" &&
-      localStorage.getItem("APP_VERSION") === null)
-  ) {
-    emptyCacheStorage();
-  }
-
-  console.log("build details", {
-    isLatestVersion,
-    latestVersion,
-
-    APP_VERSION:
-      typeof window !== "undefined" && localStorage.getItem("APP_VERSION"),
-  });
+  useEffect(() => {
+    if (
+      !isLatestVersion ||
+      (typeof window !== "undefined" &&
+        localStorage.getItem("APP_VERSION") === null)
+    ) {
+      emptyCacheStorage();
+    }
+  }, [isLatestVersion, emptyCacheStorage]);
   useEffect(() => {
     const fetchToken = async () => {
       if (router?.asPath) {
