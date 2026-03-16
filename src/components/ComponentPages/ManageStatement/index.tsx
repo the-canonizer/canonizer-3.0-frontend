@@ -143,9 +143,11 @@ function ManageStatements({ isEdit = false }) {
     const topicNum =
       router?.query?.statement?.[0]?.split("-")?.at(0) ||
       currentGetCheckSupportExistsData?.topic_num;
+    if (!topicNum) return;
     const campNum =
       router?.query?.statement?.[1]?.split("-")?.at(0) ||
-      currentGetCheckSupportExistsData?.camp_num;
+      currentGetCheckSupportExistsData?.camp_num ||
+      1;
 
     let reqBody = {
       topic_num: topicNum,
@@ -1546,7 +1548,7 @@ function ManageStatements({ isEdit = false }) {
   };
 
   useEffect(() => {
-    if (topic_num === undefined || topic_num === null) return;
+    if (!topic_num) return;
     const fetchCampStatement = async () => {
       await campStatementApiCall(topic_num);
     };
