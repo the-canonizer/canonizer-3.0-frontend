@@ -291,9 +291,11 @@ function CommanBreadcrumbs({
     setPayloadData(payload);
 
     async function getBreadCrumbApiCall() {
+      const resolvedTopicNum = payload?.topic_num || topicId;
+      if (!resolvedTopicNum) return;
       setLoadingIndicator(true);
       let reqBody = {
-        topic_num: payload?.topic_num ? payload?.topic_num : topicId,
+        topic_num: resolvedTopicNum,
         camp_num: payload?.camp_num ? payload?.camp_num : campId ? campId : 1,
         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
@@ -802,7 +804,7 @@ function CommanBreadcrumbs({
           </Row>
           <div className="content-btn-wrap">
             <PrimaryButton  title={
-            disabled &&
+            disabled ?
             `Reason: ${
                restrictedUserInfo?.reason
             } \nRestricted by: ${
@@ -810,7 +812,7 @@ function CommanBreadcrumbs({
             } \nRemaining Time: ${
               restrictedUserInfo?.remainingTime
             }
-            `
+            ` : undefined
           } disabled={disabled} className="flex items-center justify-center h-auto mx-auto gap-1">
               <Link href={campHrefForPopover} className="flex items-center justify-center h-auto mx-auto gap-1">
                   <span className="flex items-center justify-center h-auto mx-auto gap-1">
@@ -1397,7 +1399,7 @@ function CommanBreadcrumbs({
               breadCrumbRes?.propose_statement_edit?.status == "objected" ? (
                 <PrimaryButton
                 title={
-            disabled &&
+            disabled ?
             `Reason: ${
                restrictedUserInfo?.reason
             } \nRestricted by: ${
@@ -1405,7 +1407,7 @@ function CommanBreadcrumbs({
             } \nRemaining Time: ${
               restrictedUserInfo?.remainingTime
             }
-            `
+            ` : undefined
           }
                   disabled={campRecord?.is_archive || disabled}
                   className="printHIde sm:hidden md:hidden hidden lg:flex !h-[40px] py-2.5 px-5 items-center text-sm"
