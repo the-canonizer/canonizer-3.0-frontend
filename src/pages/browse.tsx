@@ -9,7 +9,9 @@ const BrowsePage = ({ current_date }: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  dispatch(setCurrentDate(current_date));
+  useEffect(() => {
+    dispatch(setCurrentDate(current_date));
+  }, []);
 
   useEffect(() => {
     let queries = router?.query;
