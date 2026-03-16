@@ -49,11 +49,10 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
         className="line-clamp-1 max-w-52 !mb-0 pl-2"
       >
         {(tags || []).map((item, idx) => (
-          <Fragment key={item?.id}>
+          <Fragment key={`${item?.id}-${idx}`}>
             <LinkItem
               text={item?.title}
               link={{ pathname: `/categories/${item?.id}` }}
-              key={item?.id}
             />
             {idx !== tags?.length - 1 ? (
               <span
