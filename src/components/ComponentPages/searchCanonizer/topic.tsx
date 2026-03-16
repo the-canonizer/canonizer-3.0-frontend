@@ -154,7 +154,7 @@ const TopicSearch = () => {
           </div>
         </Link>
         <div className="text-base text-canBlue flex items-center gap-2.5">
-          <Image src="/images/flagicon.svg" width={18} height={20} />
+          <Image src="/images/flagicon.svg" width={18} height={20} alt="" />
           <span className="text-base !text-canBlack font-medium">
             Canon:
             <span className="font-medium !text-canBlue ml-1">

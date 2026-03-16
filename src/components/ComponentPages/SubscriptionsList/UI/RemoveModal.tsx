@@ -28,7 +28,7 @@ function TopicRemoveModal({
           Remove Subscription
         </Typography.Title>
       }
-      visible={isVisible}
+      open={isVisible}
       onCancel={onCancel}
       footer={
         <div className="gap-5 py-3">

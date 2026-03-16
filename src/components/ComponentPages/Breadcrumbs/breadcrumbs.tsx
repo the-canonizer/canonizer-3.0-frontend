@@ -38,11 +38,13 @@ function Breadcrumbs({ compareMode = false, updateId, historyOF = null }: any) {
   useEffect(() => {
     async function getBreadCrumbApiCall() {
       setLoadingIndicator(true);
+      const resolvedTopicNum = compareMode
+          ? router.query.routes?.at(0)?.split("-")?.at(0)
+          : payload?.topic_num;
+      if (!resolvedTopicNum) return;
       let reqBody = {
-        topic_num: compareMode
-          ? router.query.routes?.at(0).split("-")?.at(0)
-          : payload?.topic_num,
-        camp_num: payload?.camp_num,
+        topic_num: resolvedTopicNum,
+        camp_num: payload?.camp_num || 1,
         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
           asof == "default" || asof == "review"

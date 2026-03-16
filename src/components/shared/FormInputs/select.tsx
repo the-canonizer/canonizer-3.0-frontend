@@ -43,7 +43,7 @@ const SelectInputs = ({
       data-id={dataid}
       initialValue={initialValue}
       extra={extra}
-      {...rules}
+      {...(Array.isArray(rules) ? { rules } : rules)}
     >
       <div
         className={`outerDiv flex border rounded ${
@@ -90,8 +90,8 @@ const SelectInputs = ({
 };
 
 SelectInputs.propTypes = {
-  rules: PropTypes.object,
-  label: PropTypes.string,
+  rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   name: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.object),
   className: PropTypes.string,
@@ -111,7 +111,7 @@ SelectInputs.propTypes = {
   defaultValue: PropTypes.any,
   isDefaultOption: PropTypes.bool,
   optionsData: PropTypes.node,
-  lastValue: PropTypes.string,
+  lastValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   mode: PropTypes.string, // Specify the mode for selection (multiple/tags)
 };
 

@@ -1,6 +1,6 @@
 import { Typography } from "antd";
 import { TagOutlined } from "@ant-design/icons";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 import CustomSkelton from "src/components/common/customSkelton";
 import { Fragment } from "react";
@@ -17,10 +17,19 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
     );
   }
 
+  const router = useRouter();
   const LinkItem = ({ text, link }) => (
-    <Link href={link} id="browse-topic-tags-item" className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue" onClick={(e) => e?.stopPropagation()}>
-        {text}
-    </Link>
+    <span
+      id="browse-topic-tags-item"
+      className="!text-canBlue text-xs font-inter font-medium hover:!canHoverBlue cursor-pointer"
+      onClick={(e) => {
+        e?.stopPropagation();
+        e?.preventDefault();
+        router.push(link);
+      }}
+    >
+      {text}
+    </span>
   );
 
   return (
@@ -40,11 +49,10 @@ const TopicCatsLabel = ({ tags, loading = false, ...restProps }) => {
         className="line-clamp-1 max-w-52 !mb-0 pl-2"
       >
         {(tags || []).map((item, idx) => (
-          <Fragment key={item?.id}>
+          <Fragment key={`${item?.id}-${idx}`}>
             <LinkItem
               text={item?.title}
               link={{ pathname: `/categories/${item?.id}` }}
-              key={item?.id}
             />
             {idx !== tags?.length - 1 ? (
               <span

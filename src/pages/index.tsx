@@ -40,11 +40,10 @@ function Home({ current_date, hotTopicData, featuredData, prefData, consensusVid
   const dispatch = useDispatch();
   const router = useRouter();
 
-  dispatch(setFilterCanonizedTopics({ search: "" }));
-  dispatch(setCurrentDate(current_date));
-
   /* eslint-disable */
   useEffect(() => {
+    dispatch(setFilterCanonizedTopics({ search: "" }));
+    dispatch(setCurrentDate(current_date));
     dispatch(setHotTopic(hotTopicData));
     dispatch(setFeaturedTopic(featuredData));
     dispatch(setPrefTopic(prefData));

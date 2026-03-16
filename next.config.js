@@ -4,6 +4,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 module.exports = withBundleAnalyzer({
+  transpilePackages: ["antd-img-crop"],
   modularizeImports: {
     "antd": {
       transform: "antd/lib/{{member}}",

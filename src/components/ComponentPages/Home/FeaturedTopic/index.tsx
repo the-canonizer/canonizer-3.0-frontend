@@ -10,6 +10,10 @@ import CustomSkelton from "components/common/customSkelton";
 
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
+const SlickArrow = ({ currentSlide, slideCount, children, ...rest }: any) => (
+  <div {...rest}>{children}</div>
+);
+
 const FeaturedTopic = () => {
   const { topicData } = useSelector((state: RootState) => ({
     topicData: state?.hotTopic?.featuredTopic,
@@ -29,10 +33,10 @@ const FeaturedTopic = () => {
     className: "featuresSlider",
     arrowClass: "",
     nextArrow: topicData?.length > 1 && (
-      <RightOutlined className="text-xl text-canBlue" />
+      <SlickArrow><RightOutlined className="text-xl text-canBlue" /></SlickArrow>
     ),
     prevArrow: topicData?.length > 1 && (
-      <LeftOutlined className="text-xl text-canBlue" />
+      <SlickArrow><LeftOutlined className="text-xl text-canBlue" /></SlickArrow>
     ),
   };
 

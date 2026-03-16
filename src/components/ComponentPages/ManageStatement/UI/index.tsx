@@ -257,11 +257,6 @@ function ManageStatementUI({
                   </span>
                 }
                 name="nick_name"
-                defaultValue={
-                  defaultNicknameData(nickNameData)?.id
-                    ? defaultNicknameData(nickNameData)?.id
-                    : nickNameData[0]?.id
-                }
                 options={nickNameData}
                 allowClear
                 size="large"

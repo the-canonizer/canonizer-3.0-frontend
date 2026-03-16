@@ -332,7 +332,7 @@ const ManageSupportUI = ({
         currentGetCheckSupportExistsData.remove_camps.length < 0) ||
       unableToFindCamp ? (
         <>
-          <span data-testId="warning" className={styles.warning}>
+          <span data-testid="warning" className={styles.warning}>
             <strong> Warning! </strong>
             {getSupportStatusData || currentGetCheckSupportExistsData.warning}
           </span>
@@ -408,7 +408,7 @@ const ManageSupportUI = ({
                 Quick Actions:
                 <span className={styles.checkbox}>
                   <input
-                    data-testId="checkbox"
+                    data-testid="checkbox"
                     type="checkbox"
                     checked={checked}
                     onClick={(e) => {

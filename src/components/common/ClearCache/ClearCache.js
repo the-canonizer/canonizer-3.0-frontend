@@ -19,7 +19,10 @@ function withClearCache(Component) {
 
     useEffect(() => {
       fetch("/meta.json")
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) throw new Error("meta.json not found");
+          return response.json();
+        })
         .then((meta) => {
           const latestVersionDate = meta.buildDate;
           const currentVersionDate = localStorage.getItem("build_number");
@@ -35,6 +38,9 @@ function withClearCache(Component) {
           } else {
             setIsLatestBuildDate(true);
           }
+        })
+        .catch(() => {
+          setIsLatestBuildDate(true);
         });
     }, []);
 

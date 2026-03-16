@@ -13,7 +13,7 @@ function StatementPreview({
   return (
     <Modal
       style={{ top: "20px" }}
-      visible={isVisible}
+      open={isVisible}
       footer={null}
       closable={false}
       width={800}

@@ -52,7 +52,7 @@ const ProfileInfo = ({
 
   return (
     <div id="profile_area" className="mt-0 lg:-mt-2 mr-2" key="profile_area">
-      <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
+      <Dropdown dropdownRender={() => menu} trigger={["click"]} placement="bottomLeft">
         <a
           id="profile_link"
           onClick={(e) => e.preventDefault()}
