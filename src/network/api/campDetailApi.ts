@@ -238,6 +238,7 @@ export const getAllUsedNickNames = async (body) => {
   }
 };
 export const getCampBreadCrumbApi = async (reqBody, loginToken = null) => {
+  if (!reqBody?.topic_num) return;
   try {
     const currentTopicRecord = await NetworkCall.fetch(
       TreeRequest.getCampBreadCrumb(reqBody, loginToken),
