@@ -262,9 +262,11 @@ const TimelineInfoBar = ({
     setPayloadData(payload);
 
     async function getBreadCrumbApiCall() {
+      const resolvedTopicNum = payload?.topic_num || topicId;
+      if (!resolvedTopicNum) return;
       setLoadingIndicator(true);
       let reqBody = {
-        topic_num: payload?.topic_num ? payload?.topic_num : topicId,
+        topic_num: resolvedTopicNum,
         camp_num: payload?.camp_num ? payload?.camp_num : campId ? campId : 1,
         as_of: router?.pathname == "/topic/[...camp]" ? asof : "default",
         as_of_date:
