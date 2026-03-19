@@ -175,7 +175,7 @@ const ThreadListUI = ({
 
       {isLoading ? (
         <Fragment>
-          <Table dataSource={loadingData} pagination={false} id="loading-table">
+          <Table dataSource={loadingData} pagination={false} rowKey="id" id="loading-table">
             <Column
               title="Thread Name"
               dataIndex="title"
@@ -237,7 +237,7 @@ const ThreadListUI = ({
         </Fragment>
       ) : (
         <Fragment>
-          <Table dataSource={threadList} pagination={false} id="thread-table">
+          <Table dataSource={threadList} pagination={false} rowKey="id" id="thread-table">
             <Column
               title="Thread Name"
               dataIndex="title"
