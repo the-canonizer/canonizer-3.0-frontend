@@ -49,7 +49,7 @@ const StatementPreviewModal = () => {
   }, [haveStatementPreview]);
 
   const getBorderColor = () => {
-    if (router?.query?.viewversion == "1" || router?.query?.asof == "review") {
+    if (router?.query?.viewversion == "1" || (router?.query?.asof == "review" && campStatement?.in_review_changes > 0)) {
       return "!border-canOrange";
     } else if (router?.query?.asof == "bydate") {
       return "border-[#4786CB]";
