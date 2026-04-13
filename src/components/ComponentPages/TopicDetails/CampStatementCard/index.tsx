@@ -211,7 +211,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
               ? "!border-canGreen"
               : router?.query?.status == "objected"
               ? "!border-canRed"
-              : router?.query?.asof == "review"
+              : router?.query?.asof == "review" && campStatement?.[0]?.in_review_changes > 0
               ? "!border-canOrange"
               : router?.query?.asof == "bydate"
               ? "border-[#4786CB]"
