@@ -1,8 +1,9 @@
-import { Spin, Tooltip, Typography, Button } from "antd";
+import { Spin, Tooltip, Typography, Button, Dropdown } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ApartmentOutlined } from "@ant-design/icons";
+import Image from "next/image";
 
 import styles from "../topicDetails.module.scss";
 
@@ -18,6 +19,9 @@ import RefineFilter from "../../RefineFilter";
 import LatestFilter from "../../LatestFilter";
 import CampDisclaimer from "components/common/CampDisclaimer";
 import RefineIcon from "./refineIcon";
+import SocialShare from "components/shared/ShareTopic";
+import DropDownMenu from "components/DropdownMenu";
+import { isServer } from "src/utils/generalUtility";
 
 const InfoBar = ({ isTopicPage = false }: any) => {
   const dispatch = useDispatch();
@@ -33,6 +37,8 @@ const InfoBar = ({ isTopicPage = false }: any) => {
     selectedAsOf,
     algorithms,
     openConsensusTreePopup,
+    campRecord,
+    openDrawerForManageSupport,
   } = useSelector((state: RootState) => ({
     campRecord: state?.topicDetails?.currentCampRecord,
     currentCampNode: state?.filters?.selectedCampNode,
@@ -45,6 +51,7 @@ const InfoBar = ({ isTopicPage = false }: any) => {
     selectedAsOf: state?.filters?.filterObject?.asof,
     algorithms: state.homePage?.algorithms,
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
+    openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
   }));
 
   const isMobile = window.matchMedia("(min-width: 1280px)").matches;
@@ -190,6 +197,29 @@ const InfoBar = ({ isTopicPage = false }: any) => {
               filteredScore != 0 ? (
                 <LatestFilter />
               ) : null}
+              <div className="flex gap-5 items-center ml-auto">
+                <SocialShare
+                  key={campRecord?.id}
+                  campName={campRecord?.camp_name}
+                  campUrl={!isServer() && window?.location?.href}
+                />
+                <Dropdown
+                  placement="bottomRight"
+                  dropdownRender={() =>
+                    !openDrawerForManageSupport ? <DropDownMenu /> : ""
+                  }
+                  trigger={["click"]}
+                >
+                  <a onClick={(e) => e.preventDefault()} className="flex">
+                    <Image
+                      src="/images/options-icon.svg"
+                      alt="menu"
+                      height={24}
+                      width={24}
+                    />
+                  </a>
+                </Dropdown>
+              </div>
             </div>
             <TreeButton className="w-[68%]" />
           </div>
