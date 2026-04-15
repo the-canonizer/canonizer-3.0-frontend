@@ -156,8 +156,16 @@ const CreateNewCamp = () => {
 
     if (res?.status_code === 200) {
       if (resData?.data?.camp) {
-        setExistingCamps(resData?.data?.camp);
-        if (resData?.data?.camp?.length > 0) {
+        const currentCamp = editStatementData?.data?.camp;
+        const filteredCamps = resData?.data?.camp?.filter(
+          (camp) =>
+            !(
+              camp?.topic_num == currentCamp?.topic_num &&
+              camp?.camp_num == currentCamp?.camp_num
+            )
+        );
+        setExistingCamps(filteredCamps);
+        if (filteredCamps?.length > 0) {
           setHaveCampExist(true);
         } else {
           setHaveCampExist(false);
