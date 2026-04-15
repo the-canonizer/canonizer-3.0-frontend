@@ -201,19 +201,37 @@ const CreateCampFormUI = ({
       onSelect: (val) => form.setFieldValue("parent_camp_num", val),
       id: "parent-camp-dropdown",
       isDefaultOption: false,
-      optionsData: parentCamp.map((camp) => (
-        <Option
-          value={camp.camp_num}
-          key={camp.id}
-          id={`parent-camp-${camp.id}`}
-          camp={camp}
-          disabled={camp.is_archive ? true : false}
-        >
-          <Tooltip title={camp.is_archive ? archiveToolTipContent : null}>
-            {camp.camp_name}
-          </Tooltip>
-        </Option>
-      )),
+      optionsData: [...parentCamp]
+        .sort((a, b) => {
+          if (a.camp_name?.toLowerCase() === "agreement") return -1;
+          if (b.camp_name?.toLowerCase() === "agreement") return 1;
+          return a.camp_name?.localeCompare(b.camp_name);
+        })
+        .map((camp) => {
+          const isAgreement = camp.camp_name?.toLowerCase() === "agreement";
+          const displayName = isAgreement
+            ? "Agreement (root)"
+            : camp.camp_name;
+          return (
+            <Option
+              value={camp.camp_num}
+              key={camp.id}
+              id={`parent-camp-${camp.id}`}
+              camp={camp}
+              disabled={camp.is_archive ? true : false}
+            >
+              <Tooltip
+                title={camp.is_archive ? archiveToolTipContent : null}
+              >
+                {isAgreement ? (
+                  <span style={{ fontWeight: "bold" }}>{displayName}</span>
+                ) : (
+                  displayName
+                )}
+              </Tooltip>
+            </Option>
+          );
+        }),
       value: values?.parent_camp_num || topicData?.camp_num,
       lastValue: form.getFieldValue("parent_camp_num"),
     };
