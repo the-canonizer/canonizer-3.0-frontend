@@ -26,8 +26,7 @@ import { openNotificationWithIcon } from "components/common/notification/notific
 import Breadcrumbs from "components/shared/Breadcrumbs";
 
 const CreateNewTopic = () => {
-  const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
-    nameSpaces: state.homePage.nameSpaces,
+  const { catTaga } = useSelector((state: RootState) => ({
     catTaga: state?.tag?.tags,
   }));
 
@@ -60,11 +59,6 @@ const CreateNewTopic = () => {
       .catch(() => setIsDisabled(false));
   }, [form, values]);
 
-  useEffect(() => {
-    if (nameSpaces?.length > 0) {
-      form.setFieldValue("namespace", nameSpaces[0]?.id);
-    }
-  }, [nameSpaces]);
 
   const fetchNickNameList = async () => {
     setIsLoading(true);
@@ -124,7 +118,6 @@ const CreateNewTopic = () => {
 
     const body: any = {
       topic_name: trimmedName,
-      namespace: values.namespace,
       nick_name: values.nick_name,
       is_rank_hidden: isRankHidden,
     };
@@ -303,7 +296,7 @@ const CreateNewTopic = () => {
             key="form-ui"
             onFinish={onFinish}
             form={form}
-            nameSpaces={nameSpaces || []}
+            nameSpaces={[]}
             nickNameList={nickNameList || []}
             onCancel={onCancel}
             isDisabled={isDisabled}

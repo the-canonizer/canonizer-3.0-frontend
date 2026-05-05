@@ -30,16 +30,12 @@ export const getCanonizedTopicsApi = async (reqBody, loadMore = false) => {
   }
 };
 
-export const getCanonizedNameSpacesApi = async (tc = "") => {
-  try {
-    const nameSpaces = await NetworkCall.fetch(
-      HomePageRequests.getCanonizedNameSpaces(tc)
-    );
-    store.dispatch(setCanonizedNameSpaces(nameSpaces));
-    return nameSpaces;
-  } catch (error) {
-    store.dispatch(setCanonizedNameSpaces(null));
-  }
+// Namespaces were removed in the categories cutover. This shim keeps the
+// many call sites compiling and running but never hits the network.
+// Remove call sites and this function entirely in a follow-up cleanup.
+export const getCanonizedNameSpacesApi = async (_tc = "") => {
+  store.dispatch(setCanonizedNameSpaces({ data: [] }));
+  return { data: [] };
 };
 
 export const getRecentActivitiesApi = async (

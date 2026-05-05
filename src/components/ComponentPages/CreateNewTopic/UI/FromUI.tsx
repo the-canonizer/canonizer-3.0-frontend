@@ -21,7 +21,6 @@ import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import CommonCards from "components/shared/Card";
 import Tags from "components/shared/Tag";
 import CustomSkelton from "components/common/customSkelton";
-import { getCanonizedNameSpacesApi } from "src/network/api/homePageApi";
 import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { useDispatch } from "react-redux";
 
@@ -102,22 +101,6 @@ const CreateTopicFromUI = ({
     return <SelectInputs {...selectInputProps} />;
   };
 
-  const getAllNameSpaces = async () => {
-    await getCanonizedNameSpacesApi();
-  };
-
-  useEffect(() => {
-    getAllNameSpaces();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const getNameSpacesValue = () => {
-    if (isEdit) {
-      return values?.namespace;
-    }
-
-    return values?.namespace || nameSpaces[0]?.id;
-  };
   const dispatch = useDispatch();
   return (
     <CommonCards className="border-0 bg-white" id="common-cards">
@@ -145,7 +128,6 @@ const CreateTopicFromUI = ({
             : values?.nick_name || defaultNicknameData(nickNameList)?.id
             ? defaultNicknameData(nickNameList)?.id
             : nickNameList[0]?.id,
-          namespace: getNameSpacesValue(),
           tags: null,
         }}
         id="create-new-topic-form"
