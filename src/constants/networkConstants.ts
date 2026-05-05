@@ -231,6 +231,11 @@ const NetworkConstants = {
 
     // Facebook account deletion status
     CheckFacebookDeleteDataStatus: `${BaseCanonizerApiUrl}/check-facebook-delete-data-status`,
+
+    // Topic categories (Phase 1 of namespace -> category cutover)
+    GetTopicCategories: `${BaseCanonizerApiUrl}/topic-categories`,
+    AssignTopicCategory: `${BaseCanonizerApiUrl}/topic-category/assign`,
+    AdminTopicList: `${BaseCanonizerApiUrl}/admin/topics`,
   },
   Method: {
     GET: "GET",

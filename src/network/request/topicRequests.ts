@@ -87,4 +87,37 @@ export default class TopicRequest extends Request {
       token
     );
   }
+
+  static GetTopicCategories(token: string = "") {
+    return new Request(
+      K.Network.URL.GetTopicCategories,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static AssignTopicCategory(body, token: string = "") {
+    return new Request(
+      K.Network.URL.AssignTopicCategory,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static AdminTopicList(token: string = "") {
+    return new Request(
+      K.Network.URL.AdminTopicList,
+      K.Network.Method.GET,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
 }

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import debounce from "lodash/debounce";
 import { HomeOutlined } from "@ant-design/icons";
 
-import { createTopic } from "src/network/api/topicAPI";
+import { createTopic, getTopicCategories } from "src/network/api/topicAPI";
 import {
   getNickNameList,
   globalSearchCanonizer,
@@ -41,6 +41,9 @@ const CreateNewTopic = () => {
   const [haveTopicExist, setHaveTopicExist] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isRankHidden, setIsRankHidden] = useState(false);
+  const [topicCategoryIndex, setTopicCategoryIndex] = useState<
+    Record<string, number>
+  >({});
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -81,15 +84,54 @@ const CreateNewTopic = () => {
     // eslint-disable-next-line
   }, [isUserAuthenticated]);
 
+  useEffect(() => {
+    (async () => {
+      const r = await getTopicCategories();
+      if (r?.status_code === 200 && Array.isArray(r.data)) {
+        const idx: Record<string, number> = {};
+        r.data.forEach((c: any) => {
+          idx[c.name] = c.id;
+        });
+        setTopicCategoryIndex(idx);
+      }
+    })();
+  }, []);
+
+  const classifyTopic = async (topicName: string): Promise<number | null> => {
+    try {
+      const r = await fetch("/api/classify-topic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topicName }),
+      });
+      if (!r.ok) return null;
+      const { category } = await r.json();
+      if (category && topicCategoryIndex[category]) {
+        return topicCategoryIndex[category];
+      }
+      return null;
+    } catch (e) {
+      console.error("classify-topic failed", e);
+      return null;
+    }
+  };
+
   const onFinish = async (values: any) => {
     setIsLoading(true);
 
+    const trimmedName = values.topic_name?.trim();
+    const categoryId = await classifyTopic(trimmedName);
+
     const body: any = {
-      topic_name: values.topic_name?.trim(),
+      topic_name: trimmedName,
       namespace: values.namespace,
       nick_name: values.nick_name,
       is_rank_hidden: isRankHidden,
     };
+
+    if (categoryId) {
+      body.category_id = categoryId;
+    }
 
     if (selectedCats?.length > 0) {
       body.tags = selectedCats.map((cat) => cat?.id);

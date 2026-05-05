@@ -1,6 +1,6 @@
 import NetworkCall from "../networkCall";
 import TopicRequest from "../request/topicRequests";
-import { handleError } from "../../utils/generalUtility";
+import { handleError, getCookies } from "../../utils/generalUtility";
 import { store } from "src/store";
 import {
   setFeaturedTopic,
@@ -137,7 +137,7 @@ export const GetFeaturedTopicDetails = async (token: string) => {
 export const GetConsensusVideoPodcastDetails = async (page, perPage,token:string)=>{
   try {
       const res = await NetworkCall.fetch(TopicRequest.GetConsensusVideoPodcasts(page, perPage,token));
-      
+
       if (res.status_code === 200) {
         store.dispatch(setConsensusVideoPodcasts(res?.data?.items || []));
       }
@@ -151,3 +151,39 @@ export const GetConsensusVideoPodcastDetails = async (page, perPage,token:string
       return err?.error?.data;
     }
 }
+
+export const getTopicCategories = async () => {
+  try {
+    const cc: any = getCookies();
+    const res = await NetworkCall.fetch(
+      TopicRequest.GetTopicCategories(cc?.loginToken)
+    );
+    return res;
+  } catch (err) {
+    return err?.error?.data;
+  }
+};
+
+export const assignTopicCategory = async (body) => {
+  try {
+    const cc: any = getCookies();
+    const res = await NetworkCall.fetch(
+      TopicRequest.AssignTopicCategory(body, cc?.loginToken)
+    );
+    return res;
+  } catch (err) {
+    return err?.error?.data;
+  }
+};
+
+export const adminListTopics = async () => {
+  try {
+    const cc: any = getCookies();
+    const res = await NetworkCall.fetch(
+      TopicRequest.AdminTopicList(cc?.loginToken)
+    );
+    return res;
+  } catch (err) {
+    return err?.error?.data;
+  }
+};
