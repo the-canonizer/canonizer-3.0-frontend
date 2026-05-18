@@ -23,6 +23,11 @@ const NetworkConstants = {
     LoginUser: `${BaseCanonizerApiUrl}/user/login`,
     LogoutUser: `${BaseCanonizerApiUrl}/user/logout`,
     RegisterUser: `${BaseCanonizerApiUrl}/register`,
+    // AI Agents
+    AiAgentsList: `${BaseCanonizerApiUrl}/ai-agents`,
+    AiAgentShow: `${BaseCanonizerApiUrl}/ai-agents`,
+    AiAgentUpdate: `${BaseCanonizerApiUrl}/ai-agents`,
+    AiAgentDelete: `${BaseCanonizerApiUrl}/ai-agents`,
     VerifyRegisterUser: `${BaseCanonizerApiUrl}/post-verify-otp`,
     UserSocialLogin: `${BaseCanonizerApiUrl}/user/social/login`,
     UserSocialLoginCallback: `${BaseCanonizerApiUrl}/user/social/callback`,

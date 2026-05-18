@@ -10,6 +10,7 @@ import {
   MenuOutlined,
   PlayCircleOutlined,
   QuestionCircleOutlined,
+  RobotOutlined,
   SettingOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
@@ -164,6 +165,15 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
         </Link>
       </Menu.Item>
       <Menu.Divider id="menu-divider-1" />
+      <Menu.Item key="2" className="hover:text-canHoverBlue" id="menu-item-2">
+        <Link href="/ai-agents" passHref>
+          <a className="!text-sm font-normal" id="link-ai-agents">
+            <RobotOutlined className="mr-1" />
+            AI Agents
+          </a>
+        </Link>
+      </Menu.Item>
+      <Menu.Divider id="menu-divider-2" />
       <Menu.Item
         key="3"
         className="!text-sm font-normal hover:text-canHoverBlue"
