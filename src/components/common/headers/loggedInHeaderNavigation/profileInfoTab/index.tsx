@@ -11,6 +11,7 @@ import {
   SettingOutlined,
   LogoutOutlined,
   CheckCircleOutlined,
+  RobotOutlined,
   DownOutlined,
 } from "@ant-design/icons";
 
@@ -121,6 +122,12 @@ const ProfileInfoTab = ({
             <a onClick={toggleMobNav}>
               <CheckCircleOutlined />
               Supported Camps
+            </a>
+          </Link>
+          <Link href="/ai-agents" passHref>
+            <a onClick={toggleMobNav}>
+              <RobotOutlined />
+              AI Agents
             </a>
           </Link>
           <a onClick={logOut}>

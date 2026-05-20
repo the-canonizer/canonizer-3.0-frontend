@@ -4,6 +4,11 @@ import moment from "moment";
 import { jwtDecode } from "jwt-decode";
 
 export const handleError = (error, log = false) => {
+  // Skip UI notifications on server-side (document is not available)
+  if (typeof window === "undefined") {
+    console.error("[SSR handleError]", error?.message || error);
+    return null;
+  }
   // eslint-disable-next-line
   log ? window.console.log(error) : "";
 
