@@ -8,11 +8,15 @@ import { Menu, Tooltip } from "antd";
 import Link from "next/link";
 import { RootState } from "src/store";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useAuthentication from "src/hooks/isUserAuthenticated";
 import { getTreesApi, subscribeToCampApi } from "src/network/api/campDetailApi";
-import { replaceSpecialCharacters } from "src/utils/generalUtility";
+import {
+  getRestrictedUser,
+  isUserRestricted,
+  replaceSpecialCharacters,
+} from "src/utils/generalUtility";
 import K from "src/constants";
 import CodeIcon from "components/shared/TopicOptions/codeIcon";
 import GenerateModal from "components/common/generateScript";
@@ -46,6 +50,8 @@ const DropDownMenu = () => {
     algorithms,
     currentGetCheckSupportExistsData,
     userEmail,
+    loggedInUser,
+    restrictUser,
   } = useSelector((state: RootState) => ({
     topicRecord: state?.topicDetails?.currentTopicRecord,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -67,7 +73,12 @@ const DropDownMenu = () => {
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
     userEmail: state?.auth?.loggedInUser?.email,
+    restrictUser: state?.topicDetails?.restrictSupporters,
+    loggedInUser: state.auth.loggedInUser,
   }));
+
+  const disabled = isUserRestricted(restrictUser, loggedInUser);
+
   const [topicSubscriptionID, setTopicSubscriptionID] = useState(
     topicRecord?.topicSubscriptionId
   );
@@ -224,6 +235,11 @@ const DropDownMenu = () => {
       "-"
     )}/${replaceSpecialCharacters(secondValue, "-")}`;
   };
+
+  const restrictedUserInfo = useMemo(
+    () => getRestrictedUser(restrictUser, loggedInUser),
+    [restrictUser, loggedInUser]
+  );
 
   return (
     <div id="threedot_dropdown_section">
@@ -394,6 +410,18 @@ const DropDownMenu = () => {
               id="threedot_dropdown_manage_camp_btn__menu_item"
             ></i>
           }
+          disabled={campRecord?.is_archive || disabled}
+          title={
+            disabled &&
+            `Reason: ${
+               restrictedUserInfo?.reason
+            } \nRestricted by: ${
+              restrictedUserInfo?.restrictedBy
+            } \nRemaining Time: ${
+              restrictedUserInfo?.remainingTime
+            }
+            `
+          }
         >
           {isTopicPage && (
             <Link
@@ -439,7 +467,18 @@ const DropDownMenu = () => {
         <Menu.Item
           id="threedot_dropdown_btn_lable_menu_item"
           icon={<FileTextOutlined />}
-          disabled={campRecord?.is_archive}
+          disabled={campRecord?.is_archive || disabled}
+          title={
+            disabled &&
+            `Reason: ${
+               restrictedUserInfo?.reason
+            } \nRestricted by: ${
+              restrictedUserInfo?.restrictedBy
+            } \nRemaining Time: ${
+              restrictedUserInfo?.remainingTime
+            }
+            `
+          }
         >
           {isTopicPage && (
             <Link

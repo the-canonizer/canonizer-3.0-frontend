@@ -1,6 +1,7 @@
 import {
   CloseCircleOutlined,
   ExclamationCircleFilled,
+  StopOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
 import {
@@ -95,6 +96,7 @@ const SupportTreeCard = ({
   setSupportTreeForCamp,
   setTotalCampScoreForSupportTree,
   hideRank,
+  handleSupporterClick,
 }: any) => {
   const {
     currentGetCheckSupportExistsData,
@@ -108,6 +110,7 @@ const SupportTreeCard = ({
     selectedAlgorithm,
     tree,
     userEmail,
+    restrictUser,
   } = useSelector((state: RootState) => ({
     currentGetCheckSupportExistsData:
       state.topicDetails.currentGetCheckSupportExistsData,
@@ -122,6 +125,7 @@ const SupportTreeCard = ({
     selectedAlgorithm: state?.filters?.filterObject?.algorithm,
     tree: state?.topicDetails?.tree,
     userEmail: state?.auth?.loggedInUser?.email,
+    restrictUser: state?.topicDetails?.restrictSupporters,
   }));
   const {
     manageSupportStatusCheck,
@@ -132,8 +136,8 @@ const SupportTreeCard = ({
     openDrawerForManageSupport: state.topicDetails.openDrawerForManageSupport,
     totalScoreforTreeCard: state.topicDetails.totalScoreforTreeCard,
   }));
-  const { isUserAuthenticated } = isAuth();
 
+  const { isUserAuthenticated } = isAuth();
   const router = useRouter();
 
   const [signModalOpen, setSignModalOpen] = useState(false);
@@ -480,10 +484,37 @@ const SupportTreeCard = ({
         if (data[item].delegates) {
           /* eslint-disable */
           /* eslint-enable */
+
+          // If restrictUser is an array
+          const isRestricted = restrictUser.some(
+            (user) =>
+              user?.nick_name?.user?.id &&
+              user?.nick_name?.id === data[item]?.nick_name_id &&
+              ["active", "lifted"].includes(user?.status)
+          );
+
+          const canRestrictUser = (rowUser) => {
+            const loggedInUserIsLeader = supportTreeForCamp?.some(
+              (u) =>
+                u?.camp_leader === true &&
+                userNickNameList?.includes(u?.nick_name_id)
+            );
+
+            const isRowUserMe = userNickNameList?.includes(
+              rowUser?.nick_name_id
+            );
+
+            const isRowUserLeader = rowUser?.camp_leader === true;
+
+            return loggedInUserIsLeader && !isRowUserMe && !isRowUserLeader;
+          };
+
           return (
             <TreeNode
               id="topic_detail_user_support_tree_card"
-              className="[&_.ant-tree-node-content-wrapper]:!w-full [&_.ant-tree-switcher]:!hidden !bg-transparent border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full !p-0"
+              className={`[&_.ant-tree-node-content-wrapper]:!w-full [&_.ant-tree-switcher]:!hidden ${
+                isRestricted ? "!bg-red-200" : "!bg-transparent"
+              } border-b hover:[&_.ant-tree-node-content-wrapper]:!bg-transparent !w-full !p-0`}
               title={
                 <>
                   <div
@@ -590,7 +621,7 @@ const SupportTreeCard = ({
                         (Array.isArray(data[item]?.delegates) &&
                           data[item].delegates.findIndex((obj) =>
                             userNickNameList?.includes(obj?.nick_name_id)
-                          ) > -1) ? null : (
+                          ) > -1) ? 
                           <Popover
                             id="topic_detail_user_support_tree_card_popover_info"
                             placement="right"
@@ -604,26 +635,81 @@ const SupportTreeCard = ({
                               className="printHIde custom-btn group"
                               id="topic_detail_user_support_tree_card_delegate_section"
                             >
-                              <Button
-                                id="supportTreeDelegateYourSupport"
-                                disabled={
-                                  asof === "bydate" ||
-                                  !isUserAuthenticated ||
-                                  campRecord?.is_archive === 1
-                                }
-                                onClick={() => handleDelegatedClick(data[item])}
-                                className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
-                              >
-                                <Image
-                                  id="supportTreeDelegateYourSupportimg"
-                                  src="/images/user-minus-regular.svg"
-                                  alt="svg"
-                                  height={16}
-                                  width={16}
-                                  preview={false}
-                                />
-                                {"Delegate Your Suppport"}
-                              </Button>
+                              <div className="hidden group-hover:flex items-baseline gap-3">
+                                <Button
+                                  id="supportTreeDelegateYourSupport"
+                                  disabled={true}
+                                  className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
+                                >
+                                  <Image
+                                    id="supportTreeDelegateYourSupportimg"
+                                    src="/images/user-minus-regular.svg"
+                                    alt="svg"
+                                    height={16}
+                                    width={16}
+                                    preview={false}
+                                  />
+                                  {"Delegate Your Suppport"}
+                                </Button>
+
+                                {canRestrictUser(data[item]) && (
+                                  <StopOutlined
+                                    onClick={() =>
+                                      handleSupporterClick(data[item])
+                                    }
+                                    className="text-red-500 cursor-pointer"
+                                  />
+                                )}
+                              </div>
+                            </a>
+                          </Popover>
+                           : (
+                          <Popover
+                            id="topic_detail_user_support_tree_card_popover_info"
+                            placement="right"
+                            content={
+                              !isUserAuthenticated
+                                ? "Log in to participate"
+                                : "This will delegate your support to the selected supporter"
+                            }
+                          >
+                            <a
+                              className="printHIde custom-btn group"
+                              id="topic_detail_user_support_tree_card_delegate_section"
+                            >
+                              <div className="hidden group-hover:flex items-baseline gap-3">
+                                <Button
+                                  id="supportTreeDelegateYourSupport"
+                                  disabled={
+                                    asof === "bydate" ||
+                                    !isUserAuthenticated ||
+                                    campRecord?.is_archive === 1
+                                  }
+                                  onClick={() =>
+                                    handleDelegatedClick(data[item])
+                                  }
+                                  className="hidden group-hover:flex mb-2  items-center gap-1 justify-center bg-canLightBlue text-canBlue text-xs 2xl:text-sm rounded-lg font-medium w-full !shadow-none p-2"
+                                >
+                                  <Image
+                                    id="supportTreeDelegateYourSupportimg"
+                                    src="/images/user-minus-regular.svg"
+                                    alt="svg"
+                                    height={16}
+                                    width={16}
+                                    preview={false}
+                                  />
+                                  {"Delegate Your Suppport"}
+                                </Button>
+
+                                {canRestrictUser(data[item]) && (
+                                  <StopOutlined
+                                    onClick={() =>
+                                      handleSupporterClick(data[item])
+                                    }
+                                    className="text-red-500 cursor-pointer"
+                                  />
+                                )}
+                              </div>
                             </a>
                           </Popover>
                         )}

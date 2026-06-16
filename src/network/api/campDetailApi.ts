@@ -7,6 +7,7 @@ import {
   setCurrentTopicRecordSubscriptionId,
   setCurrentCampRecordSubscriptionId,
   setRemovedReasons,
+  setRestrictSupporters,
 } from "../../store/slices/campDetailSlice";
 import NetworkCall from "../networkCall";
 import TreeRequest from "../request/campDetailRequest";
@@ -142,6 +143,53 @@ export const subscribeToCampApi = async (
 export const createCamp = async (body) => {
   try {
     const res = await NetworkCall.fetch(TreeRequest.createCamp(body));
+    return res;
+  } catch (err) {
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400 &&
+      !err.error.data.error?.camp_name &&
+      !err.error.data.error?.camp_about_url
+    ) {
+      handleError(err);
+    } else {
+      return err?.error?.data;
+    }
+  }
+};
+
+export const restrictSupporters = async (campId, body) => {
+  const queryParam = {
+    campId, body
+  }
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.restrictSupportes(queryParam));
+    return res;
+  } catch (err) {
+    if (
+      err &&
+      err.error &&
+      err.error.data &&
+      err.error.data.status_code === 400 &&
+      !err.error.data.error?.camp_name &&
+      !err.error.data.error?.camp_about_url
+    ) {
+      handleError(err);
+    } else {
+      return err?.error?.data;
+    }
+  }
+};
+
+export const getRestrictSupporters = async (campId) => {
+  const queryParam = {
+    campId
+  }
+  try {
+    const res = await NetworkCall.fetch(TreeRequest.getRestrictSupportes(queryParam));
+    store.dispatch(setRestrictSupporters(res?.data));
     return res;
   } catch (err) {
     if (

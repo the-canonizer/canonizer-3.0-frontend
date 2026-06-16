@@ -61,7 +61,8 @@ const SectionHeading = ({
         </Tooltip>
       ) : null}
       {title == "Camp Statement" &&
-        campStatement?.at(0)?.in_review_changes > 0 && (
+        Array.isArray(campStatement) &&
+        campStatement[0]?.in_review_changes > 0 && (
           <Popover
             content={warningTextForStatement}
             className="title-popover"

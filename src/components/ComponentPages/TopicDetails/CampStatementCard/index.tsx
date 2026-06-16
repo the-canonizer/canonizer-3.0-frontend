@@ -15,6 +15,7 @@ import { RootState } from "src/store";
 import K from "src/constants";
 import {
   covertToTime,
+  isUserRestricted,
   replaceSpecialCharacters,
 } from "src/utils/generalUtility";
 import CustomSkelton from "components/common/customSkelton";
@@ -34,6 +35,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
     haveStatementPreview,
     openConsensusTreePopup,
     asof,
+    loggedInUser,
+    restrictUser
   } = useSelector((state: RootState) => ({
     campStatement: state?.topicDetails?.campStatement,
     campRecord: state?.topicDetails?.currentCampRecord,
@@ -41,6 +44,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
     haveStatementPreview: state?.topic?.haveStatementPreview,
     openConsensusTreePopup: state.hotTopic.openConsensusTreePopup,
     asof: state?.filters?.filterObject?.asof,
+    restrictUser: state?.topicDetails?.restrictSupporters,
+    loggedInUser: state.auth.loggedInUser,
   }));
 
   const [fullScreen, setFullScreen] = useState(false);
@@ -110,7 +115,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
               pathname:
                 campStatement?.length < 0 ||
                 campStatement?.at(0)?.grace_period_record_count > 0 ||
-                campStatement?.at(0)?.in_review_changes
+                (Array.isArray(campStatement) &&
+                  campStatement[0]?.in_review_changes > 0)
                   ? `/statement/history/${replaceSpecialCharacters(
                       router?.query?.camp.at(0),
                       "-"
@@ -129,8 +135,10 @@ const CampStatementCard = ({ loadingIndicator }) => {
           }
         >
           {campStatement[0]?.parsed_value ||
-          campStatement?.at(0)?.in_review_changes ||
-          campStatement?.at(0)?.grace_period_record_count > 0
+          (Array.isArray(campStatement) &&
+            campStatement[0]?.in_review_changes > 0) ||
+          (Array.isArray(campStatement) &&
+            campStatement[0]?.grace_period_record_count > 0)
             ? K?.exceptionalMessages?.manageCampStatementButton
             : K?.exceptionalMessages?.addCampStatementButton}
           <Image
@@ -182,6 +190,8 @@ const CampStatementCard = ({ loadingIndicator }) => {
     );
   };
 
+  const disabled = isUserRestricted(restrictUser, loggedInUser);
+ 
   return (
     <CommonCard
       style={{
@@ -201,7 +211,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
               ? "!border-canGreen"
               : router?.query?.status == "objected"
               ? "!border-canRed"
-              : router?.query?.asof == "review"
+              : router?.query?.asof == "review" && campStatement?.[0]?.in_review_changes > 0
               ? "!border-canOrange"
               : router?.query?.asof == "bydate"
               ? "border-[#4786CB]"
@@ -285,6 +295,7 @@ const CampStatementCard = ({ loadingIndicator }) => {
             <SecondaryButton
               className="px-8 h-auto py-2 ml-auto"
               onClick={onEditDraftClick}
+              disabled={disabled}
             >
               Edit Draft <EditOutlined />
             </SecondaryButton>
@@ -319,10 +330,10 @@ const CampStatementCard = ({ loadingIndicator }) => {
             campStatement?.at(0)?.in_review_changes == 0 ? (
               // "There is no statement in review."
               <div
-              dangerouslySetInnerHTML={{
-                __html: `<div class="ck-content editorContent">${campStatement[0]?.parsed_value}</div>`,
-              }}
-            />
+                dangerouslySetInnerHTML={{
+                  __html: `<div class="ck-content editorContent">${campStatement[0]?.parsed_value}</div>`,
+                }}
+              />
             ) : campStatement?.length && campStatement[0]?.parsed_value ? (
               <div
                 dangerouslySetInnerHTML={{

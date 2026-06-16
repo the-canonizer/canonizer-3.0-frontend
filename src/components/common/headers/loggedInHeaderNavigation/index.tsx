@@ -9,6 +9,7 @@ import {
   SettingOutlined,
   LogoutOutlined,
   CheckCircleOutlined,
+  RobotOutlined,
 } from "@ant-design/icons";
 
 import styles from "../siteHeader.module.scss";
@@ -115,6 +116,15 @@ const LoggedInHeaderNavigation = ({ isLoginPage = false }: any) => {
           <a>
             <CheckCircleOutlined />
             Supported Camps
+          </a>
+        </Link>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="2">
+        <Link href="/ai-agents" passHref>
+          <a>
+            <RobotOutlined />
+            AI Agents
           </a>
         </Link>
       </Menu.Item>

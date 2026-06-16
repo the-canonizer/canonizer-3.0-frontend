@@ -36,7 +36,7 @@ const Tour = dynamic(() => import("src/components/ComponentPages/Home/Tour"), {
   ssr: false,
 });
 
-function Home({ current_date, hotTopicData, featuredData, prefData,consensusVideoPodcastData }: any) {
+function Home({ current_date, hotTopicData, featuredData, prefData, consensusVideoPodcastData }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -122,10 +122,14 @@ export async function getServerSideProps({ req, res }) {
   const currentDate = new Date().valueOf();
   let token = null;
   token = await createToken(req, res);
-  const resData = await GetHotTopicDetails(1, 6, token as string);
-  const featuredData = await GetFeaturedTopicDetails(token as string);
-  const prefData = await GetPreferedTopicDetails(1, 6, true, token as string);
-  const consensusVideoPodcastData = await GetConsensusVideoPodcastDetails(1, 6, token as string);
+  token = await createToken(req, res);
+
+  const [resData, featuredData, prefData, consensusVideoPodcastData] = await Promise.all([
+    GetHotTopicDetails(1, 6, token as string),
+    GetFeaturedTopicDetails(token as string),
+    GetPreferedTopicDetails(1, 6, true, token as string),
+    GetConsensusVideoPodcastDetails(1, 6, token as string)
+  ]);
 
   return {
     props: {
@@ -133,7 +137,7 @@ export async function getServerSideProps({ req, res }) {
       hotTopicData: resData?.data?.items ? resData?.data?.items : [],
       featuredData: featuredData?.data?.items ? featuredData?.data?.items : [],
       prefData: prefData?.data?.items ? prefData?.data?.items : null,
-      consensusVideoPodcastData : consensusVideoPodcastData?.data?.items ? consensusVideoPodcastData?.data?.items:null,
+      consensusVideoPodcastData: consensusVideoPodcastData?.data?.items ? consensusVideoPodcastData?.data?.items : null,
     },
   };
 }
