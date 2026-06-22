@@ -22,9 +22,13 @@ export const getTreesApi = async (reqBody, loginToken = null) => {
       TreeRequest.getTrees(reqBody, loginToken),
       false
     );
-    store.dispatch(setTree(trees?.data || []));
+    // Guard against an error envelope (HTTP 200 body with a non-200 code, e.g. a scoring
+    // exception). Dispatching its malformed shape would crash the tree renderer, so treat it
+    // as "no tree" instead of white-screening.
+    const isErrorEnvelope = trees?.code && trees.code !== 200;
+    store.dispatch(setTree(isErrorEnvelope ? [] : trees?.data || []));
     return {
-      treeData: trees?.data?.at(0),
+      treeData: isErrorEnvelope ? {} : trees?.data?.at(0),
       status_code: trees?.code,
       message: trees?.message || "",
     };

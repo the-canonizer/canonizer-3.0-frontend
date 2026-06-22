@@ -10,6 +10,7 @@ import {
   Popover,
   Row,
   Col,
+  Switch,
 } from "antd";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +25,7 @@ import {
   setIsReviewCanonizedTopics,
   setViewThisVersion,
   setFilterCanonizedTopics,
+  setExcludeBotsFilter,
 } from "src/store/slices/filtersSlice";
 import K from "src/constants";
 import { getCanonizedAlgorithmsApi } from "src/network/api/homePageApi";
@@ -33,6 +35,7 @@ import {
   setAsOfValues,
   setClearAlgoFromRefineFilter,
   setClearScoreFromRefineFilter,
+  setExcludeBotsFromRefineFilter,
   setDisbaleApplyBtn,
 } from "src/store/slices/campDetailSlice";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
@@ -105,6 +108,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues,
     clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter,
+    excludeBotsFromRefineFilter,
     disbaleApplyBtn,
     userEmail,
     algorithm,
@@ -127,6 +131,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     asOfValues: state.topicDetails.asOfValues,
     clearAlgoFromRefineFilter: state.topicDetails.clearAlgoFromRefineFilter,
     clearScoreFromRefineFilter: state.topicDetails.clearScoreFromRefineFilter,
+    excludeBotsFromRefineFilter: state.topicDetails.excludeBotsFromRefineFilter,
     disbaleApplyBtn: state.topicDetails.disbaleApplyBtn,
     userEmail: state?.auth?.loggedInUser?.email,
   }));
@@ -461,6 +466,7 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
     // Step 2: Dispatch Redux actions and perform state updates
     dispatch(setOpenDrawer(false));
     filterOnScore(clearScoreFromRefineFilter);
+    dispatch(setExcludeBotsFilter(excludeBotsFromRefineFilter));
     await selectAlgorithm(clearAlgoFromRefineFilter);
     // Step 3: Handle different cases based on selectedValue
     if (selectedValue === 2) {
@@ -699,6 +705,22 @@ const FilterWithTree = ({ loadingIndicator }: any) => {
                     }
                   }}
                 />
+                <div
+                  className="flex items-center justify-between lg:w-4/5 w-full mt-6"
+                  id="refine_filter_section_exclude_bots_wrap"
+                >
+                  <span className="text-sm text-canBlack font-medium">
+                    Ignore AI agent scores
+                  </span>
+                  <Switch
+                    id="exclude_bots_switch"
+                    checked={excludeBotsFromRefineFilter}
+                    disabled={loadingIndicator}
+                    onChange={(checked) =>
+                      dispatch(setExcludeBotsFromRefineFilter(checked))
+                    }
+                  />
+                </div>
               </div>
             </Col>
             <Col xs={24} className="" id="refine_filter_section_as_of_col">

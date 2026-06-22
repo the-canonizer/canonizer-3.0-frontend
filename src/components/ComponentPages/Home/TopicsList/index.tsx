@@ -58,12 +58,14 @@ const TopicsList = () => {
     sortScoreViewTopic,
     is_camp_archive_checked,
     filterByScore,
+    excludeBots,
     allAlgorithms,
   } = useSelector((state: RootState) => ({
     canonizedTopics: state.homePage?.canonizedTopicsData,
     asofdate: state.filters?.filterObject?.asofdate,
     asof: state.filters?.filterObject?.asof,
     algorithm: state.filters?.filterObject?.algorithm,
+    excludeBots: state?.filters?.filterObject?.exclude_bots,
     nameSpaces: state.homePage?.nameSpaces,
     filterNameSpace: state?.filters?.filterObject?.nameSpace,
     userEmail: state?.auth?.loggedInUser?.email,
@@ -216,6 +218,7 @@ const TopicsList = () => {
       page: "browse",
       topic_tags: getIdsOfFilteredTags(value, allTags),
       current_user: isUserAuthenticated ? userEmail : "",
+      exclude_bots: excludeBots ? 1 : 0,
     };
     const response = await getCanonizedTopicsApi(reqBody);
     setTotalTopics(response);
@@ -368,6 +371,7 @@ const TopicsList = () => {
     pageSize,
     pageNumber,
     onlyMyTopicsCheck,
+    excludeBots,
     value,
   ]);
 
