@@ -58,7 +58,26 @@ const rootReducer = (state, action) => {
   if (action.type === "auth/setLogout") {
     state.filters = undefined;
   }
-  return combinedReducer(state, action);
+  const nextState = combinedReducer(state, action);
+  // The bot-exclusion toggle must never be restored from storage — it defaults OFF on every
+  // load so a refresh always recovers the UI even if a request for that variant misbehaves.
+  if (action.type === REHYDRATE) {
+    return {
+      ...nextState,
+      filters: {
+        ...nextState.filters,
+        filterObject: {
+          ...nextState.filters?.filterObject,
+          exclude_bots: 0,
+        },
+      },
+      topicDetails: {
+        ...nextState.topicDetails,
+        excludeBotsFromRefineFilter: false,
+      },
+    };
+  }
+  return nextState;
 };
 
 const persistConfig = {
