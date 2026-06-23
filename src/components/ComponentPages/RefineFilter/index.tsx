@@ -35,7 +35,7 @@ const RefineFilter = () => {
     dispatch(setAsOfValues(2));
     dispatch(setClearAlgoFromRefineFilter("blind_popularity"));
     dispatch(setClearScoreFromRefineFilter(0));
-    dispatch(setExcludeBotsFromRefineFilter(false));
+    dispatch(setExcludeBotsFromRefineFilter(true));
   };
 
   return (

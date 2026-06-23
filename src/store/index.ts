@@ -59,8 +59,9 @@ const rootReducer = (state, action) => {
     state.filters = undefined;
   }
   const nextState = combinedReducer(state, action);
-  // The bot-exclusion toggle must never be restored from storage — it defaults OFF on every
-  // load so a refresh always recovers the UI even if a request for that variant misbehaves.
+  // The bot-exclusion toggle must never be restored from storage — it defaults ON on every
+  // load so a refresh always lands on the canonical "ignore AI agent scores" view regardless
+  // of whatever value was persisted in a prior session.
   if (action.type === REHYDRATE) {
     return {
       ...nextState,
@@ -68,12 +69,12 @@ const rootReducer = (state, action) => {
         ...nextState.filters,
         filterObject: {
           ...nextState.filters?.filterObject,
-          exclude_bots: 0,
+          exclude_bots: 1,
         },
       },
       topicDetails: {
         ...nextState.topicDetails,
-        excludeBotsFromRefineFilter: false,
+        excludeBotsFromRefineFilter: true,
       },
     };
   }

@@ -15,7 +15,7 @@ export const filtersSlice = createSlice({
       search: "",
       includeReview: false,
       is_archive: 0,
-      exclude_bots: 0,
+      exclude_bots: 1,
     },
     selectedCampNode: null,
     current_date: new Date().valueOf(),

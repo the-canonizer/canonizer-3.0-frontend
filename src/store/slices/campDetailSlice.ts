@@ -33,7 +33,7 @@ export const treeSlice = createSlice({
     asOfValues: 0,
     clearAlgoFromRefineFilter: "",
     clearScoreFromRefineFilter: 0,
-    excludeBotsFromRefineFilter: false,
+    excludeBotsFromRefineFilter: true,
     // openConsensusTreePopup: true,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
