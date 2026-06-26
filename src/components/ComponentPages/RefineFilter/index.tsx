@@ -8,6 +8,7 @@ import {
   setAsOfValues,
   setClearAlgoFromRefineFilter,
   setClearScoreFromRefineFilter,
+  setExcludeBotsFromRefineFilter,
   setOpenDrawer,
 } from "src/store/slices/campDetailSlice";
 import FilterWithTree from "../../common/topicsFilter/filterWithTree";
@@ -34,6 +35,7 @@ const RefineFilter = () => {
     dispatch(setAsOfValues(2));
     dispatch(setClearAlgoFromRefineFilter("blind_popularity"));
     dispatch(setClearScoreFromRefineFilter(0));
+    dispatch(setExcludeBotsFromRefineFilter(true));
   };
 
   return (

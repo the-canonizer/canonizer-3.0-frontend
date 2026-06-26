@@ -33,6 +33,7 @@ export const treeSlice = createSlice({
     asOfValues: 0,
     clearAlgoFromRefineFilter: "",
     clearScoreFromRefineFilter: 0,
+    excludeBotsFromRefineFilter: true,
     // openConsensusTreePopup: true,
     manageSupportUrlLink: null,
     CurrentCheckSupportStatus: null,
@@ -167,6 +168,9 @@ export const treeSlice = createSlice({
     setClearScoreFromRefineFilter: (state, action) => {
       state.clearScoreFromRefineFilter = action.payload;
     },
+    setExcludeBotsFromRefineFilter: (state, action) => {
+      state.excludeBotsFromRefineFilter = action.payload;
+    },
     setGlobalUserProfileData: (state, action) => {
       state.globalUserProfileData = action.payload;
     },
@@ -260,6 +264,7 @@ export const {
   setAsOfValues,
   setClearAlgoFromRefineFilter,
   setClearScoreFromRefineFilter,
+  setExcludeBotsFromRefineFilter,
   setGlobalUserProfileData,
   setGlobalUserProfileDataEmail,
   setOpenDrawerForDirectSupportedCamp,

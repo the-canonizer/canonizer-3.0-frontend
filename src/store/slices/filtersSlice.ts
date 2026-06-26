@@ -15,6 +15,7 @@ export const filtersSlice = createSlice({
       search: "",
       includeReview: false,
       is_archive: 0,
+      exclude_bots: 1,
     },
     selectedCampNode: null,
     current_date: new Date().valueOf(),
@@ -47,6 +48,12 @@ export const filtersSlice = createSlice({
     },
     setViewThisVersion: (state, action) => {
       state.viewThisVersionCheck = action.payload;
+    },
+    setExcludeBotsFilter: (state, action) => {
+      state.filterObject = {
+        ...state.filterObject,
+        exclude_bots: action.payload ? 1 : 0,
+      };
     },
     setCurrentDate: (state, action) => {
       state.current_date = action.payload;
@@ -84,6 +91,7 @@ export const {
   setIsReviewCanonizedTopics,
   setCurrentCamp,
   setViewThisVersion,
+  setExcludeBotsFilter,
   setCurrentDate,
   setShowDrawer,
   setCampWithScorevalue,

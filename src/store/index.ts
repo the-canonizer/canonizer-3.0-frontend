@@ -58,7 +58,27 @@ const rootReducer = (state, action) => {
   if (action.type === "auth/setLogout") {
     state.filters = undefined;
   }
-  return combinedReducer(state, action);
+  const nextState = combinedReducer(state, action);
+  // The bot-exclusion toggle must never be restored from storage — it defaults ON on every
+  // load so a refresh always lands on the canonical "ignore AI agent scores" view regardless
+  // of whatever value was persisted in a prior session.
+  if (action.type === REHYDRATE) {
+    return {
+      ...nextState,
+      filters: {
+        ...nextState.filters,
+        filterObject: {
+          ...nextState.filters?.filterObject,
+          exclude_bots: 1,
+        },
+      },
+      topicDetails: {
+        ...nextState.topicDetails,
+        excludeBotsFromRefineFilter: true,
+      },
+    };
+  }
+  return nextState;
 };
 
 const persistConfig = {

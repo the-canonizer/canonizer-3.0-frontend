@@ -166,6 +166,11 @@ export async function getServerSideProps({ req, query, res }) {
     fetch_topic_history: query?.viewversion == "1" ? 1 : null,
     view: req.cookies[cookieKey] ? req.cookies[cookieKey] : hashValue,
     current_user: userEmail,
+    // Match the client default: the "Ignore AI agent scores" toggle always rehydrates ON,
+    // and the client skips the on-mount refetch for SSR data (serverSideCall guard), so the
+    // server-rendered scores must exclude bots too — otherwise a refresh shows bot-included
+    // scores while the toggle reads ON. Respect ?exclude_bots=0 if ever added to the URL.
+    exclude_bots: query?.exclude_bots === "0" ? 0 : 1,
   };
   const reqBody = {
     topic_num: topicNum,

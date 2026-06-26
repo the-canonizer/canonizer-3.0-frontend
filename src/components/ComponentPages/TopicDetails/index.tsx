@@ -97,6 +97,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     asof,
     asofdate,
     algorithm,
+    excludeBots,
     campRecord,
     tree,
     campExist,
@@ -113,6 +114,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
     asof: state?.filters?.filterObject?.asof,
     asofdate: state.filters?.filterObject?.asofdate,
     algorithm: state.filters?.filterObject?.algorithm,
+    excludeBots: state?.filters?.filterObject?.exclude_bots,
     campRecord: state?.topicDetails?.currentCampRecord,
     tree: state?.topicDetails?.tree && state?.topicDetails?.tree[0],
     campExist: state?.topicDetails?.tree && state?.topicDetails?.tree[1],
@@ -203,6 +205,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
           current_user: isUserAuthenticated ? userEmail : "",
+          exclude_bots: excludeBots ? 1 : 0,
         };
 
         const reqBody = {
@@ -245,6 +248,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
   }, [
     asofdate,
     algorithm,
+    excludeBots,
     +(router?.query?.camp[1]?.split("-")[0] ?? 1),
     router?.query?.camp[0]?.split("-")[0],
   ]);
@@ -367,6 +371,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
       current_user: isUserAuthenticated ? userEmail : "",
+      exclude_bots: excludeBots ? 1 : 0,
     };
     setRemoveSupportSpinner(true);
     let reqBody = {
@@ -416,6 +421,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
       current_user: isUserAuthenticated ? userEmail : "",
+      exclude_bots: excludeBots ? 1 : 0,
     };
     setRemoveSupportSpinner(true);
 
@@ -459,6 +465,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
       update_all: 1,
       fetch_topic_history: +router?.query?.topic_history,
       current_user: isUserAuthenticated ? userEmail : "",
+      exclude_bots: excludeBots ? 1 : 0,
     };
     setRemoveSupportSpinner(true);
 
@@ -659,6 +666,7 @@ const TopicDetails = ({ serverSideCall }: any) => {
           update_all: 1,
           fetch_topic_history: viewThisVersionCheck ? 1 : null,
           current_user: isUserAuthenticated ? userEmail : "",
+          exclude_bots: excludeBots ? 1 : 0,
         };
 
         // Call the API
