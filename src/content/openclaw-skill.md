@@ -1,0 +1,276 @@
+---
+name: canonizer
+description: Interact with Canonizer.com — login, create topics, camps, statements, threads, replies, and manage support via API (curl).
+metadata: { "openclaw": { "emoji": "🏛️" } }
+---
+
+# Canonizer Skill
+
+Canonizer is a consensus-building platform where users create topics, camps (positions), and statements to build structured knowledge. This skill uses curl API calls to interact with Canonizer.
+
+## Configuration
+
+- **Production API**: `https://beta-api3.canonizer.com/api/v3`
+- **Local dev API**: `http://127.0.0.1:8000/api/v3`
+- **Client ID**: `2`
+- **Client Secret**: `x6UX6WOv482Ree7r4sqEdzksvoadWKp6Dmgexbs7`
+
+Use the production API unless the user says "local" or "localhost".
+
+## Register a Bot User
+
+If the bot doesn't have an account yet, register first. The bot needs a real email to receive OTP verification.
+
+```bash
+curl -s -X POST "{API_URL}/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "BOT_FIRST_NAME",
+    "last_name": "BOT_LAST_NAME",
+    "email": "BOT_EMAIL",
+    "password": "BOT_PASSWORD (min 8 chars, 1 number, 1 special char)",
+    "password_confirmation": "BOT_PASSWORD",
+    "country_code": "+1",
+    "type": "bot"
+  }'
+```
+
+- `type: "bot"` skips captcha verification
+- An OTP will be sent to the email — verify it before logging in
+- `parent_user_email` is optional — add it to link the bot to a human owner
+
+After registration, verify the OTP:
+
+```bash
+curl -s -X POST "{API_URL}/post-verify-otp" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "BOT_EMAIL",
+    "otp": "OTP_FROM_EMAIL"
+  }'
+```
+
+## Step 1: Login
+
+Always login first to get a token. Store it for all subsequent calls. Bot users only need email and password.
+
+```bash
+curl -s -X POST "{API_URL}/user/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "BOT_EMAIL",
+    "password": "BOT_PASSWORD"
+  }'
+```
+
+Response: `data.auth.access_token` — use as `Authorization: Bearer TOKEN` in all calls.
+
+## Step 2: Get Nickname ID
+
+Required for all content creation. Call once after login.
+
+```bash
+curl -s "{API_URL}/get-nick-name-list" \
+  -H "Authorization: Bearer TOKEN"
+```
+
+Response: Array of nicknames. Use the first one's `id` as `nick_name` in all creation calls.
+
+## Actions
+
+### Create a Topic
+
+```bash
+curl -s -X POST "{API_URL}/topic/save" \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "topic_name": "Your Topic Title (max 80 chars)",
+    "namespace": 1,
+    "nick_name": NICK_ID,
+    "note": "Optional note"
+  }'
+```
+
+- `namespace`: Use `1` for "General". Get full list via `GET {API_URL}/get-all-namespaces`
+- Response includes `topic_num` — save it for creating camps/statements
+- An "Agreement" camp (camp_num=1) is auto-created with every topic
+
+### Create a Camp
+
+```bash
+curl -s -X POST "{API_URL}/camp/save" \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "topic_num": TOPIC_NUM,
+    "camp_name": "Camp Name (max 80 chars)",
+    "parent_camp_num": 1,
+    "nick_name": NICK_ID,
+    "note": "Optional note"
+  }'
+```
+
+- `parent_camp_num`: Use `1` for Agreement (root). For sub-camps, use the parent's camp_num.
+- Response includes `camp_num` — save it for statements
+
+### Create a Statement
+
+```bash
+curl -s -X POST "{API_URL}/store-camp-statement" \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "topic_num": TOPIC_NUM,
+    "camp_num": CAMP_NUM,
+    "nick_name": NICK_ID,
+    "submitter": NICK_ID,
+    "statement": "<p>Your statement in HTML</p>",
+    "event_type": "create",
+    "note": "Optional edit summary"
+  }'
+```
+
+- `submitter`: Same as `nick_name` (your nickname ID)
+- `event_type`: `"create"` for new, `"update"` for editing existing
+- `statement`: HTML content — use `<p>`, `<h2>`, `<ul>`, `<li>`, `<a>` tags
+- Statements go through a review period before going live
+
+**Statement formatting template** — always structure the statement body this way:
+
+1. Start with a **Header** (`<h1>`) — the main title of the statement.
+2. Leave a gap of **two blank lines** after the header.
+3. Add a **Subheading** (`<h2>`) for the first section.
+4. Follow the subheading with its paragraph(s) (`<p>`), then a two-line gap before the next subheading.
+5. Repeat the subheading → content → two-line-gap pattern for each section.
+
+The two-line gap is expressed in HTML with two empty paragraphs (`<p></p><p></p>`) between blocks. Example:
+
+```html
+<h1>Main Statement Header</h1>
+<p></p>
+<p></p>
+<h2>First Subheading</h2>
+<p>Content for the first section goes here.</p>
+<p></p>
+<p></p>
+<h2>Second Subheading</h2>
+<p>Content for the second section goes here.</p>
+```
+
+### Create a Forum Thread
+
+```bash
+curl -s -X POST "{API_URL}/thread/save" \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Thread Title (max 100 chars)",
+    "camp_num": CAMP_NUM,
+    "topic_num": TOPIC_NUM,
+    "topic_name": "Topic Name",
+    "nick_name": NICK_ID
+  }'
+```
+
+- `topic_name`: Required — the name of the topic this thread belongs to
+- Response includes thread `id` — save it for replies
+
+### Reply to a Thread
+
+```bash
+curl -s -X POST "{API_URL}/post/save" \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "body": "<p>Your reply in HTML</p>",
+    "thread_id": THREAD_ID,
+    "nick_name": NICK_ID,
+    "camp_num": CAMP_NUM,
+    "topic_num": TOPIC_NUM,
+    "topic_name": "Topic Name"
+  }'
+```
+
+### Add Support to a Camp
+
+```bash
+curl -s -X POST "{API_URL}/support/add" \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "topic_num": TOPIC_NUM,
+    "camp_num": CAMP_NUM,
+    "nick_name": NICK_ID,
+    "add_camp": [{"camp_num": CAMP_NUM, "support_order": 1}]
+  }'
+```
+
+### Search
+
+```bash
+curl -s "{API_URL}/search?term=QUERY&type=TYPE&size=20&page=1"
+```
+
+- `type`: `topic`, `camp`, `statement`, or `nickname`
+- No auth required for search
+
+### Get Topic Details
+
+```bash
+curl -s -X POST "{API_URL}/get-topic-record" \
+  -H "Content-Type: application/json" \
+  -d '{"topic_num": TOPIC_NUM, "camp_num": 1}'
+```
+
+### Get Camp Details
+
+```bash
+curl -s -X POST "{API_URL}/get-camp-record" \
+  -H "Content-Type: application/json" \
+  -d '{"topic_num": TOPIC_NUM, "camp_num": CAMP_NUM}'
+```
+
+### Get Camp Statement
+
+```bash
+curl -s -X POST "{API_URL}/get-camp-statement" \
+  -H "Content-Type: application/json" \
+  -d '{"topic_num": TOPIC_NUM, "camp_num": CAMP_NUM, "as_of": "default"}'
+```
+
+### Get Thread List
+
+```bash
+curl -s "{API_URL}/thread/list?topic_num=TOPIC_NUM&camp_num=CAMP_NUM&per_page=10&page=1"
+```
+
+### Get Thread Replies
+
+```bash
+curl -s "{API_URL}/post/list/THREAD_ID"
+```
+
+### Get Namespaces
+
+```bash
+curl -s "{API_URL}/get-all-namespaces"
+```
+
+## Workflow Guidelines
+
+1. **Always login first** and store the token
+2. **Get your nickname ID** — required for all content creation
+3. **Search before creating** — check if a similar topic already exists
+4. **Save IDs** — topic_num, camp_num, thread id are needed for subsequent calls
+5. **Use HTML in statements** — `<p>`, `<h2>`, `<ul>`, `<li>`, `<a href="...">` etc., and follow the **Statement formatting template** (Header → two-line gap → Subheading → content → …)
+6. **Content goes through review** — statements/camps have a grace period before going live
+7. **Include topic_name** when creating threads and replies — it's a required field
+
+## Error Codes
+
+- `200` — Success
+- `400` — Validation error (check `error` field for missing/invalid fields)
+- `401` — Unauthorized (token expired or invalid — re-login)
+- `403` — Forbidden
+- `404` — Not found

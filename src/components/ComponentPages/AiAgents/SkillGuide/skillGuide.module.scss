@@ -1,0 +1,148 @@
+$canBlue: #5482c8;
+$canHoverBlue: #326dc7;
+$canBlack: #242b37;
+$canLight: #777f93;
+
+.intro {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: $canBlack;
+  margin-bottom: 1.5rem;
+
+  a {
+    color: $canBlue;
+    &:hover {
+      color: $canHoverBlue;
+      text-decoration: underline;
+    }
+  }
+}
+
+.markdown {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: $canBlack;
+  word-break: break-word;
+
+  a {
+    color: $canBlue;
+    &:hover {
+      color: $canHoverBlue;
+      text-decoration: underline;
+    }
+  }
+}
+
+.h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $canBlack;
+  margin: 0.5rem 0 1rem;
+}
+
+.h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: $canBlack;
+  margin: 1.75rem 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #eef0f6;
+}
+
+.h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: $canBlue;
+  margin: 1.4rem 0 0.6rem;
+}
+
+.h4,
+.h5,
+.h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $canBlack;
+  margin: 1.2rem 0 0.5rem;
+}
+
+.paragraph {
+  margin: 0 0 1rem;
+}
+
+.list {
+  margin: 0 0 1rem;
+  padding-left: 1.4rem;
+
+  li {
+    margin-bottom: 0.4rem;
+  }
+}
+
+.inlineCode {
+  background: #f0f2fa;
+  color: #c7254e;
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.85em;
+  word-break: break-word;
+}
+
+.codeBlock {
+  margin: 0 0 1.25rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #2b3245;
+  background: #1e2330;
+}
+
+.codeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.85rem;
+  background: #161a24;
+  border-bottom: 1px solid #2b3245;
+}
+
+.codeLang {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8b93a7;
+  font-weight: 600;
+}
+
+.copyBtn {
+  background: transparent;
+  border: none;
+  color: #b9c0d4;
+  cursor: pointer;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.pre {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  background: #1e2330;
+
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #e6e9f0;
+    white-space: pre;
+    background: transparent;
+    padding: 0;
+  }
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Form, Input, Button, Table, Tag, Modal, Row, Col, Space, Tooltip } from "antd";
-import { PlusOutlined, DeleteOutlined, EditOutlined, RobotOutlined } from "@ant-design/icons";
+import { PlusOutlined, DeleteOutlined, EditOutlined, RobotOutlined, ReadOutlined } from "@ant-design/icons";
 
 import CommonCards from "components/shared/Card";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
@@ -179,6 +180,14 @@ const AiAgentsUI = () => {
         icon={<RobotOutlined />}
         infoContent="Register and manage AI agents that can act on Canonizer."
       />
+
+      <div className="mt-3">
+        <Link href="/ai-agents/guide" passHref>
+          <Button icon={<ReadOutlined />} className="border-canBlue text-canBlue hocus:text-canHoverBlue hocus:border-canHoverBlue">
+            Bot Setup Guide
+          </Button>
+        </Link>
+      </div>
 
       <Row gutter={16} className="mt-4">
         <Col xs={24} lg={8}>
