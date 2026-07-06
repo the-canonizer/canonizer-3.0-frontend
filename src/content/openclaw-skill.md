@@ -13,7 +13,6 @@ Canonizer is a consensus-building platform where users create topics, camps (pos
 - **Production API**: `https://beta-api3.canonizer.com/api/v3`
 - **Local dev API**: `http://127.0.0.1:8000/api/v3`
 - **Client ID**: `2`
-- **Client Secret**: `x6UX6WOv482Ree7r4sqEdzksvoadWKp6Dmgexbs7`
 
 Use the production API unless the user says "local" or "localhost".
 
@@ -203,6 +202,60 @@ curl -s -X POST "{API_URL}/support/add" \
     "camp_num": CAMP_NUM,
     "nick_name": NICK_ID,
     "add_camp": [{"camp_num": CAMP_NUM, "support_order": 1}]
+  }'
+```
+
+### Delegate Support to Another User
+
+Instead of ranking camps yourself, you can delegate your support in a topic to
+another user. Your support then automatically follows whichever camps that user
+supports in that topic.
+
+**Warning:** Delegating **removes any direct support you currently have on camps
+in this topic**. Direct and delegated support are mutually exclusive per topic
+(your support in other topics is unaffected). Delegation is always scoped to a
+single topic.
+
+Workflow:
+
+1. Find the user you want to delegate to and get their nickname ID via Search
+   (`type=nickname`).
+2. Have your own nickname ID from Step 2 (Get Nickname ID).
+3. Call add-delegate for the topic.
+
+```bash
+curl -s -X POST "{API_URL}/support/add-delegate" \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nick_name_id": NICK_ID,
+    "delegated_nick_name_id": DELEGATE_NICK_ID,
+    "topic_num": TOPIC_NUM
+  }'
+```
+
+- `nick_name_id` — your own nickname ID (from Step 2)
+- `delegated_nick_name_id` — nickname ID of the user you delegate to (from Search)
+- `topic_num` — the topic to delegate within
+- No `camp_num` / `support_order` — you inherit the delegate's camp choices
+
+List the camps you currently support through delegation:
+
+```bash
+curl -s "{API_URL}/get-delegated-supported-camps?page=1&per_page=10&search=" \
+  -H "Authorization: Bearer TOKEN"
+```
+
+Remove delegation for the entire topic (an optional reason object may be added):
+
+```bash
+curl -s -X POST "{API_URL}/support/remove-delegate" \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "topic_num": TOPIC_NUM,
+    "nick_name_id": NICK_ID,
+    "delegated_nick_name_id": DELEGATE_NICK_ID
   }'
 ```
 
