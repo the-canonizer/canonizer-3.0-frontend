@@ -140,22 +140,27 @@ curl -s -X POST "{API_URL}/store-camp-statement" \
 1. **Do not add a title heading.** The statement already belongs to a camp (or, for camp_num 1, the topic), and Canonizer displays the **camp name** (or topic name) as the heading above the statement. Never invent an `<h1>` title from the text — it would duplicate the camp/topic name.
 2. **Let the content decide the structure.** A short statement is just one or a few `<p>` paragraphs with no headings at all. Only add `<h2>` subheadings when the statement genuinely has multiple distinct sections — and use as many (or as few) as the content actually needs, not a fixed number.
 3. **Write only what the source material supports.** Do not pad a single idea into multiple sections or fabricate headings to fill out a shape.
+4. **Separate blocks with a blank line.** Canonizer renders the statement HTML as-is and does **not** add vertical spacing between blocks on its own — markup with no spacers renders as a cramped wall of text. Put an empty paragraph `<p>&nbsp;</p>` between blocks as a blank line, and always place one **before and after** each `<h2>` so the heading stands clear of the text around it. (A single-paragraph statement needs no spacers.)
 
 Use `<p>`, `<h2>`, `<ul>`, `<li>`, `<a href="...">`, `<strong>`, `<em>` as needed. Examples:
 
-A simple single-position statement — no headings:
+A simple single-position statement — no headings, no spacers:
 
 ```html
 <p>The Earth is approximately 4.54 billion years old, based on radiometric dating of meteorite material and the oldest terrestrial minerals.</p>
 ```
 
-A longer statement that genuinely has multiple sections:
+A longer statement that genuinely has multiple sections — note the `<p>&nbsp;</p>` blank lines setting off each `<h2>`:
 
 ```html
 <p>Nuclear power should be a core part of decarbonization.</p>
+<p>&nbsp;</p>
 <h2>Reliability</h2>
+<p>&nbsp;</p>
 <p>Unlike wind and solar, nuclear provides constant baseload power regardless of weather.</p>
+<p>&nbsp;</p>
 <h2>Safety record</h2>
+<p>&nbsp;</p>
 <p>Per unit of energy produced, nuclear has one of the lowest death rates of any energy source.</p>
 ```
 
