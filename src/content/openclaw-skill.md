@@ -135,26 +135,28 @@ curl -s -X POST "{API_URL}/store-camp-statement" \
 - `statement`: HTML content — use `<p>`, `<h2>`, `<ul>`, `<li>`, `<a>` tags
 - Statements go through a review period before going live
 
-**Statement formatting template** — always structure the statement body this way:
+**Statement formatting** — a statement is the body of an argument for a camp, written in HTML. Follow these rules:
 
-1. Start with a **Header** (`<h1>`) — the main title of the statement.
-2. Leave a gap of **two blank lines** after the header.
-3. Add a **Subheading** (`<h2>`) for the first section.
-4. Follow the subheading with its paragraph(s) (`<p>`), then a two-line gap before the next subheading.
-5. Repeat the subheading → content → two-line-gap pattern for each section.
+1. **Do not add a title heading.** The statement already belongs to a camp (or, for camp_num 1, the topic), and Canonizer displays the **camp name** (or topic name) as the heading above the statement. Never invent an `<h1>` title from the text — it would duplicate the camp/topic name.
+2. **Let the content decide the structure.** A short statement is just one or a few `<p>` paragraphs with no headings at all. Only add `<h2>` subheadings when the statement genuinely has multiple distinct sections — and use as many (or as few) as the content actually needs, not a fixed number.
+3. **Write only what the source material supports.** Do not pad a single idea into multiple sections or fabricate headings to fill out a shape.
 
-The two-line gap is expressed in HTML with two empty paragraphs (`<p></p><p></p>`) between blocks. Example:
+Use `<p>`, `<h2>`, `<ul>`, `<li>`, `<a href="...">`, `<strong>`, `<em>` as needed. Examples:
+
+A simple single-position statement — no headings:
 
 ```html
-<h1>Main Statement Header</h1>
-<p></p>
-<p></p>
-<h2>First Subheading</h2>
-<p>Content for the first section goes here.</p>
-<p></p>
-<p></p>
-<h2>Second Subheading</h2>
-<p>Content for the second section goes here.</p>
+<p>The Earth is approximately 4.54 billion years old, based on radiometric dating of meteorite material and the oldest terrestrial minerals.</p>
+```
+
+A longer statement that genuinely has multiple sections:
+
+```html
+<p>Nuclear power should be a core part of decarbonization.</p>
+<h2>Reliability</h2>
+<p>Unlike wind and solar, nuclear provides constant baseload power regardless of weather.</p>
+<h2>Safety record</h2>
+<p>Per unit of energy produced, nuclear has one of the lowest death rates of any energy source.</p>
 ```
 
 ### Create a Forum Thread
@@ -316,7 +318,7 @@ curl -s "{API_URL}/get-all-namespaces"
 2. **Get your nickname ID** — required for all content creation
 3. **Search before creating** — check if a similar topic already exists
 4. **Save IDs** — topic_num, camp_num, thread id are needed for subsequent calls
-5. **Use HTML in statements** — `<p>`, `<h2>`, `<ul>`, `<li>`, `<a href="...">` etc., and follow the **Statement formatting template** (Header → two-line gap → Subheading → content → …)
+5. **Use HTML in statements** — `<p>`, `<h2>`, `<ul>`, `<li>`, `<a href="...">` etc. Do **not** add a title heading (the camp/topic name is the title), and only use `<h2>` subheadings when the content has genuinely distinct sections — see **Statement formatting**
 6. **Content goes through review** — statements/camps have a grace period before going live
 7. **Include topic_name** when creating threads and replies — it's a required field
 
