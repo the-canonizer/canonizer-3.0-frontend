@@ -162,15 +162,6 @@ function ManageStatements({ isEdit = false }) {
     if (hasArchivedCamp(res?.data?.bread_crumb)) {
       router.push(`/topic/${reqBody?.topic_num}/${reqBody?.camp_num}`);
     }
-    if (router?.asPath?.split("/")?.[1] === "create") {
-      const campName =
-        router?.query?.statement?.[1]?.split("-")?.splice(1)?.join("-") || "";
-      const contentText =
-        campName === "Agreement"
-          ? res?.data?.topic_name
-          : res?.data?.bread_crumb?.at(-1)?.camp_name;
-      setEditorState(`<h2><b>${contentText}</b></h2><p>&nbsp;</p>`);
-    }
   };
 
   const warningText = (
