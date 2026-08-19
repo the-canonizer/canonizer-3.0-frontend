@@ -952,7 +952,7 @@ function ManageStatements({ isEdit = false }) {
         query: { returnUrl: router?.asPath },
       });
     }
-  }, [isUserAuthenticated, campStatement[0]?.id]);
+  }, [isUserAuthenticated, campStatement?.[0]?.id]);
 
   const getTopicAndCampIds = () => {
     const topicNum = isEdit
