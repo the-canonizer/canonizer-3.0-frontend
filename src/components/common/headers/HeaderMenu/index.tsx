@@ -120,6 +120,19 @@ const HeaderMenu = ({ className = "", isUserAuthenticated }) => {
   const [loadingImage, setLoadingImage] = useState(false);
   const [isActive, setActive] = useState(false);
 
+  // The drawer is rendered inside #header, which has its own z-10 stacking
+  // context, so .NavWrap's z-index can never lift it above page content that
+  // sets a higher one (CKEditor's toolbar chrome goes up to 1100 on the camp
+  // statement pages). Flag the open state on <body> so the header itself can be
+  // raised while the drawer is up — see .mobile-nav-open in global.scss.
+  useEffect(() => {
+    document.body.classList.toggle("mobile-nav-open", isActive);
+
+    return () => {
+      document.body.classList.remove("mobile-nav-open");
+    };
+  }, [isActive]);
+
   const ListItem = ({ cls = "", ...props }) => (
     <li
       className={`flex-auto flex px-3 font-medium [&_a]:font-medium before:hidden after:hidden tab:before:block tab:after:block rounded-lg h-full ${styles.listItem} ${cls}`}

@@ -1221,3 +1221,15 @@ body {
     }
   }
 }
+
+// The mobile nav drawer (.NavWrap in HeaderMenu.module.scss) is a child of
+// #header, whose z-10 caps every descendant against the rest of the page — so
+// content that sets its own z-index bleeds through the open panel. CKEditor on
+// the add/update camp statement pages is the visible case: its dropdown and
+// panel chrome sits at --ck-z-modal (1000) and above. Lift the header itself
+// while the drawer is open, at the widths where the drawer exists.
+@media screen and (max-width: 1050px) {
+  body.mobile-nav-open #header {
+    z-index: 900000;
+  }
+}
