@@ -1,5 +1,9 @@
-const BaseCanonizerServiceUrl = process.env.NEXT_PUBLIC_BASE_SERVICE_URL;
 const BaseCanonizerApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL;
+// The canonizer service was merged into the API: /api/v1/tree, /api/v1/topic and
+// /api/v1/timeline are now served by the same host as /api/v3. Derived from the API
+// URL rather than read from NEXT_PUBLIC_BASE_SERVICE_URL so the cutover cannot be
+// silently undone by a stale deployment variable still pointing at the old service.
+const BaseCanonizerServiceUrl = BaseCanonizerApiUrl?.replace(/\/api\/v\d+\/?$/, "");
 const DummyUrl = process.env.NEXT_PUBLIC_BASE_DUMMY_URL;
 const BaseImagesURL = process.env.NEXT_PUBLIC_BASE_IMAGES_URL;
 const BaseVideosURL = process.env.NEXT_PUBLIC_BASE_VIDEOS_URL;
