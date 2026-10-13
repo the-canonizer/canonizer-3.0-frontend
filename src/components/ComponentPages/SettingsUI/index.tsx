@@ -5,6 +5,7 @@ import Sider from "antd/lib/layout/Sider";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { KeyOutlined } from "@ant-design/icons";
 
 import styles from "./Settings.module.scss";
 
@@ -317,7 +318,9 @@ const SettingsUI = () => {
           key: "passkeys",
           label: (
             <Link href="/settings?tab=passkeys">
-              <a id="menu_item_passkeys_link">Passkeys & Security Keys</a>
+              <a id="menu_item_passkeys_link">
+                {messages.passkey.sectionTitle}
+              </a>
             </Link>
           ),
           className: `subItem ${getMatchQuery("passkeys")}`,
@@ -735,14 +738,12 @@ const SettingsUI = () => {
                                       id="setting_section_select_tag_passkeys_text"
                                     >
                                       {" "}
-                                      Passkeys & Security Keys
+                                      {messages.passkey.sectionTitle}
                                     </span>
-                                    <Image
+                                    <KeyOutlined
                                       id="setting_section_select_tag_passkeys_img"
-                                      src="/images/setting-icon.svg"
-                                      width={24}
-                                      height={24}
-                                      alt=""
+                                      className="text-2xl"
+                                      aria-hidden="true"
                                     />
                                   </a>
                                 </Link>
