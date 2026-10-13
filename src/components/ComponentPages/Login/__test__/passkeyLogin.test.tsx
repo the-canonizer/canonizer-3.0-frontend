@@ -9,10 +9,7 @@ import { Provider } from "react-redux";
 import { NextRouter } from "next/router";
 import { RouterContext } from "next/dist/shared/lib/router-context";
 import configureMockStore from "redux-mock-store";
-import {
-  browserSupportsWebAuthn,
-  startAuthentication,
-} from "@simplewebauthn/browser";
+import { startAuthentication } from "@simplewebauthn/browser";
 
 import Login from "../index";
 import PasskeyLoginButton from "../UI/passkeyLoginButton";
@@ -32,6 +29,14 @@ jest.mock(
 jest.mock("src/network/api/userApi");
 
 const { errors } = messages.passkey;
+
+const setWebAuthnSupport = (supported: boolean) => {
+  if (supported) {
+    (window as any).PublicKeyCredential = function PublicKeyCredential() {};
+  } else {
+    delete (window as any).PublicKeyCredential;
+  }
+};
 
 const createMockRouter = (router: Partial<NextRouter> = {}): NextRouter =>
   ({
@@ -72,15 +77,14 @@ afterEach(cleanup);
 
 beforeEach(() => {
   jest.clearAllMocks();
-  (browserSupportsWebAuthn as jest.Mock).mockReturnValue(true);
+  setWebAuthnSupport(true);
 });
 
 describe("PasskeyLoginButton", () => {
   it("is hidden when WebAuthn is not supported", async () => {
-    (browserSupportsWebAuthn as jest.Mock).mockReturnValue(false);
+    setWebAuthnSupport(false);
     render(<PasskeyLoginButton onClick={jest.fn()} />);
 
-    await waitFor(() => expect(browserSupportsWebAuthn).toHaveBeenCalled());
     expect(screen.queryByTestId("passkey-login-btn")).not.toBeInTheDocument();
     expect(screen.queryByText(messages.passkey.signIn)).not.toBeInTheDocument();
   });
@@ -108,10 +112,9 @@ describe("Login with passkey", () => {
   });
 
   it("does not show the passkey button when unsupported", async () => {
-    (browserSupportsWebAuthn as jest.Mock).mockReturnValue(false);
+    setWebAuthnSupport(false);
     renderLogin();
 
-    await waitFor(() => expect(browserSupportsWebAuthn).toHaveBeenCalled());
     expect(screen.queryByTestId("passkey-login-btn")).not.toBeInTheDocument();
   });
 
@@ -128,7 +131,7 @@ describe("Login with passkey", () => {
     fireEvent.click(await screen.findByTestId("passkey-login-btn"));
 
     await waitFor(() => expect(router.push).toHaveBeenCalledWith("/"));
-    expect(passkeyLoginOptions).toHaveBeenCalledWith({});
+    expect(passkeyLoginOptions).toHaveBeenCalledWith();
     expect(startAuthentication).toHaveBeenCalledWith(options);
     expect(passkeyLoginVerify).toHaveBeenCalledWith({
       challenge_id: "c1",
@@ -170,5 +173,102 @@ describe("Login with passkey", () => {
     fireEvent.click(await screen.findByTestId("passkey-login-btn"));
 
     expect(await screen.findByText(errors.loginFailed)).toBeInTheDocument();
+  });
+
+  it("does not send the email even when the email field is filled", async () => {
+    (startAuthentication as jest.Mock).mockResolvedValue({ id: "cred" });
+    (passkeyLoginVerify as jest.Mock).mockResolvedValue({
+      status_code: 200,
+      data: { user: { email: "a@b.com" } },
+    });
+    renderLogin();
+
+    fireEvent.change(
+      screen.getByPlaceholderText(messages.placeholders.emailPhone),
+      { target: { value: "typed@example.com" } }
+    );
+    fireEvent.click(await screen.findByTestId("passkey-login-btn"));
+
+    await waitFor(() => expect(passkeyLoginVerify).toHaveBeenCalled());
+    expect(passkeyLoginOptions).toHaveBeenCalledTimes(1);
+    expect(passkeyLoginOptions).toHaveBeenCalledWith();
+  });
+
+  it("uses the unverified-account path for a 402", async () => {
+    const router = createMockRouter();
+    (startAuthentication as jest.Mock).mockResolvedValue({ id: "cred" });
+    (passkeyLoginVerify as jest.Mock).mockResolvedValue({
+      status_code: 402,
+      message: "Please verify your email first.",
+    });
+    renderLogin(router);
+
+    fireEvent.click(await screen.findByTestId("passkey-login-btn"));
+
+    expect(
+      await screen.findByText("Please verify your email first.")
+    ).toBeInTheDocument();
+    expect(screen.queryByText(errors.loginFailed)).not.toBeInTheDocument();
+    expect(router.push).not.toHaveBeenCalled();
+  });
+
+  describe("current_user cookie", () => {
+    let cookieWrites: string[];
+
+    beforeEach(() => {
+      cookieWrites = [];
+      jest
+        .spyOn(document, "cookie", "set")
+        .mockImplementation((v: string) => {
+          cookieWrites.push(v);
+        });
+      (startAuthentication as jest.Mock).mockResolvedValue({ id: "cred" });
+    });
+
+    afterEach(() => jest.restoreAllMocks());
+
+    const currentUserWrites = () =>
+      cookieWrites.filter((c) => c.startsWith("current_user="));
+
+    it("writes the user's email", async () => {
+      (passkeyLoginVerify as jest.Mock).mockResolvedValue({
+        status_code: 200,
+        data: { user: { email: "a@b.com" } },
+      });
+      renderLogin();
+
+      fireEvent.click(await screen.findByTestId("passkey-login-btn"));
+
+      await waitFor(() => expect(currentUserWrites()).toHaveLength(1));
+      expect(currentUserWrites()[0]).toMatch(/^current_user=a@b\.com/);
+    });
+
+    it("never writes 'undefined' when the email is missing", async () => {
+      (passkeyLoginVerify as jest.Mock).mockResolvedValue({
+        status_code: 200,
+        data: { user: {} },
+      });
+      renderLogin();
+
+      fireEvent.click(await screen.findByTestId("passkey-login-btn"));
+
+      await waitFor(() => expect(currentUserWrites()).toHaveLength(1));
+      expect(currentUserWrites()[0]).not.toContain("undefined");
+    });
+
+    it("does not sign in when the user is missing", async () => {
+      const router = createMockRouter();
+      (passkeyLoginVerify as jest.Mock).mockResolvedValue({
+        status_code: 200,
+        data: {},
+      });
+      renderLogin(router);
+
+      fireEvent.click(await screen.findByTestId("passkey-login-btn"));
+
+      expect(await screen.findByText(errors.loginFailed)).toBeInTheDocument();
+      expect(currentUserWrites()).toHaveLength(0);
+      expect(router.push).not.toHaveBeenCalled();
+    });
   });
 });

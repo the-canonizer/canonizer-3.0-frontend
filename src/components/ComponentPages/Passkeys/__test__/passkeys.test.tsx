@@ -7,11 +7,16 @@ import {
 } from "src/utils/testUtils";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
-import { browserSupportsWebAuthn } from "@simplewebauthn/browser";
+import { startRegistration } from "@simplewebauthn/browser";
 
 import Passkeys from "../index";
 import messages from "src/messages";
-import { deletePasskey, getPasskeys } from "src/network/api/userApi";
+import {
+  deletePasskey,
+  getPasskeys,
+  passkeyRegisterOptions,
+  passkeyRegisterVerify,
+} from "src/network/api/userApi";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 
 jest.mock("src/network/api/userApi");
@@ -20,6 +25,14 @@ jest.mock("components/common/notification/notificationBar", () => ({
 }));
 
 const { passkey: copy } = messages;
+
+const setWebAuthnSupport = (supported: boolean) => {
+  if (supported) {
+    (window as any).PublicKeyCredential = function PublicKeyCredential() {};
+  } else {
+    delete (window as any).PublicKeyCredential;
+  }
+};
 
 const store = configureMockStore()({
   auth: { authenticated: true, loggedInUser: { id: 1 } },
@@ -51,7 +64,7 @@ afterEach(cleanup);
 
 beforeEach(() => {
   jest.clearAllMocks();
-  (browserSupportsWebAuthn as jest.Mock).mockReturnValue(true);
+  setWebAuthnSupport(true);
   (getPasskeys as jest.Mock).mockResolvedValue({
     status_code: 200,
     data: list,
@@ -80,7 +93,7 @@ describe("Passkeys settings section", () => {
   });
 
   it("replaces the register button when WebAuthn is unsupported", async () => {
-    (browserSupportsWebAuthn as jest.Mock).mockReturnValue(false);
+    setWebAuthnSupport(false);
     renderPasskeys();
 
     expect(await screen.findByText(copy.notSupported)).toBeInTheDocument();
@@ -136,5 +149,86 @@ describe("Passkeys settings section", () => {
       )
     );
     expect(screen.getByText("Work laptop")).toBeInTheDocument();
+  });
+
+  const openRegisterModal = async () => {
+    fireEvent.click(await screen.findByTestId("passkey-register-btn"));
+    return screen.findByRole("dialog");
+  };
+
+  const submitLabel = async (label: string) => {
+    fireEvent.change(screen.getByLabelText(copy.labelField), {
+      target: { value: label },
+    });
+    fireEvent.click(screen.getByRole("button", { name: copy.continue }));
+  };
+
+  it("registers with a trimmed label, closes the modal and refreshes", async () => {
+    const credential = { id: "new-cred" };
+    (passkeyRegisterOptions as jest.Mock).mockResolvedValue({
+      status_code: 200,
+      data: { challenge: "xyz" },
+    });
+    (startRegistration as jest.Mock).mockResolvedValue(credential);
+    (passkeyRegisterVerify as jest.Mock).mockResolvedValue({
+      status_code: 200,
+    });
+    renderPasskeys();
+
+    await openRegisterModal();
+    await waitFor(() => expect(getPasskeys).toHaveBeenCalledTimes(1));
+    await submitLabel("  My phone  ");
+
+    await waitFor(() =>
+      expect(passkeyRegisterVerify).toHaveBeenCalledWith({
+        credential,
+        label: "My phone",
+      })
+    );
+    await waitFor(() => expect(getPasskeys).toHaveBeenCalledTimes(2));
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
+  });
+
+  it("omits a blank label so the backend stores null", async () => {
+    const credential = { id: "new-cred" };
+    (passkeyRegisterOptions as jest.Mock).mockResolvedValue({
+      status_code: 200,
+      data: {},
+    });
+    (startRegistration as jest.Mock).mockResolvedValue(credential);
+    (passkeyRegisterVerify as jest.Mock).mockResolvedValue({
+      status_code: 200,
+    });
+    renderPasskeys();
+
+    await openRegisterModal();
+    await submitLabel("   ");
+
+    await waitFor(() =>
+      expect(passkeyRegisterVerify).toHaveBeenCalledWith({ credential })
+    );
+  });
+
+  it("maps InvalidStateError to the already-registered message", async () => {
+    (passkeyRegisterOptions as jest.Mock).mockResolvedValue({
+      status_code: 200,
+      data: {},
+    });
+    (startRegistration as jest.Mock).mockRejectedValue(
+      Object.assign(new Error("exists"), { name: "InvalidStateError" })
+    );
+    renderPasskeys();
+
+    await openRegisterModal();
+    await submitLabel("Laptop");
+
+    await waitFor(() =>
+      expect(openNotificationWithIcon).toHaveBeenCalledWith(
+        copy.errors.alreadyRegistered
+      )
+    );
+    expect(passkeyRegisterVerify).not.toHaveBeenCalled();
   });
 });
