@@ -1236,9 +1236,10 @@ export const passkeyRegisterVerify = async (body: {
   );
 };
 
-export const passkeyLoginOptions = async (body: { email?: string } = {}) => {
+// Discoverable credentials only: the options request carries no identifier
+export const passkeyLoginOptions = async () => {
   return await NetworkCall.fetch(
-    UserRequest.passkeyLoginOptions(body, (getCookies() as any)?.loginToken)
+    UserRequest.passkeyLoginOptions({}, (getCookies() as any)?.loginToken)
   );
 };
 
@@ -1246,15 +1247,23 @@ export const passkeyLoginVerify = async (body: {
   challenge_id: string;
   credential: object;
 }) => {
-  const res = await NetworkCall.fetch(
-    UserRequest.passkeyLoginVerify(body, (getCookies() as any)?.loginToken)
-  );
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.passkeyLoginVerify(body, (getCookies() as any)?.loginToken)
+    );
 
-  if (res?.status_code === 200) {
-    persistLoginResponse(res);
+    if (res?.status_code === 200 && res.data?.user) {
+      persistLoginResponse(res);
+    }
+
+    return res;
+  } catch (err) {
+    // Unverified account: hand back the envelope, as login() does
+    if (err?.error?.data?.status_code === 402) {
+      return err.error.data;
+    }
+    throw err;
   }
-
-  return res;
 };
 
 export const getPasskeys = async () => {

@@ -117,11 +117,14 @@ const Login = () => {
       router?.push(currentReturnUrl);
     } else if (router?.pathname === "/login") {
       router?.push("/");
-    } else {
-      closeModal();
     }
 
     closeModal();
+  };
+
+  // Unverified account (402): shared by password and passkey sign-in
+  const onUnverifiedAccount = (res) => {
+    setErrorMsg(res.message);
   };
 
   const onFinish = async (values: any) => {
@@ -135,7 +138,7 @@ const Login = () => {
       let res = await login(username, pass);
 
       if (res && res.status_code === 402) {
-        setErrorMsg(res.message);
+        onUnverifiedAccount(res);
       }
 
       if (res && res.status_code === 200) {
@@ -167,11 +170,9 @@ const Login = () => {
     setLoading(true);
     setErrorMsg("");
 
-    // Email is optional: without it the browser offers discoverable passkeys
-    const email = form.getFieldValue("username")?.trim();
-
+    // Passkeys are discoverable-only, so no email is sent
     try {
-      const optionsRes = await passkeyLoginOptions(email ? { email } : {});
+      const optionsRes = await passkeyLoginOptions();
       const { challenge_id, options } = optionsRes?.data || {};
 
       const { startAuthentication } = await loadWebAuthn();
@@ -179,8 +180,10 @@ const Login = () => {
 
       const res = await passkeyLoginVerify({ challenge_id, credential });
 
-      if (res && res.status_code === 200) {
-        onLoginSuccess(res, res?.data?.user?.email || email);
+      if (res && res.status_code === 402) {
+        onUnverifiedAccount(res);
+      } else if (res && res.status_code === 200 && res.data?.user) {
+        onLoginSuccess(res, res.data.user.email || "");
         redirectAfterLogin();
       } else {
         setErrorMsg(res?.message || messages.passkey.errors.loginFailed);
