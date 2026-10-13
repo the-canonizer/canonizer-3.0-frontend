@@ -449,6 +449,72 @@ export default class UserRequest extends Request {
     );
   }
 
+  static passkeyRegisterOptions(token) {
+    return new Request(
+      K.Network.URL.PasskeyRegisterOptions,
+      K.Network.Method.POST,
+      {},
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static passkeyRegisterVerify(body, token) {
+    return new Request(
+      K.Network.URL.PasskeyRegisterVerify,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static passkeyLoginOptions(body, token) {
+    return new Request(
+      K.Network.URL.PasskeyLoginOptions,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static passkeyLoginVerify(body, token) {
+    return new Request(
+      K.Network.URL.PasskeyLoginVerify,
+      K.Network.Method.POST,
+      body,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static passkeysList(token) {
+    return new Request(
+      K.Network.URL.Passkeys,
+      K.Network.Method.GET,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
+  static passkeyDelete(id, token) {
+    return new Request(
+      K.Network.URL.Passkeys + "/" + id,
+      K.Network.Method.DELETE,
+      null,
+      K.Network.Header.Type.Json,
+      {},
+      token
+    );
+  }
+
   static SocialLinkUser(values, authToken) {
     const body = {
       client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_PASSWORD_ID,
