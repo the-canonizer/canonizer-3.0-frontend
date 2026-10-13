@@ -40,6 +40,7 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@ramonak/react-progress-bar": "^5.0.3",
     "@reduxjs/toolkit": "^1.8.0",
+    "@simplewebauthn/browser": "^10.0.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/container-queries": "^0.1.1",
     "@types/next": "^9.0.0",
