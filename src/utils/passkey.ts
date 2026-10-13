@@ -1,5 +1,15 @@
 import messages from "src/messages";
 
+// @simplewebauthn/browser is ESM-only and browser-only, so load it lazily on
+// the client instead of letting Next 12 externalise it for SSR
+export const loadWebAuthn = () => import("@simplewebauthn/browser");
+
+export const isWebAuthnSupported = async () => {
+  if (typeof window === "undefined") return false;
+  const { browserSupportsWebAuthn } = await loadWebAuthn();
+  return browserSupportsWebAuthn();
+};
+
 // Maps WebAuthn DOMExceptions and API envelope errors to a user-facing message
 export const getPasskeyErrorMessage = (error, fallback: string) => {
   const { errors } = messages.passkey;

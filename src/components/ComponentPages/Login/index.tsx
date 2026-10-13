@@ -2,7 +2,6 @@ import { Card, Col, Form, Row } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { startAuthentication } from "@simplewebauthn/browser";
 
 import LoginUI from "./UI";
 
@@ -21,7 +20,7 @@ import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import LeftContent from "./UI/leftContent";
 import { getCookiesExpirationTime } from "src/utils/generalUtility";
-import { getPasskeyErrorMessage } from "src/utils/passkey";
+import { getPasskeyErrorMessage, loadWebAuthn } from "src/utils/passkey";
 import messages from "src/messages";
 
 const Login = () => {
@@ -175,6 +174,7 @@ const Login = () => {
       const optionsRes = await passkeyLoginOptions(email ? { email } : {});
       const { challenge_id, options } = optionsRes?.data || {};
 
+      const { startAuthentication } = await loadWebAuthn();
       const credential = await startAuthentication(options);
 
       const res = await passkeyLoginVerify({ challenge_id, credential });

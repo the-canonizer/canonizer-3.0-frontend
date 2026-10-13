@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { KeyOutlined } from "@ant-design/icons";
-import { browserSupportsWebAuthn } from "@simplewebauthn/browser";
 
 import messages from "src/messages";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import { isWebAuthnSupported } from "src/utils/passkey";
 
 type Props = {
   onClick: () => void;
@@ -15,7 +15,7 @@ const PasskeyLoginButton = ({ onClick, disabled = false }: Props) => {
   const [isSupported, setIsSupported] = useState(false);
 
   useEffect(() => {
-    setIsSupported(browserSupportsWebAuthn());
+    isWebAuthnSupported().then(setIsSupported);
   }, []);
 
   if (!isSupported) return null;

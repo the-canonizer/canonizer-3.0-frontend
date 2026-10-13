@@ -11,10 +11,6 @@ import {
   message,
 } from "antd";
 import { DeleteOutlined, KeyOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  browserSupportsWebAuthn,
-  startRegistration,
-} from "@simplewebauthn/browser";
 import moment from "moment";
 
 import messages from "src/messages";
@@ -24,7 +20,11 @@ import {
   passkeyRegisterOptions,
   passkeyRegisterVerify,
 } from "src/network/api/userApi";
-import { getPasskeyErrorMessage } from "src/utils/passkey";
+import {
+  getPasskeyErrorMessage,
+  isWebAuthnSupported,
+  loadWebAuthn,
+} from "src/utils/passkey";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import isAuth from "src/hooks/isUserAuthenticated";
 import SectionHeading from "../Home/FeaturedTopic/sectionsHeading";
@@ -69,7 +69,7 @@ function Passkeys() {
   };
 
   useEffect(() => {
-    setIsSupported(browserSupportsWebAuthn());
+    isWebAuthnSupported().then(setIsSupported);
   }, []);
 
   useEffect(() => {
@@ -85,6 +85,7 @@ function Passkeys() {
     setRegistering(true);
     try {
       const optionsRes = await passkeyRegisterOptions();
+      const { startRegistration } = await loadWebAuthn();
       const credential = await startRegistration(optionsRes?.data);
 
       const trimmed = label?.trim();
