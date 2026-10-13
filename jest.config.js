@@ -43,6 +43,7 @@ const jestConfig = {
     // https://jestjs.io/docs/webpack#handling-static-assets
     "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$": `<rootDir>/fileMock.js`,
     d3: "<rootDir>/mocks/d3Mock.ts",
+    "^@simplewebauthn/browser$": "<rootDir>/mocks/simplewebauthnMock.ts",
   },
   coverageDirectory: "coverage",
   transform: {

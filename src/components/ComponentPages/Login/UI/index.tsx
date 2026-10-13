@@ -10,6 +10,7 @@ import LogoHeader from "components/common/headers/logoHeader";
 import Inputs from "src/components/shared/FormInputs";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
+import PasskeyLoginButton from "./passkeyLoginButton";
 
 const { Title, Text } = Typography;
 
@@ -24,6 +25,7 @@ const LoginUi = ({
   onForgotPasswordClick,
   onRegister,
   loading,
+  onPasskeyClick,
 }) => {
   return (
     <Card
@@ -130,6 +132,7 @@ const LoginUi = ({
           >
             Request OTP
           </SecondaryButton>
+          <PasskeyLoginButton onClick={onPasskeyClick} disabled={loading} />
         </div>
 
         <div className="mt-10">

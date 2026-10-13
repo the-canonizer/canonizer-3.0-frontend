@@ -103,22 +103,27 @@ export const createToken = async (req, res) => {
 //   }
 // };
 
+// Stores the token/user returned by any login flow (password, passkey)
+export const persistLoginResponse = (res) => {
+  store.dispatch(setAuthToken(res.data.auth?.access_token));
+
+  document.cookie =
+    "loginToken=" + res.data.auth?.access_token + getCookiesExpirationTime();
+
+  let payload = {
+    ...res.data.user,
+  };
+
+  store.dispatch(setLoggedInUser(payload));
+};
+
 export const login = async (email: string, password: string) => {
   try {
     const res = await NetworkCall.fetch(
       UserRequest.loginUser(email, password, (getCookies() as any)?.loginToken)
     );
 
-    store.dispatch(setAuthToken(res.data.auth?.access_token));
-
-    document.cookie =
-      "loginToken=" + res.data.auth?.access_token + getCookiesExpirationTime();
-
-    let payload = {
-      ...res.data.user,
-    };
-
-    store.dispatch(setLoggedInUser(payload));
+    persistLoginResponse(res);
 
     return res;
   } catch (err) {
@@ -1209,4 +1214,66 @@ export const UpdateUserPreferences = async (values: object) => {
       handleError(errors);
     });
   return res;
+};
+
+// Passkeys (WebAuthn)
+// These throw on failure so callers can map WebAuthn and API errors to
+// a single user-facing message (see utils/passkey).
+export const passkeyRegisterOptions = async () => {
+  const state = store.getState();
+  return await NetworkCall.fetch(
+    UserRequest.passkeyRegisterOptions(state?.auth?.token)
+  );
+};
+
+export const passkeyRegisterVerify = async (body: {
+  credential: object;
+  label?: string;
+}) => {
+  const state = store.getState();
+  return await NetworkCall.fetch(
+    UserRequest.passkeyRegisterVerify(body, state?.auth?.token)
+  );
+};
+
+// Discoverable credentials only: the options request carries no identifier
+export const passkeyLoginOptions = async () => {
+  return await NetworkCall.fetch(
+    UserRequest.passkeyLoginOptions({}, (getCookies() as any)?.loginToken)
+  );
+};
+
+export const passkeyLoginVerify = async (body: {
+  challenge_id: string;
+  credential: object;
+}) => {
+  try {
+    const res = await NetworkCall.fetch(
+      UserRequest.passkeyLoginVerify(body, (getCookies() as any)?.loginToken)
+    );
+
+    if (res?.status_code === 200 && res.data?.user) {
+      persistLoginResponse(res);
+    }
+
+    return res;
+  } catch (err) {
+    // Unverified account: hand back the envelope, as login() does
+    if (err?.error?.data?.status_code === 402) {
+      return err.error.data;
+    }
+    throw err;
+  }
+};
+
+export const getPasskeys = async () => {
+  const state = store.getState();
+  return await NetworkCall.fetch(UserRequest.passkeysList(state?.auth?.token));
+};
+
+export const deletePasskey = async (id: string | number) => {
+  const state = store.getState();
+  return await NetworkCall.fetch(
+    UserRequest.passkeyDelete(id, state?.auth?.token)
+  );
 };

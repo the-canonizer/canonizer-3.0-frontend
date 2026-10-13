@@ -124,6 +124,12 @@ const NetworkConstants = {
 
     GetSocialLinkedAccounts: `${BaseCanonizerApiUrl}/user/social/list`,
     DeleteSocialLinkedAccount: `${BaseCanonizerApiUrl}/user/social/delete`,
+    // Passkeys (WebAuthn)
+    PasskeyRegisterOptions: `${BaseCanonizerApiUrl}/auth/passkey/register-options`,
+    PasskeyRegisterVerify: `${BaseCanonizerApiUrl}/auth/passkey/register-verify`,
+    PasskeyLoginOptions: `${BaseCanonizerApiUrl}/auth/passkey/login-options`,
+    PasskeyLoginVerify: `${BaseCanonizerApiUrl}/auth/passkey/login-verify`,
+    Passkeys: `${BaseCanonizerApiUrl}/auth/passkeys`,
     LinkUsersFromSocial: `${BaseCanonizerApiUrl}/user/social/social-link`,
     DeactivateUser: `${BaseCanonizerApiUrl}/user/deactivate`,
     GetNickNames: `${BaseCanonizerApiUrl}/camp/get-topic-nickname-used`,
