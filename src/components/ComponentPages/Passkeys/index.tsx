@@ -235,7 +235,11 @@ function Passkeys() {
       >
         <Form form={form} layout="vertical" onFinish={onRegister}>
           <Text className="block text-sm mb-4">{copy.labelPromptHint}</Text>
-          <Form.Item name="label" label={copy.labelField}>
+          <Form.Item
+            name="label"
+            label={copy.labelField}
+            htmlFor="passkey-label-input"
+          >
             <Input
               id="passkey-label-input"
               placeholder={copy.labelPlaceholder}
