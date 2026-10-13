@@ -2,6 +2,7 @@ import { Card, Col, Form, Row } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { startAuthentication } from "@simplewebauthn/browser";
 
 import LoginUI from "./UI";
 
@@ -9,6 +10,8 @@ import CustomSpinner from "components/shared/CustomSpinner";
 import {
   getNickNameList,
   login,
+  passkeyLoginOptions,
+  passkeyLoginVerify,
   resendOTPForRegistration,
 } from "src/network/api/userApi";
 import { AppDispatch, RootState } from "src/store";
@@ -18,6 +21,8 @@ import { setFilterCanonizedTopics } from "src/store/slices/filtersSlice";
 import { setValue } from "src/store/slices/utilsSlice";
 import LeftContent from "./UI/leftContent";
 import { getCookiesExpirationTime } from "src/utils/generalUtility";
+import { getPasskeyErrorMessage } from "src/utils/passkey";
+import messages from "src/messages";
 
 const Login = () => {
   const remember = useSelector((state: RootState) => state.utils.remember_me);
@@ -86,6 +91,40 @@ const Login = () => {
     }
   };
 
+  // Shared post-login handling for password and passkey sign-in
+  const onLoginSuccess = (res, username: string) => {
+    document.cookie = "current_user=" + username + getCookiesExpirationTime();
+
+    document.cookie =
+      "isUserAuthenticated=" + true + getCookiesExpirationTime();
+
+    dispatch(
+      setFilterCanonizedTopics({
+        algorithm: res?.data?.user?.default_algo,
+      })
+    );
+
+    form.resetFields();
+
+    fetchNickNameList();
+  };
+
+  const redirectAfterLogin = () => {
+    const returnUrl: any = router?.query?.returnUrl;
+
+    if (returnUrl) {
+      router?.push(returnUrl);
+    } else if (currentReturnUrl) {
+      router?.push(currentReturnUrl);
+    } else if (router?.pathname === "/login") {
+      router?.push("/");
+    } else {
+      closeModal();
+    }
+
+    closeModal();
+  };
+
   const onFinish = async (values: any) => {
     setLoading(true);
     dispatch(setEmailForOTP(values.username?.trim()));
@@ -101,21 +140,7 @@ const Login = () => {
       }
 
       if (res && res.status_code === 200) {
-        document.cookie =
-          "current_user=" + username + getCookiesExpirationTime();
-
-        document.cookie =
-          "isUserAuthenticated=" + true + getCookiesExpirationTime();
-
-        dispatch(
-          setFilterCanonizedTopics({
-            algorithm: res?.data?.user?.default_algo,
-          })
-        );
-
-        form.resetFields();
-
-        fetchNickNameList();
+        onLoginSuccess(res, username);
 
         if (values.remember) {
           dispatch(
@@ -129,23 +154,41 @@ const Login = () => {
           );
         }
 
-        const returnUrl: any = router?.query?.returnUrl;
-
-        if (returnUrl) {
-          router?.push(returnUrl);
-        } else if (currentReturnUrl) {
-          router?.push(currentReturnUrl);
-        } else if (router?.pathname === "/login") {
-          router?.push("/");
-        } else {
-          closeModal();
-        }
-
-        closeModal();
+        redirectAfterLogin();
       }
     } catch (error) {
       console.error("Login error:", error);
       setErrorMsg("An error occurred during login. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onPasskeyClick = async () => {
+    setLoading(true);
+    setErrorMsg("");
+
+    // Email is optional: without it the browser offers discoverable passkeys
+    const email = form.getFieldValue("username")?.trim();
+
+    try {
+      const optionsRes = await passkeyLoginOptions(email ? { email } : {});
+      const { challenge_id, options } = optionsRes?.data || {};
+
+      const credential = await startAuthentication(options);
+
+      const res = await passkeyLoginVerify({ challenge_id, credential });
+
+      if (res && res.status_code === 200) {
+        onLoginSuccess(res, res?.data?.user?.email || email);
+        redirectAfterLogin();
+      } else {
+        setErrorMsg(res?.message || messages.passkey.errors.loginFailed);
+      }
+    } catch (error) {
+      setErrorMsg(
+        getPasskeyErrorMessage(error, messages.passkey.errors.loginFailed)
+      );
     } finally {
       setLoading(false);
     }
@@ -217,6 +260,7 @@ const Login = () => {
               onForgotPasswordClick={onForgotPasswordClick}
               onRegister={onRegister}
               loading={loading}
+              onPasskeyClick={onPasskeyClick}
             />
           </Col>
         </Row>
