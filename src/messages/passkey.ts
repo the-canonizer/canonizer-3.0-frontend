@@ -19,13 +19,15 @@ export const passkey = {
   unnamed: "Unnamed passkey",
   empty: "You have not registered any passkeys yet.",
   remove: "Remove",
-  removeConfirm: "Remove this passkey? You will no longer be able to sign in with it.",
+  removeConfirm:
+    "Remove this passkey? You will no longer be able to sign in with it.",
   yes: "Yes",
   no: "No",
   registered: "Passkey registered successfully.",
   removed: "Passkey removed.",
   errors: {
-    cancelled: "The passkey request was cancelled or timed out. Please try again.",
+    cancelled:
+      "The passkey request was cancelled or timed out. Please try again.",
     alreadyRegistered:
       "This device already has a passkey registered for your account.",
     security:

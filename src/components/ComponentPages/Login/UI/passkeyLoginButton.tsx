@@ -5,7 +5,12 @@ import { browserSupportsWebAuthn } from "@simplewebauthn/browser";
 import messages from "src/messages";
 import SecondaryButton from "components/shared/Buttons/SecondaryButton";
 
-const PasskeyLoginButton = ({ onClick, disabled }) => {
+type Props = {
+  onClick: () => void;
+  disabled?: boolean;
+};
+
+const PasskeyLoginButton = ({ onClick, disabled = false }: Props) => {
   // Feature-detect on the client only to keep SSR markup stable
   const [isSupported, setIsSupported] = useState(false);
 
