@@ -4,11 +4,9 @@ import messages from "src/messages";
 // the client instead of letting Next 12 externalise it for SSR
 export const loadWebAuthn = () => import("@simplewebauthn/browser");
 
-export const isWebAuthnSupported = async () => {
-  if (typeof window === "undefined") return false;
-  const { browserSupportsWebAuthn } = await loadWebAuthn();
-  return browserSupportsWebAuthn();
-};
+// Sync and SSR-safe, so the WebAuthn chunk is only fetched when it can be used
+export const isWebAuthnSupported = () =>
+  typeof window !== "undefined" && !!window.PublicKeyCredential;
 
 // Maps WebAuthn DOMExceptions and API envelope errors to a user-facing message
 export const getPasskeyErrorMessage = (error, fallback: string) => {

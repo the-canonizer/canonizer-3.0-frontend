@@ -47,7 +47,7 @@ const formatDate = (date: string | null) =>
 function Passkeys() {
   const [passkeys, setPasskeys] = useState<Passkey[]>([]);
   const [loading, setLoading] = useState(false);
-  const [isSupported, setIsSupported] = useState(true);
+  const [isSupported, setIsSupported] = useState<boolean | null>(null);
   const [isLabelModalOpen, setIsLabelModalOpen] = useState(false);
   const [registering, setRegistering] = useState(false);
 
@@ -69,7 +69,7 @@ function Passkeys() {
   };
 
   useEffect(() => {
-    isWebAuthnSupported().then(setIsSupported);
+    setIsSupported(isWebAuthnSupported());
   }, []);
 
   useEffect(() => {
@@ -134,7 +134,7 @@ function Passkeys() {
           {copy.sectionDescription}
         </Text>
 
-        {isSupported ? (
+        {isSupported === null ? null : isSupported ? (
           <PrimaryButton
             className="h-[40px] text-sm rounded-lg flex items-center justify-center gap-2 mb-6"
             onClick={openLabelModal}

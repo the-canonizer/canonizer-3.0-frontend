@@ -12,10 +12,10 @@ type Props = {
 
 const PasskeyLoginButton = ({ onClick, disabled = false }: Props) => {
   // Feature-detect on the client only to keep SSR markup stable
-  const [isSupported, setIsSupported] = useState(false);
+  const [isSupported, setIsSupported] = useState<boolean | null>(null);
 
   useEffect(() => {
-    isWebAuthnSupported().then(setIsSupported);
+    setIsSupported(isWebAuthnSupported());
   }, []);
 
   if (!isSupported) return null;

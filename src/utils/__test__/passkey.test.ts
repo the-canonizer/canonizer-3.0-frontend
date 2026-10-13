@@ -44,11 +44,22 @@ describe("getPasskeyErrorMessage", () => {
 });
 
 describe("isWebAuthnSupported", () => {
-  it("reflects browserSupportsWebAuthn", async () => {
-    (browserSupportsWebAuthn as jest.Mock).mockReturnValueOnce(true);
-    await expect(isWebAuthnSupported()).resolves.toBe(true);
+  afterEach(() => {
+    delete (window as any).PublicKeyCredential;
+  });
 
-    (browserSupportsWebAuthn as jest.Mock).mockReturnValueOnce(false);
-    await expect(isWebAuthnSupported()).resolves.toBe(false);
+  it("is true when PublicKeyCredential exists", () => {
+    (window as any).PublicKeyCredential = function PublicKeyCredential() {};
+    expect(isWebAuthnSupported()).toBe(true);
+  });
+
+  it("is false without PublicKeyCredential", () => {
+    expect(isWebAuthnSupported()).toBe(false);
+  });
+
+  it("does not load the WebAuthn library", () => {
+    (window as any).PublicKeyCredential = function PublicKeyCredential() {};
+    isWebAuthnSupported();
+    expect(browserSupportsWebAuthn).not.toHaveBeenCalled();
   });
 });
