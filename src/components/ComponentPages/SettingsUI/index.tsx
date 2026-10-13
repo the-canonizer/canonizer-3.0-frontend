@@ -14,6 +14,7 @@ import NickName from "../NickName";
 import DirectSupportedCamps from "../DirectSupportedCamps";
 import DelegatedSupportCamps from "../DelegatedSupportCamps";
 import SocialOauth from "../socialAuthVerification";
+import Passkeys from "../Passkeys";
 import SubscriptionsList from "../SubscriptionsList";
 import messages from "src/messages";
 import ImageUploader from "../ImageUploader";
@@ -94,6 +95,7 @@ const SettingsUI = () => {
       </div>
     ),
     social_oauth_verification: <SocialOauth />,
+    passkeys: <Passkeys />,
     subscriptions: <SubscriptionsList />,
   };
 
@@ -124,6 +126,8 @@ const SettingsUI = () => {
       setSelectedValue("social_oauth_verification");
     } else if (router.asPath.includes("change_password")) {
       setSelectedValue("change_password");
+    } else if (router.asPath.includes("passkeys")) {
+      setSelectedValue("passkeys");
     } else {
       setSelectedValue("profile_info");
     }
@@ -309,6 +313,15 @@ const SettingsUI = () => {
           ),
           className: `subItem ${getMatchQuery("change_password")}`,
         },
+        {
+          key: "passkeys",
+          label: (
+            <Link href="/settings?tab=passkeys">
+              <a id="menu_item_passkeys_link">Passkeys & Security Keys</a>
+            </Link>
+          ),
+          className: `subItem ${getMatchQuery("passkeys")}`,
+        },
       ],
       className: `listItem ${getMatchQuery("account_settings")}`,
     },
@@ -363,6 +376,9 @@ const SettingsUI = () => {
           break;
         case "change_password":
           setSelectedValueFromSelectTag("Change Password");
+          break;
+        case "passkeys":
+          setSelectedValueFromSelectTag("Passkeys");
           break;
         default:
           setSelectedValueFromSelectTag(undefined);
@@ -695,6 +711,34 @@ const SettingsUI = () => {
                                     </span>
                                     <Image
                                       id="setting_section_select_tag_change_password_img"
+                                      src="/images/setting-icon.svg"
+                                      width={24}
+                                      height={24}
+                                      alt=""
+                                    />
+                                  </a>
+                                </Link>
+                              </span>
+                            ),
+                          },
+                          {
+                            value: "Passkeys",
+                            label: (
+                              <span id="setting_section_select_tag_passkeys">
+                                <Link href={"/settings?tab=passkeys"}>
+                                  <a
+                                    className="flex items-center gap-3"
+                                    id="setting_section_select_tag_passkeys_link"
+                                  >
+                                    <span
+                                      className="text-base font-medium text-canBlack"
+                                      id="setting_section_select_tag_passkeys_text"
+                                    >
+                                      {" "}
+                                      Passkeys & Security Keys
+                                    </span>
+                                    <Image
+                                      id="setting_section_select_tag_passkeys_img"
                                       src="/images/setting-icon.svg"
                                       width={24}
                                       height={24}
