@@ -91,6 +91,7 @@ export default class NetworkCall {
         if (
           !(
             error.config.url?.includes("/user/login") ||
+            error.config.url?.includes("/auth/passkey/login-") ||
             error.config.url?.includes("/forgot-password/verify-otp")
           )
         ) {
