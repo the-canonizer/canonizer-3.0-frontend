@@ -5,7 +5,6 @@ import {
   Col,
   Typography,
   Modal,
-  Breadcrumb,
   Popover,
   Tooltip,
   Tag,
@@ -18,7 +17,6 @@ import {
   ExclamationCircleFilled,
   FileTextOutlined,
   HomeOutlined,
-  InfoCircleOutlined,
 } from "@ant-design/icons";
 // import OpenAI from "openai";
 
@@ -51,6 +49,7 @@ import Link from "next/link";
 import { getHistoryApi } from "src/network/api/history";
 import PrimaryButton from "components/shared/Buttons/PrimariButton";
 import K from "src/constants";
+import EditPageBreadcrumbs from "../Breadcrumbs/editPageBreadcrumbs";
 
 // const systemPropPt = `You are a text converter for a website where people put their opinions on various topics, while writing and posting the content they are given a feature of Improve with AI, Your role is to improve that text accordingly.
 
@@ -1608,97 +1607,21 @@ function ManageStatements({ isEdit = false }) {
               ]}
             /> */}
 
-            <Breadcrumb
-              className="cn-breadcrumbs"
-              separator={
-                <i className="icon-angle-right-arrow !leading-[0]"></i>
+            <EditPageBreadcrumbs
+              topicNum={
+                isEdit
+                  ? editStatementData?.topic?.topic_num
+                  : router?.query?.statement?.at(0)?.split("-")?.at(0)
               }
-            >
-              {isEdit ? (
-                <>
-                  <Breadcrumb.Item className="flex items-center gap-1.5">
-                    <Link href={getBackURL("topic")}>
-                      <a className="!break-all hover:!text-canHoverBlue">
-                        {editStatementData?.topic?.topic_name}
-                      </a>
-                    </Link>
-                    {isMobile && (
-                      <Popover
-                        placement="bottom"
-                        content={topicContent}
-                        className="title-popover"
-                        overlayClassName="max-lg:hidden popover-content-wrap"
-                      >
-                        <InfoCircleOutlined />
-                      </Popover>
-                    )}
-                  </Breadcrumb.Item>
-                  <Breadcrumb.Item className="flex gap-1.5">
-                    <Link href={getBackURL("camp")}>
-                      <a className="!break-all hover:!text-canHoverBlue">
-                        {editStatementData?.parent_camp?.length > 0
-                          ? editStatementData.parent_camp[
-                              editStatementData.parent_camp.length - 1
-                            ].camp_name
-                          : null}
-                      </a>
-                    </Link>
-
-                    {isMobile && (
-                      <Popover
-                        content={contentForCamp}
-                        title={title2}
-                        overlayClassName="max-lg:hidden"
-                      >
-                        <InfoCircleOutlined />
-                      </Popover>
-                    )}
-                  </Breadcrumb.Item>
-                </>
-              ) : (
-                <Breadcrumb.Item className="flex gap-1.5">
-                  <Link href={getBackURL("camp")}>
-                    <a className="!break-all hover:!text-canHoverBlue">
-                      Adding a camp statement
-                    </a>
-                  </Link>
-
-                  {isMobile && (
-                    <Popover
-                      content={contentForCamp}
-                      title={title2}
-                      overlayClassName="max-lg:hidden"
-                    >
-                      <InfoCircleOutlined />
-                    </Popover>
-                  )}
-                </Breadcrumb.Item>
-              )}
-
-              {/* {typeof editCampName === "object" &&
-                editCampName !== null &&
-                "camp_name" in editCampName && (
-                  <Breadcrumb.Item className="flex gap-1.5">
-                    <Link href={getBackURL("camp")}>
-                      <a className="!text-canGreen !break-all hover:!text-canHoverBlue">
-                        {typeof editCampName === "object" &&
-                        editCampName !== null
-                          ? (editCampName && editCampName.camp_name) ?? ""
-                          : editCampName ?? ""}
-                      </a>
-                    </Link>
-                    {isMobile && (
-                      <Popover
-                        placement="bottom"
-                        content={campContent}
-                        overlayClassName="max-lg:hidden"
-                      >
-                        <InfoCircleOutlined />
-                      </Popover>
-                    )}
-                  </Breadcrumb.Item>
-                )} */}
-            </Breadcrumb>
+              campNum={
+                isEdit
+                  ? editStatementData?.statement?.camp_num
+                  : router?.query?.statement?.at(1)?.split("-")?.at(0)
+              }
+              currentLabel={
+                isEdit ? "Updating camp statement" : "Adding a camp statement"
+              }
+            />
           </Col>
           <Col
             id="save-draft-col"

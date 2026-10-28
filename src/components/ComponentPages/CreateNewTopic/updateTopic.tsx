@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import { Breadcrumb, Col, Form, Popover, Row } from "antd";
+import { Col, Form, Row } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import debounce from "lodash/debounce";
-import { HomeOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 
 import { globalSearchCanonizer } from "src/network/api/userApi";
 import { RootState } from "src/store";
@@ -25,10 +25,9 @@ import {
 } from "src/network/api/campManageStatementApi";
 import { openNotificationWithIcon } from "components/common/notification/notificationBar";
 import Breadcrumbs from "components/shared/Breadcrumbs";
-import Link from "next/link";
+import EditPageBreadcrumbs from "../Breadcrumbs/editPageBreadcrumbs";
 
 const UpdateTopic = () => {
-  const [isMobile, setIsMobile] = useState(false);
   const { nameSpaces, catTaga } = useSelector((state: RootState) => ({
     nameSpaces: state.homePage.nameSpaces,
     catTaga: state?.tag?.tags,
@@ -311,16 +310,6 @@ const UpdateTopic = () => {
     form.setFieldValue("rank_hidden", e.target.checked);
     setIsRankHidden(e.target.checked);
   };
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.matchMedia("(min-width: 992px)").matches);
-    };
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-    return () => {
-      window.removeEventListener("resize", checkIsMobile);
-    };
-  }, []);
 
   return (
     <CustomSpinner key="create-topic-spinner" spinning={isLoading}>
@@ -340,32 +329,10 @@ const UpdateTopic = () => {
           }
         ]}
       /> */}
-      <Breadcrumb
-        className="cn-breadcrumbs"
-        separator={<i className="icon-angle-right-arrow !leading-[0]"></i>}
-      >
-        <Breadcrumb.Item className="flex gap-1.5">
-          <Link
-            href={`/topic/history/${
-              currentTopic?.topic_num
-            }-${replaceSpecialCharacters(currentTopic?.topic_name, "-")}`}
-          >
-            <a className="!break-all hover:!text-canHoverBlue">
-              {currentTopic?.topic_name}
-            </a>
-          </Link>
-          {isMobile && (
-            <Popover
-              placement="bottom"
-              content="Topic"
-              className="title-popover"
-              overlayClassName="max-lg:hidden popover-content-wrap"
-            >
-              <InfoCircleOutlined />
-            </Popover>
-          )}
-        </Breadcrumb.Item>
-      </Breadcrumb>
+      <EditPageBreadcrumbs
+        topicNum={currentTopic?.topic_num}
+        currentLabel="Updating topic"
+      />
 
       <Row gutter={20} className="mb-5" key="row">
         <Col lg={12} key="col-form">
